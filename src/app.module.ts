@@ -16,7 +16,7 @@ import { UsersModule } from './users/users.module';
       port: 3306,
       username: 'root',
       password: 'root',
-      database: 'fh',
+      database: 'fit-and-health',
       entities: [Users],
       synchronize: true,
     }),
