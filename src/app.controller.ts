@@ -1,7 +1,7 @@
 import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common'
 import { AppService } from './app.service'
 import { AuthService } from './auth/auth.service'
-import { JwtAuthGuard } from './auth/jwt-auth.guard'
+// import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 
 @Controller()
 export class AppController {
@@ -17,11 +17,14 @@ export class AppController {
     return this.authService.login(req.body)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Post('api/v1/auth/register')
+  async register(@Request() req) {
+    return this.authService.register(req.body)
+  }
+
+  // @UseGuards(JwtAuthGuard)
   @Get('api/v1/profile')
   getProfile(@Request() req) {
-    // console.log(req)
-    
     return 11231231
   }
 }
