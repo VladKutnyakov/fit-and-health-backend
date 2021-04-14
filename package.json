@@ -4,8 +4,8 @@
   "description": "hjghj",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config ./index.js ",
-    "start": "node -r dotenv/config ./index.js "
+    "start:dev": "nodemon -r dotenv/config ./index.js ",
+    "start:prod": "node -r dotenv/config ./index.js "
   },
   "repository": {
     "type": "git",

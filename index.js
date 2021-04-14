@@ -52,8 +52,6 @@ app.use('/api/recipes-book', recipesBookRoutes)
 app.use('/api/recipe', recipeRoutes)
 app.use('/api/training-diary', trainingDiaryRoutes)
 app.use('/api/exercises', ExercisesRoutes)
-
-
 app.use('/api/settings', settingsRoutes)
 
 
