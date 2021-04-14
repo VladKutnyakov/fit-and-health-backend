@@ -1,3 +1,4 @@
 module.exports = {
-  jwt: 'dev-jwt'
+  jwt: 'dev-jwt',
+  jwtRefresh: 'dev-jwtRefresh'
 }
