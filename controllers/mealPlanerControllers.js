@@ -1,4 +1,3 @@
-const errorHandler = require('../utils/errorHandler.js')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
 const MealPlaner = require('../models/MealPlaner')
@@ -36,7 +35,7 @@ module.exports.getMealPlanerInfo = async function (req, res) {
     }
 
   } catch (err) {
-    errorHandler(res, err)
+    console.log(res, err)
   }
 }
 

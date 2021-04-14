@@ -1,6 +1,5 @@
 // const Sequelize = require('sequelize')
 // const Op = Sequelize.Op;
-// const errorHandler = require('../utils/errorHandler.js')
 const TrainingPrograms = require('../models/TrainingPrograms')
 
 module.exports.fetchMainTrainingProgram = async function (req, res) {

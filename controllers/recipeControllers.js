@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 // const Op = Sequelize.Op;
-// const errorHandler = require('../utils/errorHandler.js')
 const Recipes = require('../models/Recipes')
 const Products = require('../models/Products')
 
@@ -40,6 +39,6 @@ module.exports.getRecipe = async function (req, res) {
 
     res.status(200).json(Recipe)
   } catch (err) {
-    console.log(err);
+    console.log(res, err)
   }
 }

@@ -1,6 +1,5 @@
 // const Sequelize = require('sequelize')
 // const Op = Sequelize.Op;
-// const errorHandler = require('../utils/errorHandler.js')
 // const Products = require('../models/Products')
 
 
