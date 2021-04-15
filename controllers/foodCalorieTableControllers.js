@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
 const Products = require('../models/Products')
+const FavoriteProducts = require('../models/FavoriteProducts')
 const jwt = require('jsonwebtoken')
 const keys = require('../keys')
 
