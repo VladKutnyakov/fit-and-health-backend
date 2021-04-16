@@ -1,26 +1,26 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const Users = sequelize.define('users', {
   email: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   phone: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   password: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   token: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   refreshToken: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true
   }
 })
