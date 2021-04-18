@@ -31,14 +31,6 @@ const Products = sequelize.define('products', {
     type: Sequelize.STRING,
     allowNull: true
   },
-  favorite: {
-    type: Sequelize.BOOLEAN,
-    allowNull: true
-  },
-  userProduct: {
-    type: Sequelize.BOOLEAN,
-    allowNull: true
-  },
   userId: {
     type: Sequelize.INTEGER,
     allowNull: true

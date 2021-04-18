@@ -7,20 +7,31 @@ const keys = require('../keys')
 
 module.exports.getAllProducts = async function (req, res) {
   try {
-    if (req.headers.authorization) {
-      const token = req.headers.authorization.split(' ')[1]
-      const decodedToken = jwt.verify(token, keys.jwt)
+    // реализовать транзакцию для получения избранных проудктов из бд
+    const AllProducts = await Products.findAll({
+      where: {
+        [Op.or]: [
+          {userId: null}, // получить все базовые продукты (id null)
+          {userId: 1} // получить продукты пользователя по его id
+        ]
+      }
+    })
 
-      const AllProducts = await Products.findAll({
-        where: {
-          [Op.or]: [{userProduct: 0}, {userId: decodedToken.userId}]
+    const UserFavoriteProducts = await FavoriteProducts.findAll({
+      where: {
+        userId: 1 // получить продукты пользователя по его id
+      }
+    })
+
+    for (let i = 0; i < AllProducts.length; i++) {
+      UserFavoriteProducts.forEach((element) => {
+        if (element.dataValues.productId === AllProducts[i].dataValues.id) {
+          AllProducts[i].dataValues.favorite = element.dataValues.favorite
         }
       })
-
-      res.status(200).json(AllProducts)
-    } else {
-      res.status(401).json({message: 'Необходима авторизация'})
     }
+
+    res.status(200).json(AllProducts)
   } catch (error) {
     console.log(error)
   }

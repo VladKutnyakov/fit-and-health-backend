@@ -21,6 +21,10 @@ const FavoriteProducts = sequelize.define('favorite_products', {
       key: 'id'
     },
     allowNull: false
+  },
+  favorite: {
+    type: Sequelize.BOOLEAN,
+    allowNull: true
   }
 }, { timestamps: false })
 
