@@ -3,9 +3,15 @@ const keys = require('../../keys/index')
 const Users = require('../../models/Users')
 
 // Guard проверяет token на валидность и обновляет его в БД, прикрепляя обновлденный token к req.body.updatedToken
-export default async function JwtGuard (req, res, next) {
+module.exports = async function JwtGuard (req, res, next) {
   try {
-    const token = req.headers.authorization.split(' ')[1]
+    const token = req.headers.authorization.split('Bearer ')[1]
+
+    // Если токен найден записываем в body расшифрованную информацию о пользователе
+    if (token) {
+      const decodedToken = jwt.decode(token, keys.jwt)
+      req.body.userId = decodedToken.id
+    }
 
     jwt.verify(token, keys.jwt, async (err, decoded) => {
       if (err) {

@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const sequelize = require('../utils/dbConnect')
 const Op = Sequelize.Op;
 const Products = require('../models/Products')
 const FavoriteProducts = require('../models/FavoriteProducts')
@@ -7,31 +8,44 @@ const keys = require('../keys')
 
 module.exports.getAllProducts = async function (req, res) {
   try {
-    // реализовать транзакцию для получения избранных проудктов из бд
-    const AllProducts = await Products.findAll({
-      where: {
-        [Op.or]: [
-          {userId: null}, // получить все базовые продукты (id null)
-          {userId: 1} // получить продукты пользователя по его id
-        ]
-      }
-    })
-
-    const UserFavoriteProducts = await FavoriteProducts.findAll({
-      where: {
-        userId: 1 // получить продукты пользователя по его id
-      }
-    })
-
-    for (let i = 0; i < AllProducts.length; i++) {
-      UserFavoriteProducts.forEach((element) => {
-        if (element.dataValues.productId === AllProducts[i].dataValues.id) {
-          AllProducts[i].dataValues.favorite = element.dataValues.favorite
+    let products = await sequelize.transaction( async (t) => {
+      const AllProducts = await Products.findAll({
+        where: {
+          [Op.or]: [
+            { userId: null }, // получить все базовые продукты (id null)
+            { userId: req.body.userId } // получить продукты пользователя по его id
+          ]
+        },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
         }
-      })
+      }, { transaction: t })
+
+      const UserFavoriteProducts = await FavoriteProducts.findAll({
+        where: {
+          userId: req.body.userId // получить продукты которые пользователь отметил как избранные
+        }
+      }, { transaction: t })
+
+      for (let i = 0; i < AllProducts.length; i++) {
+        UserFavoriteProducts.forEach((element) => {
+          if (element.dataValues.productId === AllProducts[i].dataValues.id) {
+            AllProducts[i].dataValues.favorite = true
+          } else {
+            AllProducts[i].dataValues.favorite = false
+          }
+        })
+      }
+
+      return AllProducts
+    })
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: products
     }
 
-    res.status(200).json(AllProducts)
+    res.status(200).json(response)
   } catch (error) {
     console.log(error)
   }

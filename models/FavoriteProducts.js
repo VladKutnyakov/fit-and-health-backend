@@ -12,7 +12,8 @@ const FavoriteProducts = sequelize.define('favorite_products', {
       model: Users,
       key: 'id'
     },
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   productId: {
     type: Sequelize.INTEGER,
@@ -20,15 +21,12 @@ const FavoriteProducts = sequelize.define('favorite_products', {
       model: Products,
       key: 'id'
     },
-    allowNull: false
-  },
-  favorite: {
-    type: Sequelize.BOOLEAN,
-    allowNull: true
+    allowNull: false,
+    unique: true
   }
 }, { timestamps: false })
 
-Users.belongsToMany(Products, { through: FavoriteProducts, unique: false })
-Products.belongsToMany(Users, { through: FavoriteProducts, unique: false })
+Users.belongsToMany(Products, { through: FavoriteProducts, foreignkey: 'userId' })
+Products.belongsToMany(Users, { through: FavoriteProducts, foreignkey: 'userId' })
 
 module.exports = FavoriteProducts
