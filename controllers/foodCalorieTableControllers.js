@@ -8,7 +8,7 @@ const keys = require('../keys')
 
 module.exports.getAllProducts = async function (req, res) {
   try {
-    let products = await sequelize.transaction( async (t) => {
+    const products = await sequelize.transaction( async (t) => {
       const AllProducts = await Products.findAll({
         where: {
           [Op.or]: [
@@ -123,17 +123,46 @@ module.exports.removeProduct = async function (req, res) {
 
 module.exports.changeFavoriteParam = async function (req, res) {
   try {
-    if (req.headers.authorization) {
-      // const token = req.headers.authorization.split(' ')[1]
-      // const decodedToken = jwt.verify(token, keys.jwt)
+    const isFavorite = await sequelize.transaction( async (t) => {
+      const favoriteProduct = await FavoriteProducts.findOne({
+        where: {
+          [Op.and]: [
+            { userId: req.body.userId },
+            { productId: req.body.productId }
+          ]
+        },
+      }, { transaction: t })
 
-      const UpdatedProduct = await Products.update(
-        req.body.newParam, // должно быть в виде { title: 'foooo', fats: 'baaaaaar'}
-        {where: {id: req.body.productId}}
-      )
+      if (favoriteProduct) {
+        await FavoriteProducts.destroy({
+          where: {
+            [Op.and]: [
+              { userId: req.body.userId },
+              { productId: req.body.productId }
+            ]
+          }
+        }, { transaction: t })
 
-      res.status(200).json(UpdatedProduct[0])
+        return false
+      } else {
+        await FavoriteProducts.create({
+          userId: req.body.userId,
+          productId: req.body.productId
+        }, { transaction: t })
+
+        return true
+      }
+    })
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        productId: req.body.productId,
+        favorite: isFavorite
+      }
     }
+
+    res.status(200).json(response)
   } catch (error) {
     console.log(error)
   }

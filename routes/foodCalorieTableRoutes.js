@@ -7,6 +7,6 @@ const router = express.Router()
 router.get('/', JwtGuard, controller.getAllProducts)
 router.post('/save-product', controller.saveNewProduct)
 router.post('/remove-product', controller.removeProduct)
-router.post('/change-favorite-param', controller.changeFavoriteParam)
+router.post('/change-favorite-param', JwtGuard, controller.changeFavoriteParam)
 
 module.exports = router
