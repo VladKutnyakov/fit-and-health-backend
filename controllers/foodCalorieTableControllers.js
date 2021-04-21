@@ -31,8 +31,6 @@ module.exports.getAllProducts = async function (req, res) {
         UserFavoriteProducts.forEach((element) => {
           if (element.dataValues.productId === AllProducts[i].dataValues.id) {
             AllProducts[i].dataValues.favorite = true
-          } else {
-            AllProducts[i].dataValues.favorite = false
           }
         })
       }
@@ -53,50 +51,40 @@ module.exports.getAllProducts = async function (req, res) {
 
 module.exports.saveNewProduct = async function (req, res) {
   try {
-    if (req.headers.authorization) {
-      const token = req.headers.authorization.split(' ')[1]
-      const decodedToken = jwt.verify(token, keys.jwt)
+    const product = await sequelize.transaction( async (t) => {
+      const savedProduct = await Products.create({
+        title: req.body.title,
+        weight: req.body.weight,
+        protein: req.body.protein,
+        fats: req.body.fats,
+        carb: req.body.carb,
+        kkal: req.body.kkal,
+        category: req.body.category,
+        userId: req.body.userId,
+      }, { transaction: t })
 
-      if (req.body.id && req.body.userId === decodedToken.userId) {
-        const UpdatedProduct = await Products.update(
-          {
-            title: req.body.title,
-            weight: req.body.weight,
-            protein: req.body.protein,
-            fats: req.body.fats,
-            carb: req.body.carb,
-            kkal: req.body.kkal,
-            category: req.body.category,
-            favorite: req.body.favorite,
-            userProduct: req.body.userProduct,
-          },
-          {
-            where: {
-              [Op.and]: [{id: req.body.id}, {userId: decodedToken.userId}]
-            }
-          }
-        )
-        res.status(200).json(UpdatedProduct[0])
-      } else {
-        const CreatedProduct = await Products.create({
-          title: req.body.title,
-          weight: req.body.weight,
-          protein: req.body.protein,
-          fats: req.body.fats,
-          carb: req.body.carb,
-          kkal: req.body.kkal,
-          category: req.body.category,
-          favorite: req.body.favorite,
-          userProduct: req.body.userProduct,
-          userId: decodedToken.userId
-        })
-        res.status(200).json(CreatedProduct)
+      if (req.body.favorite) {
+        await FavoriteProducts.create({
+          userId: req.body.userId,
+          productId: savedProduct.dataValues.id
+        }, { transaction: t })
       }
-    } else {
-      res.status(401).json({message: 'Необходима авторизация'})
+
+      return savedProduct
+    })
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        product: product,
+        favorite: req.body.favorite
+      }
     }
+
+    res.status(200).json(response)
   } catch (error) {
     console.log(error)
+    res.status(500).json(error)
   }
 }
 
