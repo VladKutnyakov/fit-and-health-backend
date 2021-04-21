@@ -6,7 +6,7 @@ const router = express.Router()
 // http://localhost:3031/api/food-calorie-table/
 router.get('/', JwtGuard, controller.getAllProducts)
 router.post('/save-product', JwtGuard, controller.saveNewProduct)
-router.post('/remove-product', controller.removeProduct)
+router.post('/remove-product', JwtGuard, controller.removeProduct)
 router.post('/change-favorite-param', JwtGuard, controller.changeFavoriteParam)
 
 module.exports = router

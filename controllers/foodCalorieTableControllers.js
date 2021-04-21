@@ -46,6 +46,7 @@ module.exports.getAllProducts = async function (req, res) {
     res.status(200).json(response)
   } catch (error) {
     console.log(error)
+    res.status(500).json(error)
   }
 }
 
@@ -90,22 +91,27 @@ module.exports.saveNewProduct = async function (req, res) {
 
 module.exports.removeProduct = async function (req, res) {
   try {
-    if (req.headers.authorization) {
-      const token = req.headers.authorization.split(' ')[1]
-      const decodedToken = jwt.verify(token, keys.jwt)
+    const RemoveProduct = await Products.destroy({
+      where: {
+        [Op.and]: [
+          {id: req.body.productId},
+          {userId: req.body.userId}
+        ]
+      }
+    })
 
-      const RemoveProduct = await Products.destroy({
-        where: {
-          [Op.and]: [{id: req.body.product}, {userId: decodedToken.userId}]
-        }
-      })
-
-      res.status(200).json(RemoveProduct)
-    } else {
-      res.status(401).json({message: 'Необходима авторизация'})
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        removed: RemoveProduct > 0 ? true : false,
+        productId: req.body.productId
+      }
     }
+
+    res.status(200).json(response)
   } catch (error) {
     console.log(error)
+    res.status(500).json(error)
   }
 }
 
@@ -153,5 +159,6 @@ module.exports.changeFavoriteParam = async function (req, res) {
     res.status(200).json(response)
   } catch (error) {
     console.log(error)
+    res.status(500).json(error)
   }
 }
