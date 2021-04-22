@@ -3,12 +3,6 @@ const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const MealPlaner = sequelize.define('meal_planer', {
-  // id: {
-  //   primaryKey: true,
-  //   autoIncrement: true,
-  //   allowNull: false,
-  //   type: Sequelize.INTEGER
-  // },
   userId: {
     type: Sequelize.INTEGER,
     allowNull: true

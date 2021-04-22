@@ -3,8 +3,6 @@ const sequelize = require('../utils/dbConnect')
 const Op = Sequelize.Op;
 const Products = require('../models/Products')
 const FavoriteProducts = require('../models/FavoriteProducts')
-const jwt = require('jsonwebtoken')
-const keys = require('../keys')
 
 module.exports.getAllProducts = async function (req, res) {
   try {

@@ -1,41 +1,38 @@
 const Sequelize = require('sequelize')
+const sequelize = require('../utils/dbConnect')
 const Op = Sequelize.Op;
 const MealPlaner = require('../models/MealPlaner')
-const jwt = require('jsonwebtoken')
-const keys = require('../keys')
 
 module.exports.getMealPlanerInfo = async function (req, res) {
   try {
-    if (req.headers.authorization) {
-      const token = req.headers.authorization.split(' ')[1]
-      const decodedToken = jwt.verify(token, keys.jwt)
+    console.log(req.query.date)
 
-      // Дата по которой искать данные в БД для дневника питания
-      let MealPlanerTargetDay = req.query.date
-      // const CurrentDate = new Date().toISOString().split('T')[0]
-      if (MealPlanerTargetDay === 'undefined') {
-        MealPlanerTargetDay = new Date().toISOString().split('T')[0]
+    const MealPlanerInfo = await sequelize.transaction( async (t) => {
+
+      if (req.body.date) {
+        console.log(req.body.date)
+        // const favoriteProduct = await FavoriteProducts.findOne({
+        //   where: {
+        //     [Op.and]: [
+        //       { userId: req.body.userId },
+        //       { productId: req.body.productId }
+        //     ]
+        //   },
+        // }, { transaction: t })
       }
 
-      console.log(MealPlanerTargetDay)
+    })
 
-      // MealPlaner.findOne({
-      //   where: {
-      //     userId: decodedToken.userId,
-      //     date: mealPlanerTargetDay
-      //   }
-      // }).then(info => console.log(info))
-
-      res.status(200).json({
-        message: 'test message'
-      })
-
-    } else {
-      res.status(401).json({message: 'Необходима авторизация'})
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        mealPlanerInfo: MealPlanerInfo
+      }
     }
-
-  } catch (err) {
-    console.log(res, err)
+    res.status(200).json(response)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
   }
 }
 
