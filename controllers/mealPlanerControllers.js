@@ -4,6 +4,14 @@ const Op = Sequelize.Op;
 const MealPlanerInfo = require('../models/MealPlanerInfo')
 
 module.exports.getMealPlanerInfo = async function (req, res) {
+  // Формат даты --- 2021.12.30
+
+  // convert date to unix timestamp
+  // new Date('2012.08.10').getTime() / 1000 // без значения времени
+
+  // получить текущую дату без времени
+  // console.log(Math.round(new Date().getTime() / 1000).toString());
+
   try {
     const mealPlanDayInfo = await sequelize.transaction( async (t) => {
 
