@@ -59,3 +59,18 @@ module.exports.getMealPlanerInfo = async function (req, res) {
     res.status(500).json(error)
   }
 }
+
+module.exports.saveMealPlanerInfo = async function (req, res) {
+  try {
+    console.log(req.body)
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: 1
+    }
+    res.status(200).json(response)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
