@@ -44,7 +44,7 @@ const MealPlanerInfo = sequelize.define('meal_planer_info', {
     allowNull: true
   },
   mealParts: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: true
   }
 })
