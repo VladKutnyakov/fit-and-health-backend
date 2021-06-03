@@ -63,68 +63,117 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
   try {
     // console.log(req.body)
 
-    // Если переданы параметры mealPlanerInfo и id выполнить поиск по БД
-    if (req.body.mealPlanerInfo && req.body.mealPlanerInfo.id) {
-      const candidate = await MealPlanerInfo.findOne({
+    const candidate = await MealPlanerInfo.findOne({
+      where: {
+        [Op.and]: [
+          { userId: req.body.userId },
+          { id: req.body.mealPlanerInfo.id }
+        ]
+      },
+    })
+
+    // console.log(candidate);
+
+    if (candidate) {
+      // Если запись в БД найдена, вносим изменения в существующий план рациона на сутки
+      const update = {
+        targetProtein: req.body.mealPlanerInfo.targetProtein,
+        targetFats: req.body.mealPlanerInfo.targetFats,
+        targetCarb: req.body.mealPlanerInfo.targetCarb,
+        targetWeight: req.body.mealPlanerInfo.targetWeight,
+        title: req.body.mealPlanerInfo.title,
+        description: req.body.mealPlanerInfo.description,
+        marks: JSON.stringify(req.body.mealPlanerInfo.marks),
+        social: JSON.stringify(req.body.mealPlanerInfo.social),
+        mealParts: JSON.stringify(req.body.mealPlanerInfo.mealParts)
+      }
+
+      const params = {
         where: {
-          [Op.and]: [
-            { userId: req.body.userId },
-            { id: req.body.mealPlanerInfo.id }
-          ]
-        },
-      })
-
-      if (candidate) {
-        // Если запись в БД найдена, вносим изменения в существующий план рациона на сутки
-        console.log('Запись уже есть в БД')
-
-        const update = {
-          userId: req.body.userId,
-          date: new Date(currentDate).getTime() / 1000, // текущая дата в милисекундах
-          targetProtein: req.body.mealPlanerInfo.targetProtein,
-          targetFats: req.body.mealPlanerInfo.targetFats,
-          targetCarb: req.body.mealPlanerInfo.targetCarb,
-          targetWeight: req.body.mealPlanerInfo.targetWeight,
-          title: req.body.mealPlanerInfo.title,
-          description: req.body.mealPlanerInfo.description,
-          marks: JSON.stringify(req.body.mealPlanerInfo.marks),
-          social: JSON.stringify(req.body.mealPlanerInfo.social),
-          mealParts: JSON.stringify(req.body.mealPlanerInfo.mealParts)
+          id: req.body.mealPlanerInfo.id
         }
-        const params = {
-          where: {
-            id: candidate.id
-          }
-        }
-        await MealPlanerInfo.update(update, params)
-      } else {
-        // Если запись в БД не найдена, создаем план рациона на сутки
-        const currentDate = new Date().toJSON().split('T')[0]
-  
-        const savedMealPlan = await MealPlanerInfo.create({
-          userId: req.body.userId,
-          date: new Date(currentDate).getTime() / 1000, // текущая дата в милисекундах
-          targetProtein: req.body.mealPlanerInfo.targetProtein,
-          targetFats: req.body.mealPlanerInfo.targetFats,
-          targetCarb: req.body.mealPlanerInfo.targetCarb,
-          targetWeight: req.body.mealPlanerInfo.targetWeight,
-          title: req.body.mealPlanerInfo.title,
-          description: req.body.mealPlanerInfo.description,
-          marks: JSON.stringify(req.body.mealPlanerInfo.marks),
-          social: JSON.stringify(req.body.mealPlanerInfo.social),
-          mealParts: JSON.stringify(req.body.mealPlanerInfo.mealParts)
-        })
-  
-        console.log(savedMealPlan.dataValues)
-  
+      }
+
+      const updatedMealPlan = await MealPlanerInfo.update(update, params)
+
+      if (updatedMealPlan[0]) {
         const response = {
           updatedToken: req.body.updatedToken,
           data: {
-            mealPlanerInfo: savedMealPlan
+            mealPlanerInfo: req.body.mealPlanerInfo
           }
         }
         res.status(200).json(response)
+      } else {
+        res.status(500).json({
+          message: 'Неизвестная ошибка при обновлении.'
+        })
       }
+    } else {
+      // Если запись в БД не найдена, создаем план рациона на сутки
+      const currentDate = new Date().toJSON().split('T')[0]
+
+      const savedMealPlan = await MealPlanerInfo.create({
+        userId: req.body.userId,
+        date: new Date(currentDate).getTime() / 1000, // текущая дата в милисекундах
+        targetProtein: req.body.mealPlanerInfo.targetProtein,
+        targetFats: req.body.mealPlanerInfo.targetFats,
+        targetCarb: req.body.mealPlanerInfo.targetCarb,
+        targetWeight: req.body.mealPlanerInfo.targetWeight,
+        title: req.body.mealPlanerInfo.title,
+        description: req.body.mealPlanerInfo.description,
+        marks: JSON.stringify(req.body.mealPlanerInfo.marks),
+        social: JSON.stringify(req.body.mealPlanerInfo.social),
+        mealParts: JSON.stringify(req.body.mealPlanerInfo.mealParts)
+      })
+
+      const response = {
+        updatedToken: req.body.updatedToken,
+        data: {
+          mealPlanerInfo: savedMealPlan
+        }
+      }
+      res.status(200).json(response)
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
+
+module.exports.removeMealPlanerInfo = async function (req, res) {
+  try {
+    const candidate = await MealPlanerInfo.findOne({
+      where: {
+        [Op.and]: [
+          { id: req.body.mealPlanerInfoID },
+          { userId: req.body.userId }
+        ]
+      },
+    })
+
+    if (candidate) {
+      const removedMealPlanerInfo = await MealPlanerInfo.destroy({
+        where: {
+          [Op.and]: [
+            { id: req.body.mealPlanerInfoID },
+            { userId: req.body.userId }
+          ]
+        }
+      })
+
+      const response = {
+        updatedToken: req.body.updatedToken,
+        data: {
+          removed: removedMealPlanerInfo ? true : false
+        }
+      }
+
+      res.status(200).json(response)
+    } else {
+      res.status(400).json({
+        message: 'Данные не найдены. Удаление не возможно.'
+      })
     }
   } catch (error) {
     console.log(error)
