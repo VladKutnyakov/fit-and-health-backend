@@ -72,7 +72,7 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
       },
     })
 
-    // console.log(candidate);
+    console.log(candidate);
 
     if (candidate) {
       // Если запись в БД найдена, вносим изменения в существующий план рациона на сутки
