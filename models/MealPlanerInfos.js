@@ -11,22 +11,6 @@ const MealPlanerInfo = sequelize.define('meal_planer_info', {
     type: Sequelize.STRING,
     allowNull: true
   },
-  targetProtein: {
-    type: Sequelize.FLOAT,
-    allowNull: true
-  },
-  targetFats: {
-    type: Sequelize.FLOAT,
-    allowNull: true
-  },
-  targetCarb: {
-    type: Sequelize.FLOAT,
-    allowNull: true
-  },
-  targetWeight: {
-    type: Sequelize.FLOAT,
-    allowNull: true
-  },
   title: {
     type: Sequelize.STRING,
     allowNull: true
@@ -35,16 +19,16 @@ const MealPlanerInfo = sequelize.define('meal_planer_info', {
     type: Sequelize.STRING,
     allowNull: true
   },
-  marks: {
-    type: Sequelize.STRING,
+  marksId: {
+    type: Sequelize.INTEGER,
     allowNull: true
   },
-  social: {
-    type: Sequelize.STRING,
+  socialsId: {
+    type: Sequelize.INTEGER,
     allowNull: true
   },
-  mealParts: {
-    type: Sequelize.TEXT,
+  mealPartsId: {
+    type: Sequelize.INTEGER,
     allowNull: true
   }
 })

@@ -1,11 +1,17 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 const Op = Sequelize.Op;
-const MealPlanerInfo = require('../models/MealPlanerInfo')
+const MealPlanerInfo = require('../models/MealPlanerInfos')
+const Marks = require('../models/Marks')
+const Socials = require('../models/Socials')
+const UserSettings = require('../models/UserSettings')
+const UserParams = require('../models/UserParams')
+const MealParts = require('../models/MealParts')
 
 // Формат даты для всего проекта --- 2021-12-29
 
 module.exports.getMealPlanerInfo = async function (req, res) {
+  // console.log(req.query)
   try {
     const mealPlanDayInfo = await sequelize.transaction( async (t) => {
       if (req.query && req.query.date) {
@@ -19,15 +25,106 @@ module.exports.getMealPlanerInfo = async function (req, res) {
           },
         }, { transaction: t })
 
+        // Вернуть данные о найденном плане питания на указанный день
         if (mealPlan) {
-          // Вернуть данные о найденном плане питания на указанный день
-          return mealPlan
+          // Получить данные о добавленных отметках
+          const mealPlanMarks = await Marks.findOne({
+            where: {
+              [Op.and]: [
+                { id: mealPlan.dataValues.marksId },
+                { entityId: mealPlan.dataValues.id }
+              ]
+            },
+            attributes: ['marks']
+          }, { transaction: t })
+
+          // Получить данные о социальной активности
+          const mealPlanSocials = await Socials.findOne({
+            where: {
+              [Op.and]: [
+                { id: mealPlan.dataValues.socialsId },
+                { entityId: mealPlan.dataValues.id }
+              ]
+            },
+            attributes: ['likes', 'dislikes', 'share']
+          }, { transaction: t })
+
+          // Получить данные о пользовательских настройках для рациона
+          const userTargetSettings = await UserSettings.findOne({
+            where: {
+              userId: req.body.userId
+            },
+            attributes: ['targetProtein', 'targetFats', 'targetCarb', 'targetWeight']
+          }, { transaction: t })
+
+          // Получить данные о параетрах пользователя
+          const userParams = await UserParams.findOne({
+            where: {
+              userId: req.body.userId
+            },
+            attributes: ['currentWeight']
+          }, { transaction: t })
+
+          // Получить данные о приемах пищи для плана питания на сутки
+          const mealParts = await MealParts.findAll({
+            where: {
+              mealPlanId: mealPlan.dataValues.id
+            },
+            attributes: ['title', 'mealTime', 'products', 'recipes']
+          }, { transaction: t })
+
+          const mealPlanMealParts = []
+          mealParts.forEach(element => {
+            const item = {
+              title: element.dataValues.title,
+              mealTime: element.dataValues.mealTime,
+              products: JSON.parse(element.dataValues.products),
+              recipes: JSON.parse(element.dataValues.recipes),
+            }
+            mealPlanMealParts.push(item)
+          })
+          // console.log(mealPlanMealParts)
+
+          // Сформировать зарос с данными о продуктах
+          // const allProductsIds = []
+          // mealPlanMealParts.forEach(element => {
+          //   console.log(allProductsIds, element.title)
+          //   // allProductsIds = [...allProductsIds, ...element.products]
+          // })
+          // console.log(allProductsIds)
+
+          const targetMealPlanInfo = {
+            id: mealPlan.dataValues.id,
+            date: new Date(mealPlan.dataValues.date * 1000).toJSON().split('T')[0],
+            title: mealPlan.dataValues.title,
+            description: mealPlan.dataValues.description,
+            targetProtein: userTargetSettings.dataValues.targetProtein,
+            targetFats: userTargetSettings.dataValues.targetFats,
+            targetCarb: userTargetSettings.dataValues.targetCarb,
+            targetWeight: userTargetSettings.dataValues.targetWeight,
+            currentWeight: userParams.dataValues.currentWeight,
+            marks: JSON.parse(mealPlanMarks.dataValues.marks),
+            likes: mealPlanSocials.dataValues.likes,
+            dislikes: mealPlanSocials.dataValues.dislikes,
+            share: mealPlanSocials.dataValues.share,
+            mealParts: [
+              {
+                title: 'Затрак',
+                mealTime: '07:00',
+                recipes: [],
+                products: []
+              },
+            ]
+          }
+
+          return targetMealPlanInfo
         } else {
           return false
         }
       } else {
-        const currentDate = new Date().toJSON().split('T')[0]
         // Поиск текущей даты, если дата не указана
+        const currentDate = new Date().toJSON().split('T')[0]
+
         const mealPlan = await MealPlanerInfo.findOne({
           where: {
             [Op.and]: [
@@ -39,7 +136,45 @@ module.exports.getMealPlanerInfo = async function (req, res) {
 
         if (mealPlan) {
           // Вернуть данные о найденном плане питания на текущий день
-          return mealPlan
+
+          const mealPlanMarks = await Marks.findOne({
+            where: {
+              [Op.and]: [
+                { id: mealPlan.dataValues.marksId },
+                { entityId: mealPlan.dataValues.id }
+              ]
+            },
+          }, { transaction: t })
+
+          const mealPlanSocials = await Socials.findOne({
+            where: {
+              [Op.and]: [
+                { id: mealPlan.dataValues.socialsId },
+                { entityId: mealPlan.dataValues.id }
+              ]
+            },
+          }, { transaction: t })
+
+          const targetMealPlanInfo = {
+            id: mealPlan.dataValues.id,
+            date: new Date(mealPlan.dataValues.date * 1000).toJSON().split('T')[0],
+            title: mealPlan.dataValues.title,
+            description: mealPlan.dataValues.description,
+            marks: JSON.parse(mealPlanMarks.dataValues.marks),
+            likes: mealPlanSocials.dataValues.likes,
+            dislikes: mealPlanSocials.dataValues.dislikes,
+            share: mealPlanSocials.dataValues.share,
+            mealParts: [
+              {
+                title: 'Затрак',
+                mealTime: '07:00',
+                recipes: [],
+                products: []
+              },
+            ]
+          }
+
+          return targetMealPlanInfo
         } else {
           return false
         }
