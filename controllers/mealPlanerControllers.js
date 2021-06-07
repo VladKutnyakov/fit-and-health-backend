@@ -7,11 +7,12 @@ const Socials = require('../models/Socials')
 const UserSettings = require('../models/UserSettings')
 const UserParams = require('../models/UserParams')
 const MealParts = require('../models/MealParts')
+const Products = require('../models/Products')
 
 // Формат даты для всего проекта --- 2021-12-29
 
 module.exports.getMealPlanerInfo = async function (req, res) {
-  // console.log(req.query)
+  // console.log(new Date(req.query.date).getTime() / 1000);
   try {
     const mealPlanDayInfo = await sequelize.transaction( async (t) => {
       if (req.query && req.query.date) {
@@ -58,12 +59,21 @@ module.exports.getMealPlanerInfo = async function (req, res) {
           }, { transaction: t })
 
           // Получить данные о параетрах пользователя
-          const userParams = await UserParams.findOne({
+          const userParams = await UserParams.findAll({
             where: {
               userId: req.body.userId
             },
+            limit: 10,
+            order: [
+              ['id', 'DESC'],
+            ],
             attributes: ['currentWeight']
           }, { transaction: t })
+
+          const currentWeight = []
+          userParams.forEach(element => {
+            currentWeight.push(element.dataValues.currentWeight)
+          })
 
           // Получить данные о приемах пищи для плана питания на сутки
           const mealParts = await MealParts.findAll({
@@ -83,15 +93,37 @@ module.exports.getMealPlanerInfo = async function (req, res) {
             }
             mealPlanMealParts.push(item)
           })
-          // console.log(mealPlanMealParts)
 
           // Сформировать зарос с данными о продуктах
-          // const allProductsIds = []
-          // mealPlanMealParts.forEach(element => {
-          //   console.log(allProductsIds, element.title)
-          //   // allProductsIds = [...allProductsIds, ...element.products]
-          // })
-          // console.log(allProductsIds)
+          const allProductsIds = new Set()
+          mealPlanMealParts.forEach(element => {
+            element.products.forEach(item => {
+              allProductsIds.add(item.id)
+            })
+          })
+          const productsIds = [...allProductsIds]
+
+          const productParams = []
+          productsIds.forEach(element => {
+            productParams.push({id: element})
+          })
+
+          const foundingProducts = await Products.findAll({
+            where: {
+              [Op.or]: productParams
+            },
+            attributes: ['id', 'title', 'weight', 'protein', 'fats', 'carb', 'kkal', 'category', 'userId']
+          }, { transaction: t })
+
+          mealPlanMealParts.forEach(element => {
+            for (let i = 0; i < element.products.length; i++) {
+              foundingProducts.forEach(item => {
+                if (item.dataValues.id === element.products[i].id) {
+                  element.products[i] = {...item.dataValues, weight: element.products[i].currentWeight}
+                }
+              })
+            }
+          })
 
           const targetMealPlanInfo = {
             id: mealPlan.dataValues.id,
@@ -102,20 +134,14 @@ module.exports.getMealPlanerInfo = async function (req, res) {
             targetFats: userTargetSettings.dataValues.targetFats,
             targetCarb: userTargetSettings.dataValues.targetCarb,
             targetWeight: userTargetSettings.dataValues.targetWeight,
-            currentWeight: userParams.dataValues.currentWeight,
+            currentWeight: currentWeight.reverse(),
             marks: JSON.parse(mealPlanMarks.dataValues.marks),
             likes: mealPlanSocials.dataValues.likes,
             dislikes: mealPlanSocials.dataValues.dislikes,
             share: mealPlanSocials.dataValues.share,
-            mealParts: [
-              {
-                title: 'Затрак',
-                mealTime: '07:00',
-                recipes: [],
-                products: []
-              },
-            ]
+            mealParts: mealPlanMealParts
           }
+          // console.log(targetMealPlanInfo.mealParts[0].products)
 
           return targetMealPlanInfo
         } else {
