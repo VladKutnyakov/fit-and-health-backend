@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 // const jwtDecode = require('jwt-decode')
 const keys = require('../keys/index')
 const Users = require('../models/Users')
+const Tokens = require('../models/Tokens')
 
 // http://localhost:3031/api/auth/register/
 module.exports.register = async function (req, res) {
@@ -26,29 +27,28 @@ module.exports.register = async function (req, res) {
         const newUser = await Users.create({
           email: req.body.email,
           phone: req.body.phone,
-          password: bcrypt.hashSync(password, salt),
-          token: '1',
-          refreshToken: '1'
+          password: bcrypt.hashSync(password, salt)
         })
 
         // Генерируем рефреш токен для нового пользователя
         const refreshToken = jwt.sign({
           id: newUser.id,
-        }, keys.jwtRefresh)
-  
+        }, keys.jwtRefresh, {expiresIn: '30d'})
+
         // Генерируем token для нового пользователя
-        const token = jwt.sign({
+        const accessToken = jwt.sign({
           id: newUser.id,
-          email: newUser.email,
           refreshToken: refreshToken
-        }, keys.jwt, {expiresIn: 60 * 15})
+        }, keys.jwt, {expiresIn: '15m'})
 
-        await Users.update(
-          { token, refreshToken },
-          { where: { id: newUser.id } }
-        )
+        // Создаем запись с токенами доступа для нового пользователя
+        await Tokens.create({
+          userId: candidate.id,
+          accessToken,
+          refreshToken
+        })
 
-        res.status(200).json(token)
+        res.status(200).json(accessToken)
       } catch (error) {
         res.status(404).json({
           error,
@@ -61,8 +61,8 @@ module.exports.register = async function (req, res) {
         message: 'Введенный E-mail уже занят. Попробуйте авторизироваться или используйте другой E-mail.'
       })
     }
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    console.log(error)
 
     res.status(400).json({
       message: 'Неверный запрос.'
@@ -76,33 +76,44 @@ module.exports.login = async function (req, res) {
     const candidate = await Users.findOne({
       where: {
         email: req.body.email
+      },
+      include: {
+        model: Tokens,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
+        raw: true
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
       }
     })
+    // console.log(candidate.toJSON())
 
     if (candidate) {
       // Проверяем пароль, пользователь существует
-      const passwordResult = bcrypt.compareSync(req.body.password, candidate.dataValues.password)
+      const passwordResult = bcrypt.compareSync(req.body.password, candidate.toJSON().password)
   
       if (passwordResult) {
         // Генерация refreshToken
         const refreshToken = jwt.sign({
           id: candidate.id,
-        }, keys.jwtRefresh)
+        }, keys.jwtRefresh, {expiresIn: '30d'})
 
         // Генерация токена со сроком жизни 15 мин.
-        const token = jwt.sign({
-          email: candidate.email,
+        const accessToken = jwt.sign({
           id: candidate.id,
           refreshToken: refreshToken
-        }, keys.jwt, { expiresIn: 60 * 15 })
+        }, keys.jwt, { expiresIn: '15m' })
 
         // Сохранение token и refreshToken в БД
-        await Users.update(
-          { token, refreshToken },
-          { where: { id: candidate.id } }
-        )
+        await Tokens.create({
+          userId: candidate.id,
+          accessToken,
+          refreshToken
+        })
 
-        res.status(200).json(token)
+        res.status(200).json(accessToken)
       } else {
         // Пароли не совпали
         res.status(401).json({
@@ -115,8 +126,8 @@ module.exports.login = async function (req, res) {
         message: 'Пользователь с таким E-mail не найден.'
       })
     }
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    console.log(error)
 
     res.status(400).json({
       message: 'Неверный запрос.'
