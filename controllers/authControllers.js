@@ -39,7 +39,7 @@ module.exports.register = async function (req, res) {
         const accessToken = jwt.sign({
           id: newUser.id,
           refreshToken: refreshToken
-        }, keys.jwt, {expiresIn: '15m'})
+        }, keys.jwt, {expiresIn: '1m'})
 
         // Создаем запись с токенами доступа для нового пользователя
         await Tokens.create({
@@ -104,7 +104,7 @@ module.exports.login = async function (req, res) {
         const accessToken = jwt.sign({
           id: candidate.id,
           refreshToken: refreshToken
-        }, keys.jwt, { expiresIn: '15m' })
+        }, keys.jwt, { expiresIn: '1m' })
 
         // Сохранение token и refreshToken в БД
         await Tokens.create({
