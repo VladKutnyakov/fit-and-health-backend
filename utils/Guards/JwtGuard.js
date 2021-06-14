@@ -11,6 +11,8 @@ module.exports = async function JwtGuard (req, res, next) {
     const token = req.headers.authorization.replace('Bearer ', '')
     const decodedToken = jwt.decode(token, keys.jwt)
 
+    // console.log(token);
+
     // Проверка валидности токена
     jwt.verify(token, keys.jwt, async (error) => {
       // Если токен не валиден, проверить рефреш на валидность.
@@ -74,37 +76,45 @@ module.exports = async function JwtGuard (req, res, next) {
 
               const UserTokens = User.toJSON().tokens
 
+              let targetToken = null
+
               UserTokens.forEach(async element => {
-                // Если токен найден в БД обновить accessToken и refreshToken
+                // Поиск совпадения присланного токена с записями в БД
                 if (element.accessToken === token && element.refreshToken === decodedToken.refreshToken) {
-                  // Генерируем рефреш токен для нового пользователя
-                  const refreshToken = jwt.sign({
-                    id: User.toJSON().id,
-                  }, keys.jwtRefresh, { expiresIn: '30d' })
-
-                  // Генерируем token для нового пользователя
-                  const accessToken = jwt.sign({
-                    id: User.toJSON().id,
-                    refreshToken: refreshToken
-                  }, keys.jwt, { expiresIn: '15m' })
-
-                  await Tokens.update(
-                    { accessToken, refreshToken },
-                    { where: { id: element.id } }
-                  ).then(() => {console.log(1);})
-                  // Добавить данные с обновленным token и id пользователя в body запроса
-                  req.body.updatedToken = accessToken
-                  req.body.userId = decodedToken.id
-
-                  next()
-                } else {
-                  // Если токен НЕ НАЙДЕН в БД
-                  res.status(400).json({
-                    message: 'Проверьте актуальность данных авторизации'
-                  })
-                  // ошибка и запрос обновленного токена. Если токен отправленный не равен тому что есть в сторе выполнить повторный запрос иначе перенаправить на странциу авторизации.
+                  targetToken = element
                 }
               })
+
+              // Если токен найден в БД обновить accessToken и refreshToken
+              if (targetToken) {
+                // Генерируем рефреш токен для нового пользователя
+                const refreshToken = jwt.sign({
+                  id: User.toJSON().id,
+                }, keys.jwtRefresh, { expiresIn: '30d' })
+
+                // Генерируем token для нового пользователя
+                const accessToken = jwt.sign({
+                  id: User.toJSON().id,
+                  refreshToken: refreshToken
+                }, keys.jwt, { expiresIn: '1m' })
+
+                await Tokens.update(
+                  { accessToken, refreshToken },
+                  { where: { id: targetToken.id } }
+                )
+
+                // Добавить данные с обновленным token и id пользователя в body запроса
+                req.body.updatedToken = accessToken
+                req.body.userId = decodedToken.id
+
+                next()
+              } else {
+                // Если токен НЕ НАЙДЕН в БД
+                res.status(400).json({
+                  message: 'Проверьте актуальность данных авторизации.'
+                })
+                // ошибка и запрос обновленного токена. Если токен отправленный не равен тому что есть в сторе выполнить повторный запрос иначе перенаправить на странциу авторизации.
+              }
             } catch (error) {
               res.status(500).json({
                 message: 'Неизвестная ошибка при авторизации.'
