@@ -96,7 +96,7 @@ module.exports = async function JwtGuard (req, res, next) {
                 const accessToken = jwt.sign({
                   id: User.toJSON().id,
                   refreshToken: refreshToken
-                }, keys.jwt, { expiresIn: '1m' })
+                }, keys.jwt, { expiresIn: '15m' })
 
                 await Tokens.update(
                   { accessToken, refreshToken },
