@@ -1,6 +1,5 @@
 const express = require('express')
-// const passport = require('passport')
-const controller = require('../controllers/settingsControllers')
+const settingsControllers = require('../controllers/settingsControllers')
 const router = express.Router()
 
 const multer  = require('multer')
@@ -19,6 +18,6 @@ const upload = multer({ storage: storage })
 // перепроверить как работает паспорт и вообще авторизация и перенастроить . поправить все
 
 // http://localhost:3000/api/settings/single-file
-router.post('/single-file', upload.single('file'), controller.singleFile)
+router.post('/single-file', upload.single('file'), settingsControllers.singleFile)
 
 module.exports = router

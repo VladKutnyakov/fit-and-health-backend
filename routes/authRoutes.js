@@ -1,10 +1,10 @@
 const express = require('express')
-const controller = require('../controllers/authControllers')
+const authControllers = require('../controllers/authControllers')
 const router = express.Router()
 
 // http://localhost:3031/api/auth/login/
-router.post('/login', controller.login)
+router.post('/login', authControllers.login)
 // http://localhost:3031/api/auth/register/
-router.post('/register', controller.register)
+router.post('/register', authControllers.register)
 
 module.exports = router
