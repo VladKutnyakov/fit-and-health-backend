@@ -1,50 +1,50 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const TrainingPrograms = sequelize.define('training_programs', {
   title: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   description: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   trainingDays: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
 
   addedMarks: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
 
   likes: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   dislikes: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   shares: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   // comments: {},
   views: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   addToFavorite: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
 
   userId: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   }
 })

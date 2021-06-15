@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 const Users = require('./Users')
@@ -7,7 +7,7 @@ const Products = require('./Products')
 // Описание модели таблицы в БД MySQL
 const FavoriteProducts = sequelize.define('favorite_products', {
   userId: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     reference: {
       model: Users,
       key: 'id'
@@ -16,7 +16,7 @@ const FavoriteProducts = sequelize.define('favorite_products', {
     unique: true
   },
   productId: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     reference: {
       model: Products,
       key: 'id'

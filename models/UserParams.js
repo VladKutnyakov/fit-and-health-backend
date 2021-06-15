@@ -1,14 +1,14 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const UserParams = sequelize.define('user_params', {
   userId: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
-  currentWeight: {
-    type: Sequelize.FLOAT,
+  weight: {
+    type: DataTypes.FLOAT,
     allowNull: true
   }
 })

@@ -1,22 +1,22 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const Socials = sequelize.define('socials', {
   entityId: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   likes: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   dislikes: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   share: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
 })

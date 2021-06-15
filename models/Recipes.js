@@ -1,58 +1,58 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const Recipes = sequelize.define('recipes', {
   title: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   description: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   cookingTimes: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   cookingSkill: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   portions: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   likes: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   dislikes: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   shares: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   marks: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   media: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   products: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   cookingSteps: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   userId: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   }
 })

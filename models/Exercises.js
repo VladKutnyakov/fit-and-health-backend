@@ -1,41 +1,41 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 const Exercises = sequelize.define('exercises', {
   title: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   },
   techniqueDescription: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   },
   category: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   },
   // targetMuscleGroup: {
-  //   type: Sequelize.STRING,
+  //   type: DataTypes.STRING,
   //   allowNull: true
   // },
   // exerciseType: {
-  //   type: Sequelize.STRING,
+  //   type: DataTypes.STRING,
   //   allowNull: true
   // },
   // additionalMuscle: {
-  //   type: Sequelize.STRING,
+  //   type: DataTypes.STRING,
   //   allowNull: true
   // },
   // exerciseVariety: {
-  //   type: Sequelize.STRING,
+  //   type: DataTypes.STRING,
   //   allowNull: true
   // },
   // equipment: {
-  //   type: Sequelize.STRING,
+  //   type: DataTypes.STRING,
   //   allowNull: true
   // },
   // trainingSkill: {
-  //   type: Sequelize.INTEGER,
+  //   type: DataTypes.INTEGER,
   //   allowNull: false
   // }
 })

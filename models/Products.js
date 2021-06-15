@@ -1,38 +1,38 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const Products = sequelize.define('products', {
   title: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   weight: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   protein: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   fats: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   carb: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   kkal: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   category: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   userId: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   }
 })

@@ -1,52 +1,52 @@
-const Sequelize = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
-const MealPlaner = sequelize.define('meal_planer', {
+const MealPlans = sequelize.define('meal_plans', {
   userId: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   date: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   targetProtein: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   targetFats: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   targetCarb: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   targetWeight: {
-    type: Sequelize.FLOAT,
+    type: DataTypes.FLOAT,
     allowNull: true
   },
   title: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   description: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   marks: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   social: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   },
   mealParts: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true
   }
 })
 
-module.exports = MealPlaner
+module.exports = MealPlans

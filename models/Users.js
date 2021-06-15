@@ -16,18 +16,9 @@ const Users = sequelize.define('users', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  // token: {
-  //   type: DataTypes.TEXT,
-  //   allowNull: true,
-  // },
-  // refreshToken: {
-  //   type: DataTypes.TEXT,
-  //   allowNull: true
-  // }
 })
 
 Users.hasMany(Tokens, {
-  // as: 'tokens',
   foreignKey: 'userId'
 })
 
