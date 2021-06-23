@@ -164,13 +164,11 @@ module.exports.getMealPlanerInfo = async function (req, res) {
 }
 
 module.exports.saveMealPlanerInfo = async function (req, res) {
+  // console.log(req)
   try {
     const candidate = await MealPlanerInfo.findOne({
       where: {
-        [Op.and]: [
-          { userId: req.body.userId },
-          { id: req.body.mealPlanerInfo.id }
-        ]
+        id: req.body.mealPlanerInfo.id
       },
     })
 
@@ -202,98 +200,71 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
       // Если запись в БД НЕ НАЙДЕНА, создаем новую запись в БД
       console.log('создать новую запись в БД')
 
-      // console.log(req.body)
+      const mealPlanerInfo = await sequelize.transaction( async (t) => {
+        const currentDateStr = new Date().toJSON().split('T')[0]
+        const date = new Date(currentDateStr).getTime() / 1000
 
-      // const mealPlanerInfo = await sequelize.transaction( async (t) => {
-      //   const savedMealPlanerInfo = await Products.create({
-      //     date: '',
-      //     title: req.body.title,
-      //     description: req.body.description,
-      //     targetProtein: req.body.targetProtein,
-      //     targetFats: req.body.targetFats,
-      //     targetCarb: req.body.targetCarb,
-      //     targetWeight: req.body.targetWeight,
-      //     currentWeight: req.body.currentWeight,
-      //     marksId: req.body.marksId,
-      //     socialsId: req.body.socialsId,
-      //     mealPartsId: req.body.mealPartsId,
-      //   }, { transaction: t })
+        const savedMealPlanerInfo = await MealPlanerInfo.create({
+          userId: req.body.userId,
+          date: date,
+          title: req.body.mealPlanerInfo.title,
+          description: req.body.mealPlanerInfo.description,
+          targetProtein: req.body.mealPlanerInfo.targetProtein,
+          targetFats: req.body.mealPlanerInfo.targetFats,
+          targetCarb: req.body.mealPlanerInfo.targetCarb,
+          targetWeight: req.body.mealPlanerInfo.targetWeight,
+          currentWeight: req.body.mealPlanerInfo.currentWeight,
+          // marksId: req.body.mealPlanerInfo.marksId,
+          // socialsId: req.body.mealPlanerInfo.socialsId,
+          // mealPartsId: req.body.mealPlanerInfo.mealPartsId,
+        }, { transaction: t })
 
-      //   // return savedMealPlanerInfo
-      // })
-    }
+        const savedMarks = await Marks.create({
+          entityId: savedMealPlanerInfo.toJSON().id,
+          marks: JSON.stringify(req.body.mealPlanerInfo.marks)
+        }, { transaction: t })
 
-    const response = {
-      updatedToken: req.body.updatedToken,
-      data: {
-        mealPlanerInfo: candidate
+        // console.log(savedMarks.toJSON())
+
+        const savedSocials = await Socials.create({
+          entityId: savedMealPlanerInfo.toJSON().id,
+          likes: req.body.mealPlanerInfo.likes,
+          dislikes: req.body.mealPlanerInfo.dislikes,
+          share: req.body.mealPlanerInfo.share,
+        }, { transaction: t })
+
+        // console.log(savedSocials.toJSON())
+
+        // const updatedMealPlanerInfo = await MealPlanerInfo.update(
+        //   {
+        //     marksId: savedMarks.toJSON().id,
+        //     socialsId: savedSocials.toJSON().id,
+        //     // mealParts: savedMarks.toJSON().id
+        //   },
+        //   {
+        //     where: {
+        //       id: savedMealPlanerInfo.toJSON().id
+        //     }
+        //   },
+        //   { transaction: t }
+        // )
+
+        // console.log(updatedMealPlanerInfo)
+
+        return updatedMealPlanerInfo
+      })
+
+      const response = {
+        updatedToken: req.body.updatedToken,
+        data: {
+          mealPlanerInfo: mealPlanerInfo
+        }
       }
+
+      // console.log(response);
+
+      res.status(200).json(response)
     }
-    // console.log(response);
-
-    res.status(200).json(response)
-
-    // if (candidate) {
-    //   // Если запись в БД найдена, вносим изменения в существующий план рациона на сутки
-    //   const update = {
-    //     targetProtein: req.body.mealPlanerInfo.targetProtein,
-    //     targetFats: req.body.mealPlanerInfo.targetFats,
-    //     targetCarb: req.body.mealPlanerInfo.targetCarb,
-    //     targetWeight: req.body.mealPlanerInfo.targetWeight,
-    //     title: req.body.mealPlanerInfo.title,
-    //     description: req.body.mealPlanerInfo.description,
-    //     marks: JSON.stringify(req.body.mealPlanerInfo.marks),
-    //     social: JSON.stringify(req.body.mealPlanerInfo.social),
-    //     mealParts: JSON.stringify(req.body.mealPlanerInfo.mealParts)
-    //   }
-
-    //   const params = {
-    //     where: {
-    //       id: req.body.mealPlanerInfo.id
-    //     }
-    //   }
-
-    //   const updatedMealPlan = await MealPlanerInfo.update(update, params)
-
-    //   if (updatedMealPlan[0]) {
-    //     const response = {
-    //       updatedToken: req.body.updatedToken,
-    //       data: {
-    //         mealPlanerInfo: req.body.mealPlanerInfo
-    //       }
-    //     }
-    //     res.status(200).json(response)
-    //   } else {
-    //     res.status(500).json({
-    //       message: 'Неизвестная ошибка при обновлении.'
-    //     })
-    //   }
-    // } else {
-    //   // Если запись в БД не найдена, создаем план рациона на сутки
-    //   const currentDate = new Date().toJSON().split('T')[0]
-
-    //   const savedMealPlan = await MealPlanerInfo.create({
-    //     userId: req.body.userId,
-    //     date: new Date(currentDate).getTime() / 1000, // текущая дата в милисекундах
-    //     targetProtein: req.body.mealPlanerInfo.targetProtein,
-    //     targetFats: req.body.mealPlanerInfo.targetFats,
-    //     targetCarb: req.body.mealPlanerInfo.targetCarb,
-    //     targetWeight: req.body.mealPlanerInfo.targetWeight,
-    //     title: req.body.mealPlanerInfo.title,
-    //     description: req.body.mealPlanerInfo.description,
-    //     marks: JSON.stringify(req.body.mealPlanerInfo.marks),
-    //     social: JSON.stringify(req.body.mealPlanerInfo.social),
-    //     mealParts: JSON.stringify(req.body.mealPlanerInfo.mealParts)
-    //   })
-
-    //   const response = {
-    //     updatedToken: req.body.updatedToken,
-    //     data: {
-    //       mealPlanerInfo: savedMealPlan
-    //     }
-    //   }
-    //   res.status(200).json(response)
-    // }
   } catch (error) {
     console.log(error)
     res.status(500).json(error)
