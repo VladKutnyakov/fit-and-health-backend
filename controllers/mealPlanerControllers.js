@@ -201,6 +201,21 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
       console.log('создать новую запись в БД')
 
       const mealPlanerInfo = await sequelize.transaction( async (t) => {
+        // Сохранение данных об отметках
+        const savedMarks = await Marks.create({
+          // entityId: savedMealPlanerInfo.toJSON().id,
+          marks: JSON.stringify(req.body.mealPlanerInfo.marks)
+        }, { transaction: t })
+
+        // Сохранение данных о социальных кнопках
+        const savedSocials = await Socials.create({
+          // entityId: savedMealPlanerInfo.toJSON().id,
+          likes: req.body.mealPlanerInfo.likes,
+          dislikes: req.body.mealPlanerInfo.dislikes,
+          share: req.body.mealPlanerInfo.share,
+        }, { transaction: t })
+
+        // Сохранение данных о рационе питания
         const currentDateStr = new Date().toJSON().split('T')[0]
         const date = new Date(currentDateStr).getTime() / 1000
 
@@ -214,44 +229,16 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
           targetCarb: req.body.mealPlanerInfo.targetCarb,
           targetWeight: req.body.mealPlanerInfo.targetWeight,
           currentWeight: req.body.mealPlanerInfo.currentWeight,
-          // marksId: req.body.mealPlanerInfo.marksId,
-          // socialsId: req.body.mealPlanerInfo.socialsId,
+          marksId: savedMarks.toJSON().id,
+          socialsId: savedSocials.toJSON().id,
           // mealPartsId: req.body.mealPlanerInfo.mealPartsId,
         }, { transaction: t })
 
-        const savedMarks = await Marks.create({
-          entityId: savedMealPlanerInfo.toJSON().id,
-          marks: JSON.stringify(req.body.mealPlanerInfo.marks)
-        }, { transaction: t })
+        const payload = {
+          ...savedMealPlanerInfo.toJSON(),
+        }
 
-        // console.log(savedMarks.toJSON())
-
-        const savedSocials = await Socials.create({
-          entityId: savedMealPlanerInfo.toJSON().id,
-          likes: req.body.mealPlanerInfo.likes,
-          dislikes: req.body.mealPlanerInfo.dislikes,
-          share: req.body.mealPlanerInfo.share,
-        }, { transaction: t })
-
-        // console.log(savedSocials.toJSON())
-
-        // const updatedMealPlanerInfo = await MealPlanerInfo.update(
-        //   {
-        //     marksId: savedMarks.toJSON().id,
-        //     socialsId: savedSocials.toJSON().id,
-        //     // mealParts: savedMarks.toJSON().id
-        //   },
-        //   {
-        //     where: {
-        //       id: savedMealPlanerInfo.toJSON().id
-        //     }
-        //   },
-        //   { transaction: t }
-        // )
-
-        // console.log(updatedMealPlanerInfo)
-
-        return updatedMealPlanerInfo
+        return payload
       })
 
       const response = {
