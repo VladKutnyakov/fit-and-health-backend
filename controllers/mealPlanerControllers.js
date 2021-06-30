@@ -4,8 +4,6 @@ const Op = Sequelize.Op;
 const MealPlanerInfo = require('../models/MealPlanerInfos')
 const Marks = require('../models/Marks')
 const Socials = require('../models/Socials')
-// const UserSettings = require('../models/UserSettings')
-// const UserParams = require('../models/UserParams')
 const MealParts = require('../models/MealParts')
 const Products = require('../models/Products')
 
@@ -28,8 +26,7 @@ module.exports.getMealPlanerInfo = async function (req, res) {
       const mealPlanMarks = await Marks.findOne({
         where: {
           [Op.and]: [
-            { id: mealPlan.dataValues.marksId },
-            { entityId: mealPlan.dataValues.id }
+            { id: mealPlan.toJSON().marksId }
           ]
         },
         attributes: ['marks']
@@ -39,34 +36,16 @@ module.exports.getMealPlanerInfo = async function (req, res) {
       const mealPlanSocials = await Socials.findOne({
         where: {
           [Op.and]: [
-            { id: mealPlan.dataValues.socialsId },
-            { entityId: mealPlan.dataValues.id }
+            { id: mealPlan.toJSON().socialsId }
           ]
         },
         attributes: ['likes', 'dislikes', 'share']
       }, { transaction: t })
 
-      // Получить данные о параметрах пользователя
-      // const userParams = await UserParams.findAll({
-      //   where: {
-      //     userId: req.body.userId
-      //   },
-      //   limit: 10,
-      //   order: [
-      //     ['id', 'DESC'],
-      //   ],
-      //   attributes: ['currentWeight']
-      // }, { transaction: t })
-
-      // const currentWeight = []
-      // userParams.forEach(element => {
-      //   currentWeight.push(element.dataValues.currentWeight)
-      // })
-
       // Получить данные о приемах пищи для плана питания на сутки
       const mealParts = await MealParts.findAll({
         where: {
-          mealPlanId: mealPlan.dataValues.id
+          id: mealPlan.toJSON().mealPartsId
         },
         attributes: ['title', 'mealTime', 'products', 'recipes']
       }, { transaction: t })
@@ -177,25 +156,65 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
     if (candidate) {
       console.log('Обновить данные у рациона')
       // Если запись в БД найдена, вносим изменения в существующий план рациона на сутки
-      // const update = {
-      //   targetProtein: req.body.mealPlanerInfo.targetProtein,
-      //   targetFats: req.body.mealPlanerInfo.targetFats,
-      //   targetCarb: req.body.mealPlanerInfo.targetCarb,
-      //   targetWeight: req.body.mealPlanerInfo.targetWeight,
-      //   title: req.body.mealPlanerInfo.title,
-      //   description: req.body.mealPlanerInfo.description,
-      //   marks: JSON.stringify(req.body.mealPlanerInfo.marks),
-      //   social: JSON.stringify(req.body.mealPlanerInfo.social),
-      //   mealParts: JSON.stringify(req.body.mealPlanerInfo.mealParts)
-      // }
+      const mealPlanerInfo = await sequelize.transaction( async (t) => {
+        // Обновление данных об отметках
+        const updatedMarks = await Marks.update(
+          { marks: JSON.stringify(req.body.mealPlanerInfo.marks) },
+          { where: { id: candidate.marksId } },
+          { transaction: t }
+        )
 
-      // const params = {
-      //   where: {
-      //     id: req.body.mealPlanerInfo.id
-      //   }
-      // }
+        // Обновление данных о социальных кнопках
+        const updatedSocials = await Socials.update(
+          {
+            likes: req.body.mealPlanerInfo.likes,
+            dislikes: req.body.mealPlanerInfo.dislikes,
+            share: req.body.mealPlanerInfo.share,
+          },
+          { where: { id: candidate.socialsId } },
+          { transaction: t }
+        )
 
-      // const updatedMealPlan = await MealPlanerInfo.update(update, params)
+        // Обновление данных о рационе питания
+        const currentDateStr = new Date().toJSON().split('T')[0]
+        const date = new Date(currentDateStr).getTime() / 1000
+
+        const updatedMealPlanerInfo = await MealPlanerInfo.update(
+          {
+            // userId: req.body.userId,
+            // date: date,
+            title: req.body.mealPlanerInfo.title,
+            description: req.body.mealPlanerInfo.description,
+            targetProtein: req.body.mealPlanerInfo.targetProtein,
+            targetFats: req.body.mealPlanerInfo.targetFats,
+            targetCarb: req.body.mealPlanerInfo.targetCarb,
+            targetWeight: req.body.mealPlanerInfo.targetWeight,
+            currentWeight: req.body.mealPlanerInfo.currentWeight,
+            // marksId: savedMarks.toJSON().id,
+            // socialsId: savedSocials.toJSON().id,
+            // mealPartsId: req.body.mealPlanerInfo.mealPartsId,
+          },
+          { where: { id: candidate.id } },
+          { transaction: t }
+        )
+
+        // const payload = {
+        //   ...updatedMealPlanerInfo.toJSON(),
+        // }
+
+        return true
+      })
+
+      const response = {
+        updatedToken: req.body.updatedToken,
+        data: {
+          mealPlanerInfo: mealPlanerInfo
+        }
+      }
+
+      console.log(response);
+
+      res.status(200).json(response)
     } else {
       // Если запись в БД НЕ НАЙДЕНА, создаем новую запись в БД
       console.log('создать новую запись в БД')
