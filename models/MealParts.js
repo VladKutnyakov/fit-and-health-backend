@@ -3,10 +3,6 @@ const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const MealParts = sequelize.define('meal_parts', {
-  mealPlanId: {
-    type: DataTypes.INTEGER,
-    allowNull: true
-  },
   title: {
     type: DataTypes.STRING,
     allowNull: true
