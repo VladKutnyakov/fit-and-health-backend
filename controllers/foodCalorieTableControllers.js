@@ -16,19 +16,25 @@ module.exports.getAllProducts = async function (req, res) {
         },
         attributes: {
           exclude: ['createdAt', 'updatedAt']
-        }
+        },
+        raw: true
       }, { transaction: t })
 
       const UserFavoriteProducts = await FavoriteProducts.findAll({
         where: {
           userId: req.body.userId // получить продукты которые пользователь отметил как избранные
-        }
+        },
+        raw: true
       }, { transaction: t })
 
       for (let i = 0; i < AllProducts.length; i++) {
+        // Добавляем параметр "избранное" для продукта
+        AllProducts[i].favorite = false
+
+        // Проверяем и обновляем "избранное" параметр
         UserFavoriteProducts.forEach((element) => {
-          if (element.dataValues.productId === AllProducts[i].dataValues.id) {
-            AllProducts[i].dataValues.favorite = true
+          if (element.productId === AllProducts[i].id) {
+            AllProducts[i].favorite = true
           }
         })
       }
