@@ -8,5 +8,6 @@ router.get('/', JwtGuard, foodCalorieTableControllers.getAllProducts)
 router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduct)
 router.post('/remove-product', JwtGuard, foodCalorieTableControllers.removeProduct)
 router.post('/change-favorite-param', JwtGuard, foodCalorieTableControllers.changeFavoriteParam)
+router.post('/change-pinned-param', JwtGuard, foodCalorieTableControllers.changePinnedParam)
 
 module.exports = router

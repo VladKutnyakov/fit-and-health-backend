@@ -3,6 +3,7 @@ const sequelize = require('../utils/dbConnect')
 const Op = Sequelize.Op;
 const Products = require('../models/Products')
 const FavoriteProducts = require('../models/FavoriteProducts')
+const PinnedProducts = require('../models/PinnedProducts')
 
 module.exports.getAllProducts = async function (req, res) {
   try {
@@ -27,14 +28,29 @@ module.exports.getAllProducts = async function (req, res) {
         raw: true
       }, { transaction: t })
 
-      for (let i = 0; i < AllProducts.length; i++) {
-        // Добавляем параметр "избранное" для продукта
-        AllProducts[i].favorite = false
+      const UserPinnedProducts = await PinnedProducts.findAll({
+        where: {
+          userId: req.body.userId // получить продукты которые пользователь отметил как избранные
+        },
+        raw: true
+      }, { transaction: t })
 
-        // Проверяем и обновляем "избранное" параметр
+      for (let i = 0; i < AllProducts.length; i++) {
+        // Добавляем параметр "избранный" и "закрепленый" для продукта
+        AllProducts[i].favorite = false
+        AllProducts[i].pinned = false
+
+        // Проверяем и обновляем параметр "избранный продукт"
         UserFavoriteProducts.forEach((element) => {
           if (element.productId === AllProducts[i].id) {
             AllProducts[i].favorite = true
+          }
+        })
+
+        // Проверяем и обновляем параметр "закрепленый продукт"
+        UserPinnedProducts.forEach((element) => {
+          if (element.productId === AllProducts[i].id) {
+            AllProducts[i].pinned = true
           }
         })
       }
@@ -157,6 +173,54 @@ module.exports.changeFavoriteParam = async function (req, res) {
       data: {
         productId: req.body.productId,
         favorite: isFavorite
+      }
+    }
+
+    res.status(200).json(response)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
+
+module.exports.changePinnedParam = async function (req, res) {
+  try {
+    const isPinned = await sequelize.transaction( async (t) => {
+      const pinnedProduct = await PinnedProducts.findOne({
+        where: {
+          [Op.and]: [
+            { userId: req.body.userId },
+            { productId: req.body.productId }
+          ]
+        },
+      }, { transaction: t })
+
+      if (pinnedProduct) {
+        await PinnedProducts.destroy({
+          where: {
+            [Op.and]: [
+              { userId: req.body.userId },
+              { productId: req.body.productId }
+            ]
+          }
+        }, { transaction: t })
+
+        return false
+      } else {
+        await PinnedProducts.create({
+          userId: req.body.userId,
+          productId: req.body.productId
+        }, { transaction: t })
+
+        return true
+      }
+    })
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        productId: req.body.productId,
+        pinned: isPinned
       }
     }
 
