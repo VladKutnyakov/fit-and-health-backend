@@ -120,9 +120,6 @@ module.exports.saveNewProduct = async function (req, res) {
 }
 
 module.exports.updateProduct = async function (req, res) {
-  console.log(req.body.product)
-  console.log(req.body.userId)
-
   try {
     const product = await sequelize.transaction( async (t) => {
       await Products.update(
