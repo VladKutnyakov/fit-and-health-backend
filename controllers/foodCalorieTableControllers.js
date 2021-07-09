@@ -74,31 +74,117 @@ module.exports.saveNewProduct = async function (req, res) {
   try {
     const product = await sequelize.transaction( async (t) => {
       const savedProduct = await Products.create({
-        title: req.body.title,
-        weight: req.body.weight,
-        protein: req.body.protein,
-        fats: req.body.fats,
-        carb: req.body.carb,
-        kkal: req.body.kkal,
-        category: req.body.category,
+        title: req.body.product.title,
+        weight: req.body.product.weight,
+        protein: req.body.product.protein,
+        fats: req.body.product.fats,
+        carb: req.body.product.carb,
+        kkal: req.body.product.kkal,
+        category: req.body.product.category,
         userId: req.body.userId,
       }, { transaction: t })
 
-      if (req.body.favorite) {
+      if (req.body.product.favorite) {
         await FavoriteProducts.create({
           userId: req.body.userId,
           productId: savedProduct.dataValues.id
         }, { transaction: t })
       }
 
-      return savedProduct
+      if (req.body.product.pinned) {
+        await PinnedProducts.create({
+          userId: req.body.userId,
+          productId: savedProduct.dataValues.id
+        }, { transaction: t })
+      }
+
+      const product = {...savedProduct.toJSON()}
+      product.favorite = req.body.product.favorite
+      product.pinned = req.body.product.pinned
+
+      return product
     })
 
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
-        product: product,
-        favorite: req.body.favorite
+        product: product
+      }
+    }
+
+    res.status(200).json(response)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
+
+module.exports.updateProduct = async function (req, res) {
+  console.log(req.body.product)
+  console.log(req.body.userId)
+
+  try {
+    const product = await sequelize.transaction( async (t) => {
+      await Products.update(
+        {
+          title: req.body.product.title,
+          weight: req.body.product.weight,
+          protein: req.body.product.protein,
+          fats: req.body.product.fats,
+          carb: req.body.product.carb,
+          kkal: req.body.product.kkal,
+          category: req.body.product.category,
+        },
+        {
+          where: {
+            [Op.and]: [
+              { id: req.body.product.id },
+              { userId: req.body.userId }
+            ]
+          }
+        },
+        { transaction: t }
+      )
+
+      if (req.body.product.favorite) {
+        await FavoriteProducts.create({
+          userId: req.body.userId,
+          productId: req.body.product.id
+        }, { transaction: t })
+      } else {
+        await FavoriteProducts.destroy({
+          where: {
+            [Op.and]: [
+              { userId: req.body.userId },
+              { productId: req.body.product.id }
+            ]
+          }
+        }, { transaction: t })
+      }
+
+      if (req.body.product.pinned) {
+        await PinnedProducts.create({
+          userId: req.body.userId,
+          productId: req.body.product.id
+        }, { transaction: t })
+      } else {
+        await PinnedProducts.destroy({
+          where: {
+            [Op.and]: [
+              { userId: req.body.userId },
+              { productId: req.body.product.id }
+            ]
+          }
+        }, { transaction: t })
+      }
+
+      return true
+    })
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        product: product ? {...req.body.product} : false
       }
     }
 
@@ -114,7 +200,7 @@ module.exports.removeProduct = async function (req, res) {
     const RemoveProduct = await Products.destroy({
       where: {
         [Op.and]: [
-          {id: req.body.productId},
+          {id: req.params.id},
           {userId: req.body.userId}
         ]
       }
@@ -123,8 +209,8 @@ module.exports.removeProduct = async function (req, res) {
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
-        removed: RemoveProduct > 0 ? true : false,
-        productId: req.body.productId
+        removed: RemoveProduct ? true : false,
+        productId: req.params.id
       }
     }
 
