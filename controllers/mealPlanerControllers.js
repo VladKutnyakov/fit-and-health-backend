@@ -1,117 +1,187 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../utils/dbConnect')
-const Op = Sequelize.Op;
-const MealPlanerInfo = require('../models/MealPlanerInfos')
+const Op = Sequelize.Op
+const MealPlaner = require('../models/MealPlaner')
 const Marks = require('../models/Marks')
 const Socials = require('../models/Socials')
 const MealParts = require('../models/MealParts')
 const Products = require('../models/Products')
 
 // Формат даты для всего проекта --- 2021-12-29
+// Показать дату в мс
+// console.log(new Date('2021-12-29').getTime() / 1000)
 
 module.exports.getMealPlanerInfo = async function (req, res) {
   async function getInfo (t, date) {
-    const mealPlan = await MealPlanerInfo.findOne({
+    const mealPlan = await MealPlaner.findOne({
       where: {
         [Op.and]: [
           { userId: req.body.userId },
           { date: date } // переданная дата (строка) приведенная в милесекунды
         ]
       },
+      include: [
+        {
+          model: Marks,
+          as: 'marks',
+          attributes: {
+            exclude: ['id', 'createdAt', 'updatedAt']
+          }
+        },
+        {
+          model: Socials,
+          as: 'socials',
+          attributes: {
+            exclude: ['id', 'createdAt', 'updatedAt']
+          }
+        },
+        {
+          model: MealParts,
+          as: 'mealParts',
+          attributes: {
+            exclude: ['id', 'createdAt', 'updatedAt']
+          }
+        },
+      ],
+      attributes: {
+        exclude: ['marksId', 'socialsId', 'mealPartsId', 'createdAt', 'updatedAt']
+      },
+      raw: true,
     }, { transaction: t })
 
-    // Вернуть данные о найденном плане питания на указанный день
+    console.log(mealPlan)
+
     if (mealPlan) {
       // Получить данные о добавленных отметках
-      const mealPlanMarks = await Marks.findOne({
-        where: {
-          [Op.and]: [
-            { id: mealPlan.toJSON().marksId }
-          ]
-        },
-        attributes: ['marks']
-      }, { transaction: t })
+      // const mealPlanMarks = await Marks.findOne({
+      //   where: {
+      //     id: mealPlan.marksId
+      //   },
+      //   attributes: ['marks'],
+      //   raw: true
+      // }, { transaction: t })
 
-      // Получить данные о социальной активности
-      const mealPlanSocials = await Socials.findOne({
-        where: {
-          [Op.and]: [
-            { id: mealPlan.toJSON().socialsId }
-          ]
-        },
-        attributes: ['likes', 'dislikes', 'share']
-      }, { transaction: t })
+      // Получить данные о социальных действиях
+      // const mealPlanSocials = await Socials.findOne({
+      //   where: {
+      //     id: mealPlan.socialsId
+      //   },
+      //   attributes: ['likes', 'dislikes', 'share'],
+      //   raw: true
+      // }, { transaction: t })
+
+      // console.log(mealPlanSocials);
 
       // Получить данные о приемах пищи для плана питания на сутки
-      const mealParts = await MealParts.findAll({
-        where: {
-          id: mealPlan.toJSON().mealPartsId
-        },
-        attributes: ['title', 'mealTime', 'products', 'recipes']
+      // const mealParts = await MealParts.findAll({
+      //   where: {
+      //     id: mealPlan.mealPartsId
+      //   },
+      //   attributes: ['title', 'mealTime', 'products', 'recipes'],
+      //   raw: true
+      // }, { transaction: t })
+
+      // const mealPlanMealParts = []
+      // mealParts.forEach(element => {
+      //   const item = {
+      //     title: element.title,
+      //     mealTime: element.mealTime,
+      //     products: JSON.parse(element.products),
+      //     recipes: JSON.parse(element.recipes),
+      //   }
+      //   mealPlanMealParts.push(item)
+      // })
+
+      // // Сформировать зарос с данными о продуктах
+      // const allProductsIds = new Set()
+      // mealPlanMealParts.forEach(element => {
+      //   element.products.forEach(item => {
+      //     allProductsIds.add(item.id)
+      //   })
+      // })
+      // const productsIds = [...allProductsIds]
+
+      // const productParams = []
+      // productsIds.forEach(element => {
+      //   productParams.push({id: element})
+      // })
+
+      // const foundingProducts = await Products.findAll({
+      //   where: {
+      //     [Op.or]: productParams
+      //   },
+      //   attributes: ['id', 'title', 'weight', 'protein', 'fats', 'carb', 'kkal', 'category', 'userId'],
+      //   raw: true
+      // }, { transaction: t })
+
+      // mealPlanMealParts.forEach(element => {
+      //   for (let i = 0; i < element.products.length; i++) {
+      //     foundingProducts.forEach(item => {
+      //       if (item.id === element.products[i].id) {
+      //         element.products[i] = {...item, weight: element.products[i].currentWeight}
+      //       }
+      //     })
+      //   }
+      // })
+
+      // const CurrentMealPlan = {
+      //   id: mealPlan.id,
+      //   userId: mealPlan.userId,
+      //   date: new Date(mealPlan.date * 1000).toJSON().split('T')[0],
+      //   title: mealPlan.title || '',
+      //   description: mealPlan.description || '',
+      //   targetProtein: mealPlan.targetProtein || 2,
+      //   targetFats: mealPlan.targetFats || 1,
+      //   targetCarb: mealPlan.targetCarb || 3,
+      //   targetWeight: mealPlan.targetWeight || 0,
+      //   currentWeight: mealPlan.currentWeight || 0,
+      //   marks: mealPlanMarks ? JSON.parse(mealPlanMarks.marks) : [],
+      //   // likes: mealPlanSocials ? mealPlanSocials.likes : 0,
+      //   // dislikes: mealPlanSocials ? mealPlanSocials.dislikes : 0,
+      //   // share: mealPlanSocials ? mealPlanSocials.share : 0,
+      //   mealParts: mealPlanMealParts.length > 0 ? mealPlanMealParts : [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
+      // }
+
+      // console.log(CurrentMealPlan)
+
+      // return CurrentMealPlan
+      return {}
+    } else {
+      // Если рацион на сутки не найден, поиск последней записи для формирование пустого рациона на сутки. Будут использованы данные из пердыдущего сохраненного дня или базовые значения для БЖУ, показателей веса и первого приема пищи.
+      const lastMealPlan = await MealPlaner.findOne({
+          where: {
+            userId: req.body.userId
+          },
+          order: [ [ 'id', 'DESC' ]],
+          raw: true,
       }, { transaction: t })
 
-      const mealPlanMealParts = []
-      mealParts.forEach(element => {
-        const item = {
-          title: element.dataValues.title,
-          mealTime: element.dataValues.mealTime,
-          products: JSON.parse(element.dataValues.products),
-          recipes: JSON.parse(element.dataValues.recipes),
-        }
-        mealPlanMealParts.push(item)
-      })
-
-      // Сформировать зарос с данными о продуктах
-      const allProductsIds = new Set()
-      mealPlanMealParts.forEach(element => {
-        element.products.forEach(item => {
-          allProductsIds.add(item.id)
-        })
-      })
-      const productsIds = [...allProductsIds]
-
-      const productParams = []
-      productsIds.forEach(element => {
-        productParams.push({id: element})
-      })
-
-      const foundingProducts = await Products.findAll({
-        where: {
-          [Op.or]: productParams
-        },
-        attributes: ['id', 'title', 'weight', 'protein', 'fats', 'carb', 'kkal', 'category', 'userId']
-      }, { transaction: t })
-
-      mealPlanMealParts.forEach(element => {
-        for (let i = 0; i < element.products.length; i++) {
-          foundingProducts.forEach(item => {
-            if (item.dataValues.id === element.products[i].id) {
-              element.products[i] = {...item.dataValues, weight: element.products[i].currentWeight}
-            }
-          })
-        }
-      })
-
-      const targetMealPlanInfo = {
-        id: mealPlan.dataValues.id,
-        date: new Date(mealPlan.dataValues.date * 1000).toJSON().split('T')[0],
-        title: mealPlan.dataValues.title,
-        description: mealPlan.dataValues.description,
-        targetProtein: mealPlan.dataValues.targetProtein,
-        targetFats: mealPlan.dataValues.targetFats,
-        targetCarb: mealPlan.dataValues.targetCarb,
-        targetWeight: mealPlan.dataValues.targetWeight,
-        currentWeight: mealPlan.dataValues.currentWeight,
-        marks: JSON.parse(mealPlanMarks.dataValues.marks),
-        likes: mealPlanSocials.dataValues.likes,
-        dislikes: mealPlanSocials.dataValues.dislikes,
-        share: mealPlanSocials.dataValues.share,
-        mealParts: mealPlanMealParts
+      const CurrentMealPlan = {
+        id: null,
+        userId: req.body.userId,
+        date: new Date().toJSON().split('T')[0],
+        title: '',
+        description: '',
+        targetProtein: lastMealPlan.targetProtein || 2,
+        targetFats: lastMealPlan.targetFats || 1,
+        targetCarb: lastMealPlan.targetCarb || 3,
+        targetWeight: lastMealPlan.targetWeight || 0,
+        currentWeight: lastMealPlan.currentWeight || 0,
+        marks: [],
+        // likes: 0,
+        // dislikes: 0,
+        // share: 0,
+        mealParts: [
+          {
+            title: 'Завтрак',
+            mealTime: '08:00',
+            products: [],
+            recipes: []
+          }
+        ]
       }
 
-      return targetMealPlanInfo
-    } else {
-      return false
+      return CurrentMealPlan
     }
   }
 
@@ -145,7 +215,7 @@ module.exports.getMealPlanerInfo = async function (req, res) {
 module.exports.saveMealPlanerInfo = async function (req, res) {
   // console.log(req)
   try {
-    const candidate = await MealPlanerInfo.findOne({
+    const candidate = await MealPlaner.findOne({
       where: {
         id: req.body.mealPlanerInfo.id
       },
@@ -279,7 +349,7 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
 
 module.exports.removeMealPlanerInfo = async function (req, res) {
   try {
-    const candidate = await MealPlanerInfo.findOne({
+    const candidate = await MealPlaner.findOne({
       where: {
         [Op.and]: [
           { id: req.body.mealPlanerInfoID },
