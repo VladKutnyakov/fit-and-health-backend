@@ -13,6 +13,8 @@ const Products = require('../models/Products')
 
 module.exports.getMealPlanerInfo = async function (req, res) {
   async function getInfo (t, date) {
+    console.log(date)
+
     const mealPlan = await MealPlaner.findOne({
       where: {
         [Op.and]: [
@@ -25,31 +27,31 @@ module.exports.getMealPlanerInfo = async function (req, res) {
           model: Marks,
           as: 'marks',
           attributes: {
-            exclude: ['id', 'createdAt', 'updatedAt']
+            exclude: ['id', 'mealPlanerId', 'createdAt', 'updatedAt']
           }
         },
         {
           model: Socials,
           as: 'socials',
           attributes: {
-            exclude: ['id', 'createdAt', 'updatedAt']
+            exclude: ['id', 'mealPlanerId', 'createdAt', 'updatedAt']
           }
         },
         {
           model: MealParts,
           as: 'mealParts',
           attributes: {
-            exclude: ['id', 'createdAt', 'updatedAt']
+            exclude: ['id', 'mealPlanerId', 'createdAt', 'updatedAt']
           }
         },
       ],
       attributes: {
-        exclude: ['marksId', 'socialsId', 'mealPartsId', 'createdAt', 'updatedAt']
+        exclude: ['createdAt', 'updatedAt']
       },
-      raw: true,
+      raw: false,
     }, { transaction: t })
 
-    console.log(mealPlan)
+    console.log(mealPlan.toJSON())
 
     if (mealPlan) {
       // Получить данные о добавленных отметках
