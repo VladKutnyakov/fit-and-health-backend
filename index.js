@@ -25,7 +25,7 @@ const app = express()
 // Синхронизация модели с базой данных
 // { force: true } Это создает таблицу, сначала удаляя ее, если она уже существует.
 // { alter: true } Это проверяет текущее состояние таблицы в базе данных (какие столбцы у нее есть, каковы их типы данных и т. Д.), А затем выполняет необходимые изменения в таблице, чтобы она соответствовала модели.
-sequelize.sync({ alter: true })
+sequelize.sync({ alter: true }) // force: true
   .then(() => console.log('MySQL has been connected :)'))
 
 const corsOptions = {
