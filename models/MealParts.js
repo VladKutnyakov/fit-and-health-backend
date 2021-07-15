@@ -16,14 +16,6 @@ const MealParts = sequelize.define('meal_parts', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  products: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
-  recipes: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
   mealPlanerId: {
     type: DataTypes.UUID,
     allowNull: true,
@@ -35,6 +27,7 @@ const MealParts = sequelize.define('meal_parts', {
 
 MealParts.associate = (models) => {
   MealParts.belongsTo(models.MealPlaner)
+  MealParts.hasMany(models.MealPartProducts, { as: 'products', foreignKey: 'mealPartId' })
 }
 
 module.exports = MealParts
