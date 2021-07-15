@@ -27,7 +27,7 @@ const MealParts = sequelize.define('meal_parts', {
 
 MealParts.associate = (models) => {
   MealParts.belongsTo(models.MealPlaner)
-  MealParts.hasMany(models.MealPartProducts, { as: 'products', foreignKey: 'mealPartId' })
+  MealParts.hasMany(models.MealPartProducts)
 }
 
 module.exports = MealParts

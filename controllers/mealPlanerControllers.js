@@ -28,31 +28,31 @@ module.exports.getMealPlanerInfo = async function (req, res) {
           model: Marks,
           as: 'marks',
           attributes: {
-            exclude: ['id', 'mealPlanerId', 'createdAt', 'updatedAt']
+            exclude: ['id', 'mealPlanerId']
           }
         },
         {
           model: Socials,
           as: 'socials',
           attributes: {
-            exclude: ['id', 'mealPlanerId', 'createdAt', 'updatedAt']
+            exclude: ['id', 'mealPlanerId']
           }
         },
         {
           model: MealParts,
           as: 'mealParts',
           attributes: {
-            exclude: ['id', 'mealPlanerId', 'createdAt', 'updatedAt']
+            exclude: ['id', 'mealPlanerId']
           },
-          // include: [
-          //   {
-          //     model: MealPartProducts,
-          //     as: 'products',
-          //     // attributes: {
-          //     //   exclude: ['id', 'mealPlanerId', 'createdAt', 'updatedAt']
-          //     // }
-          //   },
-          // ]
+          include: [
+            {
+              model: MealPartProducts,
+              as: 'products',
+              attributes: {
+                exclude: ['id', 'mealPartId']
+              }
+            },
+          ]
         },
       ],
       attributes: {
