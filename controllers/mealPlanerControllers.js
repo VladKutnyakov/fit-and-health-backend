@@ -13,7 +13,7 @@ const Products = require('../models/Products')
 
 module.exports.getMealPlanerInfo = async function (req, res) {
   async function getInfo (t, date) {
-    console.log(date)
+    // console.log(date)
 
     const mealPlan = await MealPlaner.findOne({
       where: {
@@ -51,103 +51,33 @@ module.exports.getMealPlanerInfo = async function (req, res) {
       raw: false,
     }, { transaction: t })
 
-    console.log(mealPlan.toJSON())
+    // console.log(mealPlan.toJSON())
 
     if (mealPlan) {
-      // Получить данные о добавленных отметках
-      // const mealPlanMarks = await Marks.findOne({
-      //   where: {
-      //     id: mealPlan.marksId
-      //   },
-      //   attributes: ['marks'],
-      //   raw: true
-      // }, { transaction: t })
+      const mealPlanInfo = mealPlan.toJSON()
 
-      // Получить данные о социальных действиях
-      // const mealPlanSocials = await Socials.findOne({
-      //   where: {
-      //     id: mealPlan.socialsId
-      //   },
-      //   attributes: ['likes', 'dislikes', 'share'],
-      //   raw: true
-      // }, { transaction: t })
-
-      // console.log(mealPlanSocials);
-
-      // Получить данные о приемах пищи для плана питания на сутки
-      // const mealParts = await MealParts.findAll({
-      //   where: {
-      //     id: mealPlan.mealPartsId
-      //   },
-      //   attributes: ['title', 'mealTime', 'products', 'recipes'],
-      //   raw: true
-      // }, { transaction: t })
-
-      // const mealPlanMealParts = []
-      // mealParts.forEach(element => {
-      //   const item = {
-      //     title: element.title,
-      //     mealTime: element.mealTime,
-      //     products: JSON.parse(element.products),
-      //     recipes: JSON.parse(element.recipes),
-      //   }
-      //   mealPlanMealParts.push(item)
-      // })
-
-      // // Сформировать зарос с данными о продуктах
-      // const allProductsIds = new Set()
-      // mealPlanMealParts.forEach(element => {
-      //   element.products.forEach(item => {
-      //     allProductsIds.add(item.id)
-      //   })
-      // })
-      // const productsIds = [...allProductsIds]
-
-      // const productParams = []
-      // productsIds.forEach(element => {
-      //   productParams.push({id: element})
-      // })
-
-      // const foundingProducts = await Products.findAll({
-      //   where: {
-      //     [Op.or]: productParams
-      //   },
-      //   attributes: ['id', 'title', 'weight', 'protein', 'fats', 'carb', 'kkal', 'category', 'userId'],
-      //   raw: true
-      // }, { transaction: t })
-
-      // mealPlanMealParts.forEach(element => {
-      //   for (let i = 0; i < element.products.length; i++) {
-      //     foundingProducts.forEach(item => {
-      //       if (item.id === element.products[i].id) {
-      //         element.products[i] = {...item, weight: element.products[i].currentWeight}
-      //       }
-      //     })
-      //   }
-      // })
-
-      // const CurrentMealPlan = {
-      //   id: mealPlan.id,
-      //   userId: mealPlan.userId,
-      //   date: new Date(mealPlan.date * 1000).toJSON().split('T')[0],
-      //   title: mealPlan.title || '',
-      //   description: mealPlan.description || '',
-      //   targetProtein: mealPlan.targetProtein || 2,
-      //   targetFats: mealPlan.targetFats || 1,
-      //   targetCarb: mealPlan.targetCarb || 3,
-      //   targetWeight: mealPlan.targetWeight || 0,
-      //   currentWeight: mealPlan.currentWeight || 0,
-      //   marks: mealPlanMarks ? JSON.parse(mealPlanMarks.marks) : [],
-      //   // likes: mealPlanSocials ? mealPlanSocials.likes : 0,
-      //   // dislikes: mealPlanSocials ? mealPlanSocials.dislikes : 0,
-      //   // share: mealPlanSocials ? mealPlanSocials.share : 0,
-      //   mealParts: mealPlanMealParts.length > 0 ? mealPlanMealParts : [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
-      // }
+      const CurrentMealPlan = {
+        id: mealPlanInfo.id,
+        userId: mealPlanInfo.userId,
+        date: new Date(mealPlanInfo.date * 1000).toJSON().split('T')[0],
+        title: mealPlanInfo.title || '',
+        description: mealPlanInfo.description || '',
+        targetProtein: mealPlanInfo.targetProtein || 2,
+        targetFats: mealPlanInfo.targetFats || 1,
+        targetCarb: mealPlanInfo.targetCarb || 3,
+        targetWeight: mealPlanInfo.targetWeight || 0,
+        currentWeight: mealPlanInfo.currentWeight || 0,
+        marks: mealPlanInfo.marks ? JSON.parse(mealPlanInfo.marks.tags) : [],
+        likes: mealPlanInfo.socials ? mealPlanInfo.socials.likes : 0,
+        dislikes: mealPlanInfo.socials ? mealPlanInfo.socials.dislikes : 0,
+        share: mealPlanInfo.socials ? mealPlanInfo.socials.share : 0,
+        mealParts: [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
+        // mealParts: mealPlanMealParts.length > 0 ? mealPlanMealParts : [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
+      }
 
       // console.log(CurrentMealPlan)
 
-      // return CurrentMealPlan
-      return {}
+      return CurrentMealPlan
     } else {
       // Если рацион на сутки не найден, поиск последней записи для формирование пустого рациона на сутки. Будут использованы данные из пердыдущего сохраненного дня или базовые значения для БЖУ, показателей веса и первого приема пищи.
       const lastMealPlan = await MealPlaner.findOne({
