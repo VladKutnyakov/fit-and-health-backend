@@ -41,23 +41,11 @@ const MealPlaner = sequelize.define('meal_planer', {
   currentWeight: {
     type: DataTypes.FLOAT,
     allowNull: true
-  },
-  marksId: {
-    type: DataTypes.INTEGER,
-    allowNull: true
-  },
-  socialsId: {
-    type: DataTypes.INTEGER,
-    allowNull: true
-  },
-  // mealPartsId: {
-  //   type: DataTypes.INTEGER,
-  //   allowNull: true
-  // }
+  }
 })
 
-MealPlaner.belongsTo(Marks, {as: 'marks', foreingKey: 'marksId'})
-MealPlaner.belongsTo(Socials, {as: 'socials', foreingKey: 'socialsId'})
-MealPlaner.hasMany(MealParts, {as: 'mealParts', foreingKey: 'mealPlanerId'})
+MealPlaner.hasOne(Marks, { as: 'marks', foreignKey: 'mealPlanerId' })
+MealPlaner.hasOne(Socials, { as: 'socials', foreignKey: 'mealPlanerId' })
+MealPlaner.hasMany(MealParts, { as: 'mealParts', foreignKey: 'mealPlanerId' })
 
 module.exports = MealPlaner

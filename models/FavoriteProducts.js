@@ -1,30 +1,33 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
-// const Users = require('./Users')
-// const Products = require('./Products')
+const Users = require('./Users')
+const Products = require('./Products')
 
 // Описание модели таблицы в БД MySQL
 const FavoriteProducts = sequelize.define('favorite_products', {
   userId: {
-    type: DataTypes.INTEGER,
-    // reference: {
-    //   model: Users,
-    //   key: 'id'
-    // },
+    type: DataTypes.UUID,
+    reference: {
+      model: Users,
+      key: 'id'
+    },
     allowNull: false
   },
   productId: {
-    type: DataTypes.INTEGER,
-    // reference: {
-    //   model: Products,
-    //   key: 'id'
-    // },
+    type: DataTypes.UUID,
+    reference: {
+      model: Products,
+      key: 'id'
+    },
     allowNull: false
   }
-}, { timestamps: false })
+}, {
+  freezeTableName: false,
+  timestamps: false
+})
 
-// Users.belongsToMany(Products, { through: FavoriteProducts, foreignkey: 'userId' })
-// Products.belongsToMany(Users, { through: FavoriteProducts, foreignkey: 'userId' })
+Users.belongsToMany(Products, { as: 'products', through: FavoriteProducts, foreignKey: 'productId' })
+Products.belongsToMany(Users, { as: 'users', through: FavoriteProducts, foreignKey: 'userId' })
 
 module.exports = FavoriteProducts

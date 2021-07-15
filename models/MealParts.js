@@ -1,16 +1,12 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
-// const MealPlaner = require('./MealPlaner')
 
 // Описание модели таблицы в БД MySQL
 const MealParts = sequelize.define('meal_parts', {
-  mealPlanerId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    // references: {
-    //   model: MealPlaner,
-    //   key: "id"
-    // }
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true
   },
   title: {
     type: DataTypes.STRING,
@@ -28,8 +24,17 @@ const MealParts = sequelize.define('meal_parts', {
     type: DataTypes.STRING,
     allowNull: true
   },
+  mealPlanerId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  }
+}, {
+  freezeTableName: true,
+  timestamps: false
 })
 
-// MealParts.belongsTo(MealPlaner)
+MealParts.associate = (models) => {
+  MealParts.belongsTo(models.MealPlaner)
+}
 
 module.exports = MealParts
