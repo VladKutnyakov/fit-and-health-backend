@@ -39,6 +39,6 @@ const Products = sequelize.define('products', {
 })
 
 Products.hasMany(MealPartProducts)
-MealPartProducts.belongsTo(Products, { as: 'mealPartProducts', foreignKey: 'productId' })
+MealPartProducts.belongsTo(Products, { as: 'product', foreignKey: 'productId' })
 
 module.exports = Products

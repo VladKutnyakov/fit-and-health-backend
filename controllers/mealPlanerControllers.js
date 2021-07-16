@@ -49,8 +49,17 @@ module.exports.getMealPlanerInfo = async function (req, res) {
               model: MealPartProducts,
               as: 'products',
               attributes: {
-                exclude: ['id', 'mealPartId']
-              }
+                exclude: ['id', 'mealPartId', 'productId']
+              },
+              include: [
+                {
+                  model: Products,
+                  as: 'product',
+                  attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                  }
+                },
+              ]
             },
           ]
         },
