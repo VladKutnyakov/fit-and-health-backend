@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
-// const MealPartProducts = require('./MealPartProducts')
+const MealPartProducts = require('./MealPartProducts')
 
 // Описание модели таблицы в БД MySQL
 const Products = sequelize.define('products', {
@@ -38,6 +38,7 @@ const Products = sequelize.define('products', {
   }
 })
 
-// Products.hasMany(MealPartProducts, { as: 'mealPartProducts', foreignKey: 'mealPartProductsId' })
+Products.hasMany(MealPartProducts)
+MealPartProducts.belongsTo(Products, { as: 'mealPartProducts', foreignKey: 'productId' })
 
 module.exports = Products
