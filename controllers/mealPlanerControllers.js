@@ -14,7 +14,7 @@ const MealPartProducts = require('../models/MealPartProducts')
 
 module.exports.getMealPlanerInfo = async function (req, res) {
   async function getInfo (t, date) {
-    console.log(date)
+    // console.log(date)
 
     const mealPlan = await MealPlaner.findOne({
       where: {
@@ -81,8 +81,7 @@ module.exports.getMealPlanerInfo = async function (req, res) {
         likes: mealPlanInfo.socials ? mealPlanInfo.socials.likes : 0,
         dislikes: mealPlanInfo.socials ? mealPlanInfo.socials.dislikes : 0,
         share: mealPlanInfo.socials ? mealPlanInfo.socials.share : 0,
-        mealParts: [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
-        // mealParts: mealPlanMealParts.length > 0 ? mealPlanMealParts : [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
+        mealParts: mealPlanInfo.mealParts.length > 0 ? mealPlanInfo.mealParts : [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
       }
 
       // console.log(CurrentMealPlan)
