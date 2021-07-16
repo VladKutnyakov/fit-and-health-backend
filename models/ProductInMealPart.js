@@ -27,7 +27,7 @@ const ProductInMealPart = sequelize.define('product_in_meal_part', {
   timestamps: false
 })
 
-// MealPartProducts.belongsToMany(Products, { as: 'products', through: FavoriteProducts, foreignKey: 'productId' })
-// Products.belongsToMany(MealPartProducts, { as: 'mealPartProducts', through: FavoriteProducts, foreignKey: 'userId' })
+MealPartProducts.belongsToMany(Products, { as: 'productsInMealPart', through: ProductInMealPart, foreignKey: 'productId' })
+Products.belongsToMany(MealPartProducts, { as: 'productsInMealPart', through: ProductInMealPart, foreignKey: 'mealPartProductId' })
 
 module.exports = ProductInMealPart

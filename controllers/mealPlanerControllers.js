@@ -7,6 +7,9 @@ const Socials = require('../models/Socials')
 const MealParts = require('../models/MealParts')
 // const Products = require('../models/Products')
 const MealPartProducts = require('../models/MealPartProducts')
+const Products = require('../models/Products')
+const ProductInMealPart = require('../models/ProductInMealPart')
+
 
 // Формат даты для всего проекта --- 2021-12-29
 // Показать дату в мс
@@ -50,7 +53,16 @@ module.exports.getMealPlanerInfo = async function (req, res) {
               as: 'products',
               attributes: {
                 exclude: ['id', 'mealPartId']
-              }
+              },
+              include: [
+                {
+                  model: ProductInMealPart,
+                  as: 'productsInMealPart',
+                  // attributes: {
+                  //   exclude: ['id', 'mealPartId']
+                  // },
+                }
+              ]
             },
           ]
         },
@@ -61,7 +73,7 @@ module.exports.getMealPlanerInfo = async function (req, res) {
       raw: false,
     }, { transaction: t })
 
-    // console.log(mealPlan.toJSON())
+    console.log(mealPlan.toJSON())
 
     if (mealPlan) {
       const mealPlanInfo = mealPlan.toJSON()
