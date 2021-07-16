@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
+const MealPartProducts = require('./MealPartProducts')
 
 // Описание модели таблицы в БД MySQL
 const MealParts = sequelize.define('meal_parts', {
@@ -15,19 +16,14 @@ const MealParts = sequelize.define('meal_parts', {
   mealTime: {
     type: DataTypes.STRING,
     allowNull: true
-  },
-  mealPlanerId: {
-    type: DataTypes.UUID,
-    allowNull: true,
   }
 }, {
   freezeTableName: true,
   timestamps: false
 })
 
-MealParts.associate = (models) => {
-  MealParts.belongsTo(models.MealPlaner)
-  MealParts.hasMany(models.MealPartProducts)
-}
+MealParts.hasMany(MealPartProducts, { as: 'products', foreignKey: 'mealPartId' })
+
+MealPartProducts.belongsTo(MealParts)
 
 module.exports = MealParts

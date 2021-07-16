@@ -11,18 +11,10 @@ const Marks = sequelize.define('marks', {
   tags: {
     type: DataTypes.TEXT('long'),
     allowNull: true
-  },
-  mealPlanerId: {
-    type: DataTypes.UUID,
-    allowNull: true,
   }
 }, {
   freezeTableName: true,
   timestamps: false
 })
-
-Marks.associate = (models) => {
-  Marks.belongsTo(models.MealPlaner)
-}
 
 module.exports = Marks

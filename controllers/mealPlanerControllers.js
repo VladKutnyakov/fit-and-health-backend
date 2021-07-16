@@ -14,7 +14,7 @@ const MealPartProducts = require('../models/MealPartProducts')
 
 module.exports.getMealPlanerInfo = async function (req, res) {
   async function getInfo (t, date) {
-    // console.log(date)
+    console.log(date)
 
     const mealPlan = await MealPlaner.findOne({
       where: {
@@ -104,15 +104,15 @@ module.exports.getMealPlanerInfo = async function (req, res) {
         date: new Date().toJSON().split('T')[0],
         title: '',
         description: '',
-        targetProtein: lastMealPlan.targetProtein || 2,
-        targetFats: lastMealPlan.targetFats || 1,
-        targetCarb: lastMealPlan.targetCarb || 3,
-        targetWeight: lastMealPlan.targetWeight || 0,
-        currentWeight: lastMealPlan.currentWeight || 0,
+        targetProtein: lastMealPlan ? lastMealPlan.targetProtein : 2,
+        targetFats: lastMealPlan ? lastMealPlan.targetFats : 1,
+        targetCarb: lastMealPlan ? lastMealPlan.targetCarb : 3,
+        targetWeight: lastMealPlan ? lastMealPlan.targetWeight : 0,
+        currentWeight: lastMealPlan ? lastMealPlan.currentWeight : 0,
         marks: [],
-        // likes: 0,
-        // dislikes: 0,
-        // share: 0,
+        likes: 0,
+        dislikes: 0,
+        share: 0,
         mealParts: [
           {
             title: 'Завтрак',

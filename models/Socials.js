@@ -19,18 +19,10 @@ const Socials = sequelize.define('socials', {
   share: {
     type: DataTypes.INTEGER,
     allowNull: true
-  },
-  mealPlanerId: {
-    type: DataTypes.UUID,
-    allowNull: true,
   }
 }, {
   freezeTableName: true,
   timestamps: false
 })
-
-Socials.associate = (models) => {
-  Socials.belongsTo(models.MealPlaner)
-}
 
 module.exports = Socials
