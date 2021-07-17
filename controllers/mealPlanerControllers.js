@@ -70,9 +70,9 @@ module.exports.getMealPlanerInfo = async function (req, res) {
       raw: false,
     }, { transaction: t })
 
-    console.log(mealPlan.toJSON())
-
     if (mealPlan) {
+      console.log(mealPlan.toJSON())
+
       const mealPlanInfo = mealPlan.toJSON()
 
       const CurrentMealPlan = {

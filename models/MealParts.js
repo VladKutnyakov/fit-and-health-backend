@@ -23,7 +23,6 @@ const MealParts = sequelize.define('meal_parts', {
 })
 
 MealParts.hasMany(MealPartProducts, { as: 'products', foreignKey: 'mealPartId' })
-
 MealPartProducts.belongsTo(MealParts)
 
 module.exports = MealParts
