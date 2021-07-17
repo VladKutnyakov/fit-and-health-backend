@@ -71,7 +71,7 @@ module.exports.getMealPlanerInfo = async function (req, res) {
     }, { transaction: t })
 
     if (mealPlan) {
-      console.log(mealPlan.toJSON())
+      // console.log(mealPlan.toJSON())
 
       const mealPlanInfo = mealPlan.toJSON()
 
@@ -92,6 +92,8 @@ module.exports.getMealPlanerInfo = async function (req, res) {
         share: mealPlanInfo.socials ? mealPlanInfo.socials.share : 0,
         mealParts: mealPlanInfo.mealParts.length > 0 ? mealPlanInfo.mealParts : [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
       }
+
+      for (let i = 0; i < CurrentMealPlan.mealParts.length; i++) {}
 
       // console.log(CurrentMealPlan)
 
