@@ -93,7 +93,15 @@ module.exports.getMealPlanerInfo = async function (req, res) {
         mealParts: mealPlanInfo.mealParts.length > 0 ? mealPlanInfo.mealParts : [{title: 'Завтрак', mealTime: '08:00', products: [], recipes: []}]
       }
 
-      for (let i = 0; i < CurrentMealPlan.mealParts.length; i++) {}
+      for (let i = 0; i < CurrentMealPlan.mealParts.length; i++) {
+        const preparedProducts = []
+        CurrentMealPlan.mealParts[i].products.forEach((element) => {
+          const item = {...element.product}
+          item.weight = element.currentWeight
+          preparedProducts.push(item)
+        })
+        CurrentMealPlan.mealParts[i].products = preparedProducts
+      }
 
       // console.log(CurrentMealPlan)
 
