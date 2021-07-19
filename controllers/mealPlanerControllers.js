@@ -24,13 +24,10 @@ module.exports.getMealPlanerInfo = async function (req, res) {
         ]
       },
       include: [
-        // {
-        //   model: Marks,
-        //   as: 'marks',
-        //   attributes: {
-        //     exclude: ['id', 'mealPlanerId']
-        //   }
-        // },
+        {
+          model: Marks,
+          as: 'marks'
+        },
         {
           model: Socials,
           as: 'socials',
