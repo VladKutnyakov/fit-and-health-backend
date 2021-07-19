@@ -4,6 +4,11 @@ const MealPartProducts = require('./MealPartProducts')
 
 // Описание модели таблицы в БД MySQL
 const Products = sequelize.define('products', {
+  id: {
+    type: DataTypes.INTEGER,
+    defaultValue: DataTypes.INTEGER,
+    primaryKey: true
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: true
@@ -36,6 +41,9 @@ const Products = sequelize.define('products', {
     type: DataTypes.INTEGER,
     allowNull: true
   }
+}, {
+  freezeTableName: true,
+  timestamps: false
 })
 
 Products.hasMany(MealPartProducts, { as: 'product', foreignKey: 'productId' })

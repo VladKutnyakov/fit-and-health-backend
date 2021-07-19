@@ -11,6 +11,9 @@ const PinnedProducts = sequelize.define('pinned_products', {
     type: DataTypes.INTEGER,
     allowNull: false
   }
-}, { timestamps: false })
+}, {
+  freezeTableName: true,
+  timestamps: false
+})
 
 module.exports = PinnedProducts

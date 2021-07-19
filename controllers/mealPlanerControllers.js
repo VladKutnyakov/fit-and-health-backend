@@ -24,13 +24,13 @@ module.exports.getMealPlanerInfo = async function (req, res) {
         ]
       },
       include: [
-        {
-          model: Marks,
-          as: 'marks',
-          attributes: {
-            exclude: ['id', 'mealPlanerId']
-          }
-        },
+        // {
+        //   model: Marks,
+        //   as: 'marks',
+        //   attributes: {
+        //     exclude: ['id', 'mealPlanerId']
+        //   }
+        // },
         {
           model: Socials,
           as: 'socials',
@@ -86,7 +86,8 @@ module.exports.getMealPlanerInfo = async function (req, res) {
         targetCarb: mealPlanInfo.targetCarb || 3,
         targetWeight: mealPlanInfo.targetWeight || 0,
         currentWeight: mealPlanInfo.currentWeight || 0,
-        marks: mealPlanInfo.marks ? JSON.parse(mealPlanInfo.marks.tags) : [],
+        // marks: mealPlanInfo.marks ? JSON.parse(mealPlanInfo.marks.tags) : [],
+        marks: [],
         likes: mealPlanInfo.socials ? mealPlanInfo.socials.likes : 0,
         dislikes: mealPlanInfo.socials ? mealPlanInfo.socials.dislikes : 0,
         share: mealPlanInfo.socials ? mealPlanInfo.socials.share : 0,

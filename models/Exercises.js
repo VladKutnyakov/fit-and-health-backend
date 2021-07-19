@@ -2,6 +2,11 @@ const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
 
 const Exercises = sequelize.define('exercises', {
+  id: {
+    type: DataTypes.INTEGER,
+    defaultValue: DataTypes.INTEGER,
+    primaryKey: true
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: false
@@ -38,6 +43,9 @@ const Exercises = sequelize.define('exercises', {
   //   type: DataTypes.INTEGER,
   //   allowNull: false
   // }
+}, {
+  freezeTableName: true,
+  timestamps: false
 })
 
 module.exports = Exercises

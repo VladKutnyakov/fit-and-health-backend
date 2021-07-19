@@ -4,8 +4,8 @@ const sequelize = require('../utils/dbConnect')
 // Описание модели таблицы в БД MySQL
 const MealPartProducts = sequelize.define('meal_part_products', {
   id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
+    defaultValue: DataTypes.INTEGER,
     primaryKey: true
   },
   currentWeight: {

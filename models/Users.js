@@ -5,6 +5,11 @@ const UserParams = require('./UserParams')
 
 // Описание модели таблицы в БД MySQL
 const Users = sequelize.define('users', {
+  id: {
+    type: DataTypes.INTEGER,
+    defaultValue: DataTypes.INTEGER,
+    primaryKey: true
+  },
   email: {
     type: DataTypes.STRING,
     allowNull: true
@@ -17,6 +22,9 @@ const Users = sequelize.define('users', {
     type: DataTypes.STRING,
     allowNull: true
   },
+}, {
+  freezeTableName: true,
+  timestamps: false
 })
 
 Users.hasMany(Tokens, {

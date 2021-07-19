@@ -7,7 +7,7 @@ const Products = require('./Products')
 // Описание модели таблицы в БД MySQL
 const FavoriteProducts = sequelize.define('favorite_products', {
   userId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     reference: {
       model: Users,
       key: 'id'
@@ -15,7 +15,7 @@ const FavoriteProducts = sequelize.define('favorite_products', {
     allowNull: false
   },
   productId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     reference: {
       model: Products,
       key: 'id'
@@ -23,7 +23,7 @@ const FavoriteProducts = sequelize.define('favorite_products', {
     allowNull: false
   }
 }, {
-  freezeTableName: false,
+  freezeTableName: true,
   timestamps: false
 })
 

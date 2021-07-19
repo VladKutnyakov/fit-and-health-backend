@@ -15,6 +15,9 @@ const Tokens = sequelize.define('tokens', {
     type: DataTypes.TEXT('medium'),
     allowNull: true
   },
+}, {
+  freezeTableName: true,
+  timestamps: false
 })
 
 module.exports = Tokens

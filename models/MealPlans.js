@@ -3,9 +3,10 @@ const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const MealPlans = sequelize.define('meal_plans', {
-  userId: {
+  id: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    defaultValue: DataTypes.INTEGER,
+    primaryKey: true
   },
   date: {
     type: DataTypes.STRING,
@@ -46,7 +47,14 @@ const MealPlans = sequelize.define('meal_plans', {
   mealParts: {
     type: DataTypes.STRING,
     allowNull: true
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   }
+}, {
+  freezeTableName: true,
+  timestamps: false
 })
 
 module.exports = MealPlans

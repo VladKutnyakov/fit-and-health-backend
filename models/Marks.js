@@ -4,13 +4,13 @@ const sequelize = require('../utils/dbConnect')
 // Описание модели таблицы в БД MySQL
 const Marks = sequelize.define('marks', {
   id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
+    defaultValue: DataTypes.INTEGER,
     primaryKey: true
   },
-  tags: {
-    type: DataTypes.TEXT('long'),
-    allowNull: true
+  text: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }, {
   freezeTableName: true,
