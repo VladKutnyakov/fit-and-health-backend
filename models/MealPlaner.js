@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/dbConnect')
-// const Marks = require('./Marks')
 const Socials = require('./Socials')
 const MealParts = require('./MealParts')
+const Marks = require('./Marks')
+const AddedMarks = require('./AddedMarks')
 
 // Описание модели таблицы в БД MySQL
 const MealPlaner = sequelize.define('meal_planers', {
@@ -52,11 +53,12 @@ const MealPlaner = sequelize.define('meal_planers', {
   timestamps: false
 })
 
-// MealPlaner.hasOne(Marks, { as: 'marks', foreignKey: 'mealPlanerId' })
+
 MealPlaner.hasOne(Socials, { as: 'socials', foreignKey: 'mealPlanerId' })
 MealPlaner.hasMany(MealParts, { as: 'mealParts', foreignKey: 'mealPlanerId' })
+MealPlaner.belongsToMany(Marks, { as: 'marks', through: AddedMarks, foreignKey: 'markId' })
 
-// Marks.belongsTo(MealPlaner)
+Marks.belongsToMany(MealPlaner, { as: 'mealPlaners', through: AddedMarks, foreignKey: 'mealPlanerId' })
 Socials.belongsTo(MealPlaner)
 MealParts.belongsTo(MealPlaner)
 
