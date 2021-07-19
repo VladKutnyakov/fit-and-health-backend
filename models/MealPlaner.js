@@ -7,11 +7,6 @@ const AddedMarks = require('./AddedMarks')
 
 // Описание модели таблицы в БД MySQL
 const MealPlaner = sequelize.define('meal_planers', {
-  id: {
-    type: DataTypes.INTEGER,
-    defaultValue: DataTypes.INTEGER,
-    primaryKey: true
-  },
   date: {
     type: DataTypes.STRING,
     allowNull: true

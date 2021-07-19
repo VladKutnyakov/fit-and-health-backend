@@ -3,11 +3,6 @@ const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const Socials = sequelize.define('socials', {
-  id: {
-    type: DataTypes.INTEGER,
-    defaultValue: DataTypes.INTEGER,
-    primaryKey: true
-  },
   likes: {
     type: DataTypes.INTEGER,
     allowNull: true

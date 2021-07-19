@@ -3,11 +3,6 @@ const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const UserParams = sequelize.define('user_params', {
-  id: {
-    type: DataTypes.INTEGER,
-    defaultValue: DataTypes.INTEGER,
-    primaryKey: true
-  },
   firstName: {
     type: DataTypes.STRING,
     allowNull: true

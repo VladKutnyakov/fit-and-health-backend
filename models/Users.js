@@ -5,11 +5,6 @@ const UserParams = require('./UserParams')
 
 // Описание модели таблицы в БД MySQL
 const Users = sequelize.define('users', {
-  id: {
-    type: DataTypes.INTEGER,
-    defaultValue: DataTypes.INTEGER,
-    primaryKey: true
-  },
   email: {
     type: DataTypes.STRING,
     allowNull: true

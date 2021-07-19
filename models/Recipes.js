@@ -3,11 +3,6 @@ const sequelize = require('../utils/dbConnect')
 
 // Описание модели таблицы в БД MySQL
 const Recipes = sequelize.define('recipes', {
-  id: {
-    type: DataTypes.INTEGER,
-    defaultValue: DataTypes.INTEGER,
-    primaryKey: true
-  },
   title: {
     type: DataTypes.STRING,
     allowNull: true
