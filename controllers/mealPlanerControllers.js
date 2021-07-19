@@ -173,73 +173,100 @@ module.exports.getMealPlanerInfo = async function (req, res) {
 }
 
 module.exports.saveMealPlanerInfo = async function (req, res) {
-  // console.log(req)
+  // console.log(req.body)
   try {
     const candidate = await MealPlaner.findOne({
       where: {
         id: req.body.mealPlanerInfo.id
       },
+      include: [
+        {
+          model: Marks,
+          as: 'marks'
+        },
+        {
+          model: MealParts,
+          as: 'mealParts',
+          include: [
+            {
+              model: MealPartProducts,
+              as: 'products',
+              include: [
+                {
+                  model: Products,
+                  as: 'product'
+                },
+              ]
+            },
+          ]
+        },
+      ],
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      },
+      raw: false,
     })
-
-    // console.log(candidate)
 
     if (candidate) {
       console.log('Обновить данные у рациона')
+
+      // console.log(candidate.toJSON())
+
       // Если запись в БД найдена, вносим изменения в существующий план рациона на сутки
-      const mealPlanerInfo = await sequelize.transaction( async (t) => {
-        // Обновление данных об отметках
-        const updatedMarks = await Marks.update(
-          { marks: JSON.stringify(req.body.mealPlanerInfo.marks) },
-          { where: { id: candidate.marksId } },
-          { transaction: t }
-        )
-
-        // Обновление данных о социальных кнопках
-        const updatedSocials = await Socials.update(
-          {
-            likes: req.body.mealPlanerInfo.likes,
-            dislikes: req.body.mealPlanerInfo.dislikes,
-            share: req.body.mealPlanerInfo.share,
-          },
-          { where: { id: candidate.socialsId } },
-          { transaction: t }
-        )
-
+      const MealPlanerInfo = await sequelize.transaction( async (t) => {
         // Обновление данных о рационе питания
-        const currentDateStr = new Date().toJSON().split('T')[0]
-        const date = new Date(currentDateStr).getTime() / 1000
-
-        const updatedMealPlanerInfo = await MealPlanerInfo.update(
+        const UpdatedMealPlan = await MealPlaner.update(
           {
-            // userId: req.body.userId,
-            // date: date,
             title: req.body.mealPlanerInfo.title,
             description: req.body.mealPlanerInfo.description,
             targetProtein: req.body.mealPlanerInfo.targetProtein,
             targetFats: req.body.mealPlanerInfo.targetFats,
             targetCarb: req.body.mealPlanerInfo.targetCarb,
             targetWeight: req.body.mealPlanerInfo.targetWeight,
-            currentWeight: req.body.mealPlanerInfo.currentWeight,
-            // marksId: savedMarks.toJSON().id,
-            // socialsId: savedSocials.toJSON().id,
-            // mealPartsId: req.body.mealPlanerInfo.mealPartsId,
+            currentWeight: req.body.mealPlanerInfo.currentWeight
           },
           { where: { id: candidate.id } },
           { transaction: t }
         )
 
+        // console.log(UpdatedMealPlan)
+
+        if (candidate.toJSON().marks) {
+          // Обновление данных об отметках, если они были созданы
+          console.log('update marks')
+          // const UpdatedMarks = await Marks.update(
+          //   { marks: JSON.stringify(req.body.mealPlanerInfo.marks) },
+          //   { where: { id: candidate.marksId } },
+          //   { transaction: t }
+          // )
+        } else if (req.body.mealPlanerInfo.marks && req.body.mealPlanerInfo.marks.length > 0) {
+          // Создание новой записи об отметках
+          console.log('create new marks')
+        }
+
+        // // Обновление данных о социальных кнопках
+        // const updatedSocials = await Socials.update(
+        //   {
+        //     likes: req.body.mealPlanerInfo.likes,
+        //     dislikes: req.body.mealPlanerInfo.dislikes,
+        //     share: req.body.mealPlanerInfo.share,
+        //   },
+        //   { where: { id: candidate.socialsId } },
+        //   { transaction: t }
+        // )
+
         // const payload = {
         //   ...updatedMealPlanerInfo.toJSON(),
         // }
 
-        return true
+        return UpdatedMealPlan
       })
 
       const response = {
         updatedToken: req.body.updatedToken,
-        data: {
-          mealPlanerInfo: mealPlanerInfo
-        }
+        // data: {
+        //   mealPlanerInfo: mealPlanerInfo
+        // }
       }
 
       console.log(response);
@@ -250,26 +277,11 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
       console.log('создать новую запись в БД')
 
       const mealPlanerInfo = await sequelize.transaction( async (t) => {
-        // Сохранение данных об отметках
-        const savedMarks = await Marks.create({
-          // entityId: savedMealPlanerInfo.toJSON().id,
-          marks: JSON.stringify(req.body.mealPlanerInfo.marks)
-        }, { transaction: t })
-
-        // Сохранение данных о социальных кнопках
-        const savedSocials = await Socials.create({
-          // entityId: savedMealPlanerInfo.toJSON().id,
-          likes: req.body.mealPlanerInfo.likes,
-          dislikes: req.body.mealPlanerInfo.dislikes,
-          share: req.body.mealPlanerInfo.share,
-        }, { transaction: t })
-
         // Сохранение данных о рационе питания
         const currentDateStr = new Date().toJSON().split('T')[0]
         const date = new Date(currentDateStr).getTime() / 1000
 
-        const savedMealPlanerInfo = await MealPlanerInfo.create({
-          userId: req.body.userId,
+        const savedMealPlan = await MealPlaner.create({
           date: date,
           title: req.body.mealPlanerInfo.title,
           description: req.body.mealPlanerInfo.description,
@@ -278,23 +290,37 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
           targetCarb: req.body.mealPlanerInfo.targetCarb,
           targetWeight: req.body.mealPlanerInfo.targetWeight,
           currentWeight: req.body.mealPlanerInfo.currentWeight,
-          marksId: savedMarks.toJSON().id,
-          socialsId: savedSocials.toJSON().id,
-          // mealPartsId: req.body.mealPlanerInfo.mealPartsId,
+          userId: req.body.userId,
         }, { transaction: t })
 
-        const payload = {
-          ...savedMealPlanerInfo.toJSON(),
-        }
+        console.log(savedMealPlan.toJSON())
 
-        return payload
+        // Сохранение данных об отметках
+      //   const savedMarks = await Marks.create({
+      //     // entityId: savedMealPlanerInfo.toJSON().id,
+      //     marks: JSON.stringify(req.body.mealPlanerInfo.marks)
+      //   }, { transaction: t })
+
+      //   // Сохранение данных о социальных кнопках
+      //   const savedSocials = await Socials.create({
+      //     // entityId: savedMealPlanerInfo.toJSON().id,
+      //     likes: req.body.mealPlanerInfo.likes,
+      //     dislikes: req.body.mealPlanerInfo.dislikes,
+      //     share: req.body.mealPlanerInfo.share,
+      //   }, { transaction: t })
+
+        // const payload = {
+        //   ...mealPlanerInfo.toJSON(),
+        // }
+
+        return savedMealPlan
       })
 
       const response = {
         updatedToken: req.body.updatedToken,
-        data: {
-          mealPlanerInfo: mealPlanerInfo
-        }
+        // data: {
+        //   mealPlanerInfo: mealPlanerInfo
+        // }
       }
 
       // console.log(response);
