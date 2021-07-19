@@ -100,6 +100,16 @@ module.exports.getMealPlanerInfo = async function (req, res) {
         CurrentMealPlan.mealParts[i].products = preparedProducts
       }
 
+      const preparedMarks = []
+      for (let i = 0; i < CurrentMealPlan.marks.length; i++) {
+        const mark = {
+          id: parseInt(CurrentMealPlan.marks[i].id),
+          text: CurrentMealPlan.marks[i].text
+        }
+        preparedMarks.push(mark)
+      }
+      CurrentMealPlan.marks = preparedMarks
+
       // console.log(CurrentMealPlan)
 
       return CurrentMealPlan
