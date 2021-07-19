@@ -104,7 +104,7 @@ module.exports.getMealPlanerInfo = async function (req, res) {
       for (let i = 0; i < CurrentMealPlan.marks.length; i++) {
         const mark = {
           id: parseInt(CurrentMealPlan.marks[i].id),
-          text: CurrentMealPlan.marks[i].text
+          tag: CurrentMealPlan.marks[i].tag
         }
         preparedMarks.push(mark)
       }
