@@ -238,33 +238,8 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
 
         // console.log(UpdatedMealPlan)
 
-        if (candidate.toJSON().marks) {
-          // Обновление данных об отметках, если они были созданы
-          console.log('update marks')
-          // const UpdatedMarks = await Marks.update(
-          //   { marks: JSON.stringify(req.body.mealPlanerInfo.marks) },
-          //   { where: { id: candidate.marksId } },
-          //   { transaction: t }
-          // )
-        } else if (req.body.mealPlanerInfo.marks && req.body.mealPlanerInfo.marks.length > 0) {
-          // Создание новой записи об отметках
-          console.log('create new marks')
-        }
-
-        // // Обновление данных о социальных кнопках
-        // const updatedSocials = await Socials.update(
-        //   {
-        //     likes: req.body.mealPlanerInfo.likes,
-        //     dislikes: req.body.mealPlanerInfo.dislikes,
-        //     share: req.body.mealPlanerInfo.share,
-        //   },
-        //   { where: { id: candidate.socialsId } },
-        //   { transaction: t }
-        // )
-
-        // const payload = {
-        //   ...updatedMealPlanerInfo.toJSON(),
-        // }
+        // Обновить данные об отметках
+        // console.log(req.body.mealPlanerInfo.marks)
 
         return UpdatedMealPlan
       })
