@@ -1,4 +1,5 @@
 const { Op } = require("sequelize")
+const Marks = require('../models/Marks')
 const AddedMarks = require('../models/AddedMarks')
 
 const updateMarks = async function (entityId, updatedMarks, t) {
@@ -24,6 +25,27 @@ const updateMarks = async function (entityId, updatedMarks, t) {
 
   // Новые отметки
   const NewMarks = updatedMarks.filter(item => !item.id)
+
+  // Добавлние отметок в БД
+  if (NewMarks.length > 0) {
+    // Поиск отметки с таким же текстом в таблице Marks, если ее нет создать в таблице, а затем создать связь с entityId
+    for (let i = 0; i < NewMarks.length; i++) {
+      const Mark = await Marks.findOne({
+        where: {
+          tag: NewMarks[i].tag
+        },
+        raw: true
+      }, { transaction: t })
+
+      // console.log(Mark)
+
+      if (Mark) {
+        await AddedMarks.create({ markId: Mark.id, mealPlanerId: entityId })
+      } else {
+        console.log('create mark and addedMarks')
+      }
+    }
+  }
 
   // Удаленные отметки
   const RemovedMarksId = []
