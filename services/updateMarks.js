@@ -11,7 +11,7 @@ const updateMarks = async function (entityId, updatedMarks, t) {
   const EntityCurrentMarks = await AddedMarks.findAll({
     where: {
       [Op.or]: [
-        { mealPlanerId: entityId }
+        { entityId: entityId }
       ]
     },
     raw: true
@@ -40,7 +40,7 @@ const updateMarks = async function (entityId, updatedMarks, t) {
       // console.log(Mark)
 
       if (Mark) {
-        await AddedMarks.create({ markId: Mark.id, mealPlanerId: entityId })
+        await AddedMarks.create({ markId: Mark.id, entityId: entityId })
       } else {
         console.log('create mark and addedMarks')
       }
@@ -68,7 +68,7 @@ const updateMarks = async function (entityId, updatedMarks, t) {
     where: {
       [Op.and]: [
         { markId: RemovedMarksId },
-        { mealPlanerId: entityId }
+        { entityId: entityId }
       ]
     }
   }, { transaction: t })

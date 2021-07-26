@@ -51,7 +51,7 @@ const MealPlaner = sequelize.define('meal_planers', {
 
 MealPlaner.hasOne(Socials, { as: 'socials', foreignKey: 'mealPlanerId' })
 MealPlaner.hasMany(MealParts, { as: 'mealParts', foreignKey: 'mealPlanerId' })
-MealPlaner.belongsToMany(Marks, { as: 'marks', through: AddedMarks, foreignKey: 'mealPlanerId' })
+MealPlaner.belongsToMany(Marks, { as: 'marks', through: AddedMarks, foreignKey: 'entityId' })
 
 Marks.belongsToMany(MealPlaner, { as: 'mealPlaners', through: AddedMarks, foreignKey: 'markId' })
 Socials.belongsTo(MealPlaner)
