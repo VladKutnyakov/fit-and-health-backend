@@ -26,10 +26,12 @@ const updateMarks = async function (entityId, updatedMarks, t) {
   // Новые отметки
   const NewMarks = updatedMarks.filter(item => !item.id)
 
+  // console.log(NewMarks)
+
   // Добавлние отметок в БД
   if (NewMarks.length > 0) {
-    // Поиск отметки с таким же текстом в таблице Marks, если ее нет создать в таблице, а затем создать связь с entityId
     for (let i = 0; i < NewMarks.length; i++) {
+      // Поиск отметки с таким же текстом в таблице Marks
       const Mark = await Marks.findOne({
         where: {
           tag: NewMarks[i].tag
@@ -37,12 +39,17 @@ const updateMarks = async function (entityId, updatedMarks, t) {
         raw: true
       }, { transaction: t })
 
-      // console.log(Mark)
-
       if (Mark) {
+        // Если отметка есть - создать связь с entityId
         await AddedMarks.create({ markId: Mark.id, entityId: entityId })
       } else {
-        console.log('create mark and addedMarks')
+        // Если отметки нет - создать в таблице, а затем создать связь с entityId
+        const NewMark = await Marks.create({
+          tag: NewMarks[i].tag,
+          entityType: NewMarks[i].entityType
+        }, { transaction: t })
+
+        await AddedMarks.create({ markId: NewMark.id, entityId: entityId })
       }
     }
   }
