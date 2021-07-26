@@ -1,7 +1,7 @@
 const { Op } = require("sequelize")
 const AddedMarks = require('../models/AddedMarks')
 
-const updateMarks = async function (entityId, updatedMarks) {
+const updateMarks = async function (entityId, updatedMarks, t) {
 
   // console.log('update marks')
   // console.log(entityId, updatedMarks)
@@ -14,7 +14,7 @@ const updateMarks = async function (entityId, updatedMarks) {
       ]
     },
     raw: true
-  })
+  }, { transaction: t })
 
   // Сохраненные отметки
   const currentMarksId = []
@@ -26,7 +26,7 @@ const updateMarks = async function (entityId, updatedMarks) {
   const NewMarks = updatedMarks.filter(item => !item.id)
 
   // Удаленные отметки
-  const RemovedMarks = []
+  const RemovedMarksId = []
   for (let i = 0; i < currentMarksId.length; i++) {
     let foundMark = false
 
@@ -37,11 +37,19 @@ const updateMarks = async function (entityId, updatedMarks) {
     })
 
     if (!foundMark) {
-      RemovedMarks.push(currentMarksId[i])
+      RemovedMarksId.push(currentMarksId[i])
     }
   }
 
-  console.log(NewMarks, RemovedMarks)
+  // Удаление отметок из БД
+  await AddedMarks.destroy({
+    where: {
+      [Op.and]: [
+        { markId: RemovedMarksId },
+        { mealPlanerId: entityId }
+      ]
+    }
+  }, { transaction: t })
 
 }
 

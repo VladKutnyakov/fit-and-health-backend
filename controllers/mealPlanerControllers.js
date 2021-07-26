@@ -240,7 +240,7 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
         // console.log(UpdatedMealPlan)
 
         // Обновить данные об отметках
-        updateMarks(req.body.mealPlanerInfo.id, req.body.mealPlanerInfo.marks)
+        updateMarks(req.body.mealPlanerInfo.id, req.body.mealPlanerInfo.marks, t)
 
         return UpdatedMealPlan
       })
