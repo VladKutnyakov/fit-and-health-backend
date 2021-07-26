@@ -7,6 +7,7 @@ const Socials = require('../models/Socials')
 const MealParts = require('../models/MealParts')
 const Products = require('../models/Products')
 const MealPartProducts = require('../models/MealPartProducts')
+const updateMarks = require('../services/updateMarks')
 
 // Формат даты для всего проекта --- 2021-12-29
 // Показать дату в мс
@@ -220,7 +221,7 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
       // console.log(candidate.toJSON())
 
       // Если запись в БД найдена, вносим изменения в существующий план рациона на сутки
-      const MealPlanerInfo = await sequelize.transaction( async (t) => {
+      const mealPlanerInfo = await sequelize.transaction( async (t) => {
         // Обновление данных о рационе питания
         const UpdatedMealPlan = await MealPlaner.update(
           {
@@ -239,7 +240,7 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
         // console.log(UpdatedMealPlan)
 
         // Обновить данные об отметках
-        // console.log(req.body.mealPlanerInfo.marks)
+        updateMarks(req.body.mealPlanerInfo.id, req.body.mealPlanerInfo.marks)
 
         return UpdatedMealPlan
       })
@@ -251,7 +252,7 @@ module.exports.saveMealPlanerInfo = async function (req, res) {
         // }
       }
 
-      console.log(response);
+      // console.log(response);
 
       res.status(200).json(response)
     } else {

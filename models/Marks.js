@@ -6,6 +6,10 @@ const Marks = sequelize.define('marks', {
   tag: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  entityType: {
+    type: DataTypes.STRING,  // mealPlaner, trainingProgram, ..., по типу сущности
+    allowNull: false
   }
 }, {
   freezeTableName: true,
