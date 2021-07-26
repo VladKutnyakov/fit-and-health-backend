@@ -15,7 +15,7 @@ const updateMarks = async function (entityId, updatedMarks, t) {
       ]
     },
     raw: true
-  }, { transaction: t })
+  })
 
   // Сохраненные отметки
   const currentMarksId = []
@@ -37,7 +37,7 @@ const updateMarks = async function (entityId, updatedMarks, t) {
           tag: NewMarks[i].tag
         },
         raw: true
-      }, { transaction: t })
+      })
 
       if (Mark) {
         // Если отметка есть - создать связь с entityId
@@ -47,7 +47,7 @@ const updateMarks = async function (entityId, updatedMarks, t) {
         const NewMark = await Marks.create({
           tag: NewMarks[i].tag,
           entityType: NewMarks[i].entityType
-        }, { transaction: t })
+        })
 
         await AddedMarks.create({ markId: NewMark.id, entityId: entityId })
       }
@@ -78,7 +78,7 @@ const updateMarks = async function (entityId, updatedMarks, t) {
         { entityId: entityId }
       ]
     }
-  }, { transaction: t })
+  })
 
 }
 
