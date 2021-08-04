@@ -7,9 +7,9 @@ import cors from 'cors'
 import helmet from 'helmet'
 import consola from 'consola'
 
-import "reflect-metadata";
-import { createConnection } from "typeorm";
-import { Photo } from "./db/entity/Photo";
+import "reflect-metadata"
+import { createConnection } from "typeorm"
+import { Photo } from "./db/entity/Photo"
 
 createConnection({
     type: "mysql",

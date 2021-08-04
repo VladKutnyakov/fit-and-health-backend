@@ -5,7 +5,7 @@
   "username": "admin",
   "password": "admin",
   "database": "fit_and_health",
-  "synchronize": false,
+  "synchronize": true,
   "logging": false,
   "entities": [
      "src/db/entity/**/*.ts"
