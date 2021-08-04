@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
 // const express = require('express')
 import express, { Application, Request, Response, NextFunction } from "express"
 
-const consola = require('consola')
-const cors = require('cors')
-const helmet = require("helmet")
+import consola from 'consola'
+import cors from 'cors'
+import helmet from 'helmet'
 // const sequelize = require('./utils/dbConnect')
 
 import authRoutes from './routes/authRoutes'
