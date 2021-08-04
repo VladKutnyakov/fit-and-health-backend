@@ -11,13 +11,13 @@ const helmet = require("helmet")
 // const sequelize = require('./utils/dbConnect')
 
 import authRoutes from './routes/authRoutes'
-import mealPlanerRoutes from './routes/mealPlanerRoutes'
-import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
-import recipesBookRoutes from './routes/recipesBookRoutes'
-import recipeRoutes from './routes/recipeRoutes'
-import trainingDiaryRoutes from './routes/trainingDiaryRoutes'
-import ExercisesRoutes from './routes/ExercisesRoutes'
-import settingsRoutes from './routes/settingsRoutes'
+// import mealPlanerRoutes from './routes/mealPlanerRoutes'
+// import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
+// import recipesBookRoutes from './routes/recipesBookRoutes'
+// import recipeRoutes from './routes/recipeRoutes'
+// import trainingDiaryRoutes from './routes/trainingDiaryRoutes'
+// import ExercisesRoutes from './routes/ExercisesRoutes'
+// import settingsRoutes from './routes/settingsRoutes'
 
 const app: Application = express()
 
@@ -45,17 +45,15 @@ app.use('/uploads', express.static('uploads'))
 // sequelize.sync({ alter: true }) // force: true
 //   .then(() => console.log('MySQL has been connected :)'))
 
-
-
 // Routes
 app.use('/api/auth', authRoutes)
-app.use('/api/meal-planer', mealPlanerRoutes)
-app.use('/api/food-calorie-table', foodCalorieTableRoutes)
-app.use('/api/recipes-book', recipesBookRoutes)
-app.use('/api/recipe', recipeRoutes)
-app.use('/api/training-diary', trainingDiaryRoutes)
-app.use('/api/exercises', ExercisesRoutes)
-app.use('/api/settings', settingsRoutes)
+// app.use('/api/meal-planer', mealPlanerRoutes)
+// app.use('/api/food-calorie-table', foodCalorieTableRoutes)
+// app.use('/api/recipes-book', recipesBookRoutes)
+// app.use('/api/recipe', recipeRoutes)
+// app.use('/api/training-diary', trainingDiaryRoutes)
+// app.use('/api/exercises', ExercisesRoutes)
+// app.use('/api/settings', settingsRoutes)
 
 
 // Listen the server
