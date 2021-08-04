@@ -10,7 +10,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 // const sequelize = require('./utils/dbConnect')
 
-import authRoutes from './routes/authRoutes'
+import authRoutes from './src/routes/authRoutes'
 // import mealPlanerRoutes from './routes/mealPlanerRoutes'
 // import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
 // import recipesBookRoutes from './routes/recipesBookRoutes'
