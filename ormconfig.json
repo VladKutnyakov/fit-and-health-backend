@@ -1,10 +1,10 @@
 {
   "type": "postgres",
   "host": "localhost",
-  "port": 3306,
+  "port": 5432,
   "username": "admin",
   "password": "admin",
-  "database": "fit-and-health",
+  "database": "fit_and_health",
   "synchronize": false,
   "logging": false,
   "entities": [
