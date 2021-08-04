@@ -17,9 +17,6 @@ export class Photo {
     @Column()
     filename: string;
 
-    @Column("double")
-    views: number;
-
     @Column()
     isPublished: boolean;
 }

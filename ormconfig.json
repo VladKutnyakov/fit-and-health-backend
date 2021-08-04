@@ -2,7 +2,7 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "username": "admin",
+  "username": "postgres",
   "password": "admin",
   "database": "fit_and_health",
   "synchronize": true,
@@ -16,7 +16,7 @@
   "subscribers": [
      "src/db/subscriber/**/*.ts"
   ],
-  "cli": { 
+  "cli": {
     "entitiesDir":"src/db/entity",
     "migrationsDir":"src/db/migration",
     "subscribersDir":"src/db/subscriber"

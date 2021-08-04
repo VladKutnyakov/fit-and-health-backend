@@ -7,25 +7,16 @@ import cors from 'cors'
 import helmet from 'helmet'
 import consola from 'consola'
 
+// Подключение к базе данных
 import "reflect-metadata"
-import { createConnection } from "typeorm"
-import { Photo } from "./db/entity/Photo"
+import { createConnection } from 'typeorm'
 
-createConnection({
-    type: "mysql",
-    host: "localhost",
-    port: 5432,
-    username: "root",
-    password: "admin",
-    database: "test",
-    entities: [
-        Photo
-    ],
-    synchronize: true,
-    logging: false
-}).then(connection => {
-    // here you can start to work with your entities
-}).catch(error => console.log(error));
+createConnection().then(connection => {
+  consola.ready({
+    message: `DB connected success`,
+    badge: true
+  })
+}).catch(error => console.log(error))
 
 import authRoutes from './routes/authRoutes'
 // import mealPlanerRoutes from './routes/mealPlanerRoutes'
