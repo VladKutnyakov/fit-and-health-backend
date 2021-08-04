@@ -74,71 +74,75 @@ const register = async function (req: Request, res: Response) {
 }
 
 // http://localhost:3031/api/auth/login/
-// module.exports.login = async function (req, res) {
-//   try {
-//     const candidate = await Users.findOne({
-//       where: {
-//         email: req.body.email
-//       },
-//       include: {
-//         model: Tokens,
-//         attributes: {
-//           exclude: ['createdAt', 'updatedAt']
-//         },
-//         raw: true
-//       },
-//       attributes: {
-//         exclude: ['createdAt', 'updatedAt']
-//       }
-//     })
-//     // console.log(candidate.toJSON())
+const login = async function (req: Request, res: Response) {
+  res.status(200).json({
+    message: 'Пользователь авторизован'
+  })
+  // try {
+  //   const candidate = await Users.findOne({
+  //     where: {
+  //       email: req.body.email
+  //     },
+  //     include: {
+  //       model: Tokens,
+  //       attributes: {
+  //         exclude: ['createdAt', 'updatedAt']
+  //       },
+  //       raw: true
+  //     },
+  //     attributes: {
+  //       exclude: ['createdAt', 'updatedAt']
+  //     }
+  //   })
+  //   // console.log(candidate.toJSON())
 
-//     if (candidate) {
-//       // Проверяем пароль, пользователь существует
-//       const passwordResult = bcrypt.compareSync(req.body.password, candidate.toJSON().password)
+  //   if (candidate) {
+  //     // Проверяем пароль, пользователь существует
+  //     const passwordResult = bcrypt.compareSync(req.body.password, candidate.toJSON().password)
   
-//       if (passwordResult) {
-//         // Генерация refreshToken
-//         const refreshToken = jwt.sign({
-//           id: candidate.id,
-//         }, keys.jwtRefresh, {expiresIn: '30d'})
+  //     if (passwordResult) {
+  //       // Генерация refreshToken
+  //       const refreshToken = jwt.sign({
+  //         id: candidate.id,
+  //       }, keys.jwtRefresh, {expiresIn: '30d'})
 
-//         // Генерация токена со сроком жизни 15 мин.
-//         const accessToken = jwt.sign({
-//           id: candidate.id,
-//           refreshToken: refreshToken
-//         }, keys.jwt, { expiresIn: '15m' })
+  //       // Генерация токена со сроком жизни 15 мин.
+  //       const accessToken = jwt.sign({
+  //         id: candidate.id,
+  //         refreshToken: refreshToken
+  //       }, keys.jwt, { expiresIn: '15m' })
 
-//         // Сохранение token и refreshToken в БД
-//         await Tokens.create({
-//           userId: candidate.id,
-//           accessToken,
-//           refreshToken
-//         })
+  //       // Сохранение token и refreshToken в БД
+  //       await Tokens.create({
+  //         userId: candidate.id,
+  //         accessToken,
+  //         refreshToken
+  //       })
 
-//         res.status(200).json(accessToken)
-//       } else {
-//         // Пароли не совпали
-//         res.status(401).json({
-//           message: 'Неверный пароль. Попробуйте еще раз или воспользуйтесь формой для восстановления пароля.'
-//         })
-//       }
-//     } else {
-//       // Пользователя нет, ошибка
-//       res.status(404).json({
-//         message: 'Пользователь с таким E-mail не найден.'
-//       })
-//     }
-//   } catch (error) {
-//     console.log(error)
+  //       res.status(200).json(accessToken)
+  //     } else {
+  //       // Пароли не совпали
+  //       res.status(401).json({
+  //         message: 'Неверный пароль. Попробуйте еще раз или воспользуйтесь формой для восстановления пароля.'
+  //       })
+  //     }
+  //   } else {
+  //     // Пользователя нет, ошибка
+  //     res.status(404).json({
+  //       message: 'Пользователь с таким E-mail не найден.'
+  //     })
+  //   }
+  // } catch (error) {
+  //   console.log(error)
 
-//     res.status(400).json({
-//       message: 'Неверный запрос.'
-//     })
-//   }
-// }
+  //   res.status(400).json({
+  //     message: 'Неверный запрос.'
+  //   })
+  // }
+}
 
 
 export default {
-  register
+  register,
+  login
 }

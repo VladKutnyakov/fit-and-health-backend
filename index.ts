@@ -2,13 +2,10 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-// const express = require('express')
-import express, { Application, Request, Response, NextFunction } from "express"
-
-import consola from 'consola'
+import express, { Application } from "express"
 import cors from 'cors'
 import helmet from 'helmet'
-// const sequelize = require('./utils/dbConnect')
+import consola from 'consola'
 
 import authRoutes from './src/routes/authRoutes'
 // import mealPlanerRoutes from './routes/mealPlanerRoutes'
