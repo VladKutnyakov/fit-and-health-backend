@@ -6,6 +6,7 @@ import express, { Application } from "express"
 import cors from 'cors'
 import helmet from 'helmet'
 import consola from 'consola'
+import 'reflect-metadata'
 
 import authRoutes from './src/routes/authRoutes'
 // import mealPlanerRoutes from './routes/mealPlanerRoutes'

@@ -6,8 +6,8 @@ import Users from '../models/Users'
 import Tokens from '../models/Tokens'
 
 // http://localhost:3031/api/auth/register/
-const register = async function (req: Request, res: Response) {
-  res.status(200).json({
+const register = async (req: Request, res: Response): Promise<Response> => {
+  return res.status(200).json({
     message: 'Пользователь зарегестрирован'
   })
   // try {
@@ -74,8 +74,8 @@ const register = async function (req: Request, res: Response) {
 }
 
 // http://localhost:3031/api/auth/login/
-const login = async function (req: Request, res: Response) {
-  res.status(200).json({
+const login = async (req: Request, res: Response): Promise<Response> => {
+  return res.status(200).json({
     message: 'Пользователь авторизован'
   })
   // try {
@@ -140,7 +140,6 @@ const login = async function (req: Request, res: Response) {
   //   })
   // }
 }
-
 
 export default {
   register,
