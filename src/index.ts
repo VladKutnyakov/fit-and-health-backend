@@ -8,7 +8,7 @@ import helmet from 'helmet'
 import consola from 'consola'
 import 'reflect-metadata'
 
-import authRoutes from './src/routes/authRoutes'
+import authRoutes from './routes/authRoutes'
 // import mealPlanerRoutes from './routes/mealPlanerRoutes'
 // import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
 // import recipesBookRoutes from './routes/recipesBookRoutes'
