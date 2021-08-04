@@ -1,10 +1,11 @@
 {
   "name": "fit-and-health-backend",
   "version": "1.0.0",
-  "description": "hjghj",
+  "description": "desc",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "ts-node-dev ./index.js",
+    "dev": "ts-node-dev ./index.ts",
     "start": "ts-node-dev ./build/index.js",
     "build": "tsc -p ."
   },
