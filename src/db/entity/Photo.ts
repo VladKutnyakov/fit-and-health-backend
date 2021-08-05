@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Timestamp } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm"
 import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
 
 @Entity()
@@ -7,10 +7,8 @@ export class Photo {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column({
-    length: 100
-  })
-  name: string
+  @Column("varchar")
+  title: string
 
   @Column("text")
   description: string
@@ -22,14 +20,14 @@ export class Photo {
   @Column()
   isPublished: boolean
 
-  @CreateDateColumn()
-  createdAt: Timestamp
+  // @CreateDateColumn()
+  // createdAt: date
 
-  @UpdateDateColumn()
-  updatedAt: Timestamp
+  // @UpdateDateColumn()
+  // updatedAt: Timestamp
 
-  @DeleteDateColumn()
-  deletedAt: Timestamp
+  // @DeleteDateColumn()
+  // deletedAt: Timestamp
 
 }
 
@@ -55,3 +53,8 @@ export class Photo {
 // } else {
 //     await getManager().save(post);
 // }
+
+// Созадать миграцию
+// npm run typeorm migration:generate -- -n MIGRATION_NAME
+// Запустить миграцию
+// npm run typeorm migration:run

@@ -5,21 +5,21 @@
   "username": "postgres",
   "password": "admin",
   "database": "fit_and_health",
-  "synchronize": true,
+  "synchronize": false,
   "logging": false,
   "entities": [
-     "src/db/entity/**/*.ts"
+    "src/db/entity/**/*.ts"
   ],
   "migrations": [
-     "src/db/migration/**/*.ts"
+    "src/db/migration/**/*.ts"
   ],
   "migrationsRun": true,
   "subscribers": [
-     "src/db/subscriber/**/*.ts"
+    "src/db/subscriber/**/*.ts"
   ],
   "cli": {
-    "entitiesDir":"src/db/entity",
-    "migrationsDir":"src/db/migration",
-    "subscribersDir":"src/db/subscriber"
+    "entitiesDir": "src/db/entity",
+    "migrationsDir": "src/db/migration",
+    "subscribersDir": "src/db/subscriber"
   }
 }
