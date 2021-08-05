@@ -13,6 +13,7 @@
   "migrations": [
      "src/db/migration/**/*.ts"
   ],
+  "migrationsRun": true,
   "subscribers": [
      "src/db/subscriber/**/*.ts"
   ],

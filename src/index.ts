@@ -7,6 +7,16 @@ import cors from 'cors'
 import helmet from 'helmet'
 import consola from 'consola'
 
+// Импорт роутов
+import authRoutes from './routes/authRoutes'
+// import mealPlanerRoutes from './routes/mealPlanerRoutes'
+// import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
+// import recipesBookRoutes from './routes/recipesBookRoutes'
+// import recipeRoutes from './routes/recipeRoutes'
+// import trainingDiaryRoutes from './routes/trainingDiaryRoutes'
+// import ExercisesRoutes from './routes/ExercisesRoutes'
+// import settingsRoutes from './routes/settingsRoutes'
+
 // Подключение к базе данных
 import "reflect-metadata"
 import { createConnection } from 'typeorm'
@@ -18,14 +28,7 @@ createConnection().then(connection => {
   })
 }).catch(error => console.log(error))
 
-import authRoutes from './routes/authRoutes'
-// import mealPlanerRoutes from './routes/mealPlanerRoutes'
-// import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
-// import recipesBookRoutes from './routes/recipesBookRoutes'
-// import recipeRoutes from './routes/recipeRoutes'
-// import trainingDiaryRoutes from './routes/trainingDiaryRoutes'
-// import ExercisesRoutes from './routes/ExercisesRoutes'
-// import settingsRoutes from './routes/settingsRoutes'
+
 
 const app: Application = express()
 
