@@ -6,6 +6,8 @@ import express, { Application } from "express"
 import cors from 'cors'
 import helmet from 'helmet'
 import consola from 'consola'
+import "reflect-metadata"
+import { createConnection } from 'typeorm'
 
 // Импорт роутов
 import authRoutes from './routes/authRoutes'
@@ -16,19 +18,6 @@ import authRoutes from './routes/authRoutes'
 // import trainingDiaryRoutes from './routes/trainingDiaryRoutes'
 // import ExercisesRoutes from './routes/ExercisesRoutes'
 // import settingsRoutes from './routes/settingsRoutes'
-
-// Подключение к базе данных
-import "reflect-metadata"
-import { createConnection } from 'typeorm'
-
-createConnection().then(connection => {
-  consola.ready({
-    message: `DB connected success`,
-    badge: true
-  })
-}).catch(error => console.log(error))
-
-
 
 const app: Application = express()
 
@@ -49,13 +38,6 @@ app.use(express.json())
 // localhost:3000/uploads/названиеКартинки.png
 app.use('/uploads', express.static('uploads'))
 
-// Подключение к базе MySQL
-// Синхронизация модели с базой данных
-// { force: true } Это создает таблицу, сначала удаляя ее, если она уже существует.
-// { alter: true } Это проверяет текущее состояние таблицы в базе данных (какие столбцы у нее есть, каковы их типы данных и т. Д.), А затем выполняет необходимые изменения в таблице, чтобы она соответствовала модели.
-// sequelize.sync({ alter: true }) // force: true
-//   .then(() => console.log('MySQL has been connected :)'))
-
 // Routes
 app.use('/api/auth', authRoutes)
 // app.use('/api/meal-planer', mealPlanerRoutes)
@@ -66,8 +48,15 @@ app.use('/api/auth', authRoutes)
 // app.use('/api/exercises', ExercisesRoutes)
 // app.use('/api/settings', settingsRoutes)
 
+// Подключение к базе данных
+createConnection().then(connection => {
+  consola.ready({
+    message: `DB connected success`,
+    badge: true
+  })
+}).catch(error => console.log(error))
 
-// Listen the server
+// Запуск сервера
 const HOST: string = process.env.HOST || 'localhost'
 const PORT: any = process.env.PORT || 3031
 

@@ -1,8 +1,13 @@
 // import express, { Application, Request, Response, NextFunction } from "express"
 const jwt = require('jsonwebtoken')
-const keys = require('../../keys/index')
+// const keys = require('../../keys/index')
 const Users = require('../../models/Users')
 const Tokens = require('../../models/Tokens')
+
+const keys = {
+  jwt: process.env.JWT,
+  jwtRefresh: process.env.JWT_REFRESH
+}
 
 // Guard проверяет token на валидность и обновляет его в БД, прикрепляя обновлденный token к req.body.updatedToken
 module.exports = async function JwtGuard (req, res, next) {
