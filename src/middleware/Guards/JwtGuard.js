@@ -4,6 +4,14 @@ const jwt = require('jsonwebtoken')
 const Users = require('../../models/Users')
 const Tokens = require('../../models/Tokens')
 
+
+// отправлять refresh токен в заголовке вместе с access
+// Если access валиден, ничего не делать
+// Если access не валиден селать проверку на наличие пары access-refresh в БД
+// Если access-refresh найдены, перезаписать оба токена и выдать новые
+// Если пара access-refresh не найдены - удалить все данные авторизации пользователя для всех устройств (все пары access-refresh токенов). Выводить сообщение о возможной попытке взлома.
+
+
 const keys = {
   jwt: process.env.JWT,
   jwtRefresh: process.env.JWT_REFRESH
