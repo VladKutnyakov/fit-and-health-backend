@@ -1,15 +1,33 @@
 import { Request, Response } from "express"
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-// import keys from '../keys/index'
-import Users from '../models/Users'
-import Tokens from '../models/Tokens'
+import { getManager } from "typeorm"
+import { Users } from "../db/entities/Users"
+// import bcrypt from 'bcryptjs'
+// import jwt from 'jsonwebtoken'
+// import Users from '../models/Users'
+// import Tokens from '../models/Tokens'
 
 // http://localhost:3031/api/auth/register/
 const register = async (req: Request, res: Response): Promise<Response> => {
-  return res.status(200).json({
-    message: 'Пользователь зарегестрирован'
-  })
+  try {
+    const entityManager = getManager()
+
+    const candidate = await entityManager.findOne(Users, {where: {email: req.body.email}})
+
+    if (candidate) {
+      console.log('Пользователь найден')
+    } else {
+      console.log('Пользователь не найден')
+    }
+
+    return res.status(200).json({
+      message: 'Пользователь зарегестрирован.'
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: 'Неизвестная ошибка.'
+    })
+  }
+
   // try {
   //   const candidate = await Users.findOne({
   //     where: {
