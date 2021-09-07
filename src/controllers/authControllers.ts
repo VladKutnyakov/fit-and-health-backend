@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import keys from '../keys/index'
+// import keys from '../keys/index'
 import Users from '../models/Users'
 import Tokens from '../models/Tokens'
 

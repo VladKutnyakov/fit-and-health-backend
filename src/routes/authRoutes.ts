@@ -1,6 +1,6 @@
-import express from 'express'
+import express, { Router } from 'express'
 import authControllers from '../controllers/authControllers'
-const router = express.Router()
+const router: Router = express.Router()
 
 // http://localhost:3031/api/auth/login/
 router.post('/login', authControllers.login)
