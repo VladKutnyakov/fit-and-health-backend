@@ -3,8 +3,6 @@ import { getManager } from "typeorm"
 import { Users } from "../db/entities/Users"
 // import bcrypt from 'bcryptjs'
 // import jwt from 'jsonwebtoken'
-// import Users from '../models/Users'
-// import Tokens from '../models/Tokens'
 
 // http://localhost:3031/api/auth/register/
 const register = async (req: Request, res: Response): Promise<Response> => {
