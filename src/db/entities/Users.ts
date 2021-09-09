@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from "typeorm"
 import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
 import { Tokens } from './Tokens'
 
@@ -156,5 +156,8 @@ export class Users {
   // subscriptions
   // subscribers
   // sportDirections
+
+  @OneToMany(() => Tokens, tokens => tokens.user)
+  tokens: Tokens[]
 
 }

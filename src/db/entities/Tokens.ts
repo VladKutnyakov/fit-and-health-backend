@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from "typeorm"
 import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
+import { Users } from './Users'
 
 @Entity()
 export class Tokens {
@@ -24,5 +25,8 @@ export class Tokens {
   })
   @IsEmail()
   refreshToken: string
+
+  @ManyToOne(() => Users, user => user.tokens)
+  user: Users
 
 }
