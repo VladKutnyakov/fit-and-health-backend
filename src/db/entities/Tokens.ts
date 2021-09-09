@@ -5,7 +5,9 @@ import { Users } from './Users'
 @Entity()
 export class Tokens {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({
+    comment: 'ID токенов доступа и обновления'
+  })
   id: number
 
   @Column({

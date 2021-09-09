@@ -5,7 +5,9 @@ import { Tokens } from './Tokens'
 @Entity()
 export class Users {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({
+    comment: 'ID пользователя'
+  })
   id: number
 
   @Column({
