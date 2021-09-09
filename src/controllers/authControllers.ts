@@ -1,8 +1,9 @@
 import { Request, Response } from "express"
-import { getManager, Transaction, TransactionManager } from "typeorm"
-import { Users } from "../db/entities/Users"
+import { getManager } from "typeorm"
 import bcrypt from 'bcrypt'
-// import jwt from 'jsonwebtoken'
+import jwt, { Secret } from 'jsonwebtoken'
+import { Users } from "../db/entities/Users"
+import { Tokens } from "../db/entities/Tokens"
 
 // http://localhost:3031/api/auth/register/
 const register = async (req: Request, res: Response): Promise<Response> => {
@@ -22,46 +23,55 @@ const register = async (req: Request, res: Response): Promise<Response> => {
       // console.log('Пользователь не найден')
 
       // Создаем нового пользователя в БД
-      // const salt = bcrypt.genSaltSync(10)
-      // const password = req.body.password
+      const CreatedUserAccessToken = await getManager().transaction(async transactionalEntityManager => {
 
-      // @Transaction()
-      // save(@TransactionManager() manager: EntityManager, user: Users) {
-      //   let stud = new Student();
-      //   stud.name = student.name;
-      //   stud.entered = normalizeNumber(student.entered, 'Bad year entered');
-      //   stud.grade = normalizeNumber(student.grade, 'Bad grade');
-      //   stud.gender = student.gender;
-      //   await this.save(stud);
-      //   return stud.id;
-      // }
+        // Создать пользователя
+        const NewUser = new Users()
+        NewUser.email = req.body.email
+        NewUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+        NewUser.firstName = null
+        NewUser.middleName = null
+        NewUser.lastName = null
+        NewUser.birthday = null
+        NewUser.phone = null
+        NewUser.gender = null
+        NewUser.weight = null
+        NewUser.height = null
+        NewUser.city = null
+        NewUser.site = null
+        NewUser.vk = null
+        NewUser.facebook = null
+        NewUser.instagram = null
+        NewUser.youtube = null
+        NewUser.twitter = null
+        NewUser.skype = null
 
-      // const newUser = await Users.create({
-      //   email: req.body.email,
-      //   phone: req.body.phone,
-      //   password: bcrypt.hashSync(password, salt)
-      // })
+        const CreatedUser = await transactionalEntityManager.save(NewUser)
 
-      // // Генерируем рефреш токен для нового пользователя
-      // const refreshToken = jwt.sign({
-      //   id: newUser.id,
-      // }, keys.jwtRefresh, {expiresIn: '30d'})
+        // Генерируем рефреш токен для созданного пользователя
+        const JwtRefreshKey: Secret = process.env.JWT_REFRESH || ''
+        const RefreshToken = jwt.sign({
+          id: CreatedUser.id,
+        }, JwtRefreshKey, {expiresIn: '30d'})
 
-      // // Генерируем token для нового пользователя
-      // const accessToken = jwt.sign({
-      //   id: newUser.id,
-      //   refreshToken: refreshToken
-      // }, keys.jwt, {expiresIn: '15m'})
+        // Генерируем token для созданного пользователя
+        const JwtKey: Secret = process.env.JWT || ''
+        const AccessToken = jwt.sign({
+          id: CreatedUser.id,
+          refreshToken: RefreshToken
+        }, JwtKey, {expiresIn: '15m'})
 
-      // // Создаем запись с токенами доступа для нового пользователя
-      // await Tokens.create({
-      //   userId: candidate.id,
-      //   accessToken,
-      //   refreshToken
-      // })
+        // Создаем запись с токенами доступа для созданного пользователя
+        const CreatedTokens = new Tokens()
+        CreatedTokens.accessToken = AccessToken
+        CreatedTokens.refreshToken = RefreshToken
 
-      // return res.status(200).json(accessToken)
-      return res.status(200).json({mess: '123'})
+        await transactionalEntityManager.save(CreatedTokens)
+
+        return AccessToken
+      })
+
+      return res.status(200).json(CreatedUserAccessToken)
     }
   } catch (error: any) {
     return res.status(500).json({
