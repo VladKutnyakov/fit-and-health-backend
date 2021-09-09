@@ -26,131 +26,131 @@ export class Users {
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Имя пользователя'
   })
-  firstName: string
+  firstName: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Отчество пользователя'
   })
-  middleName: string
+  middleName: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Фамилия пользователя'
   })
-  lastName: string
+  lastName: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Дата рождения пользователя'
   })
-  birthday: string
+  birthday: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
-    comment: 'Дата рождения пользователя'
+    comment: 'Телефон пользователя'
   })
-  phone: string
+  phone: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Пол пользователя'
   })
-  gender: string
+  gender: string | null
 
   @Column({
     type: 'integer',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Вес пользователя'
   })
-  weight: number
+  weight: number | null
 
   @Column({
     type: 'integer',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Рост пользователя'
   })
-  height: number
+  height: number | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Город проживания пользователя'
   })
-  city: string
+  city: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Личный сайт пользователя'
   })
-  site: string
+  site: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в vk пользователя'
   })
-  vk: string
+  vk: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в facebook пользователя'
   })
-  facebook: string
+  facebook: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в instagram пользователя'
   })
-  instagram: string
+  instagram: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в youtube пользователя'
   })
-  youtube: string
+  youtube: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в twitter пользователя'
   })
-  twitter: string
+  twitter: string | null
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в skype пользователя'
   })
-  skype: string
+  skype: string | null
 
   // subscriptions
   // subscribers
