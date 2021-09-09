@@ -65,6 +65,7 @@ const register = async (req: Request, res: Response): Promise<Response> => {
         const CreatedTokens = new Tokens()
         CreatedTokens.accessToken = AccessToken
         CreatedTokens.refreshToken = RefreshToken
+        CreatedTokens.user = CreatedUser
 
         await transactionalEntityManager.save(CreatedTokens)
 
