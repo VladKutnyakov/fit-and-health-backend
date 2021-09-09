@@ -84,9 +84,29 @@ const register = async (req: Request, res: Response): Promise<Response> => {
 
 // http://localhost:3031/api/auth/login/
 const login = async (req: Request, res: Response): Promise<Response> => {
-  return res.status(200).json({
-    message: 'Пользователь авторизован'
-  })
+
+  try {
+    const entityManager = getManager()
+
+    const candidate = await entityManager.findOne(Users, {where: {email: req.body.email}})
+
+    if (candidate) {
+      // console.log('Пользователь найден')
+
+      return res.status(200).json({
+        message: ''
+      })
+    } else {
+      return res.status(401).json({
+        message: 'Пользователь не найден.'
+      })
+    }
+  } catch (erro: any) {
+    return res.status(500).json({
+      message: 'Неизвестная ошибка.'
+    })
+  }
+
   // try {
   //   const candidate = await Users.findOne({
   //     where: {
