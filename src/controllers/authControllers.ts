@@ -129,6 +129,7 @@ const login = async (req: Request, res: Response): Promise<Response> => {
         })
       }
 
+      // этот return никогда не вызовется но компилятор требует возвращать что-то...
       return res.status(200)
     } else {
       return res.status(401).json({
