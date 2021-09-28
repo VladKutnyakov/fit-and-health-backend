@@ -121,16 +121,13 @@ const login = async (req: Request, res: Response): Promise<Response> => {
           return AccessToken
         })
 
-        res.status(200).json(authUserAccessToken)
+        return res.status(200).json(authUserAccessToken)
       } else {
         // Если пароли не совпали
         return res.status(401).json({
           message: 'Неверный пароль. Попробуйте еще раз или воспользуйтесь формой для восстановления пароля.'
         })
       }
-
-      // этот return никогда не вызовется но компилятор требует возвращать что-то...
-      return res.status(200)
     } else {
       return res.status(401).json({
         message: 'Пользователь не найден.'
