@@ -6,7 +6,7 @@ import { Users } from "../db/entities/Users"
 // import { Tokens } from "../db/entities/Tokens"
 
 // http://localhost:3031/api/auth/login/
-const login = async (req: Request, res: Response): Promise<Response> => {
+const fetchProfileInfo = async (req: Request, res: Response): Promise<Response> => {
 
   try {
     const targetUserId = req.params.profileId
@@ -33,5 +33,5 @@ const login = async (req: Request, res: Response): Promise<Response> => {
 }
 
 export default {
-  login
+  fetchProfileInfo
 }
