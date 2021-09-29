@@ -10,7 +10,7 @@ const login = async (req: Request, res: Response): Promise<Response> => {
 
   try {
     const targetUserId = req.params.profileId
-    console.log(targetUserId, req.body.userId)
+    // console.log(targetUserId, req.body.userId)
 
     if (req.body.userId == targetUserId) {
       // Данные об авторизованном пользователе
