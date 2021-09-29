@@ -32,6 +32,16 @@ const router: Router = express.Router()
 *               example: token_string
 *       401:
 *         description: Ошибка авторизации
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               required: true
+*               properties:
+*                 message:
+*                   type: string
+*                   description: Текст ошибки
+*               example: Пользователь не найден.
 *       500:
 *         description: Неизвестная ошибка. Обратитесь к разработчику.
 */
