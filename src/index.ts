@@ -3,6 +3,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import express, { Application } from "express"
+const swaggerUi = require('swagger-ui-express')
+// const swaggerDocument = require('../swagger.json')
+const swaggerJsdoc = require('swagger-jsdoc')
+
 import cors from 'cors'
 import helmet from 'helmet'
 import consola from 'consola'
@@ -20,8 +24,30 @@ import profileRoutes from './routes/profileRoutes'
 // import ExercisesRoutes from './routes/ExercisesRoutes'
 // import settingsRoutes from './routes/settingsRoutes'
 
+// Инициализация приложения
 const app: Application = express()
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
+// Настройки swagger
+const swaggerJsDocOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'FH',
+      version: '1.0.0',
+    },
+  },
+  apis: ['**/*.ts'],
+}
+
+const swaggerJsDoc = swaggerJsdoc(swaggerJsDocOptions)
+const swaggerOptions = {
+  explorer: true
+}
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc, swaggerOptions))
+
+// Настройки и инициализация CORS
 const corsOptions = {
   "origin": "*",
   "methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD",
@@ -30,14 +56,13 @@ const corsOptions = {
   "optionsSuccessStatus": 200,
 }
 app.use(cors(corsOptions))
-app.use(helmet())
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+// Настройка и инициализация helmet
+app.use(helmet())
 
 // Для получения доступа к папке напрямую
 // localhost:3000/uploads/названиеКартинки.png
-app.use('/uploads', express.static('uploads'))
+app.use('/public', express.static('public'))
 
 // Routes
 app.use('/api/auth', authRoutes)
