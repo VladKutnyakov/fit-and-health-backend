@@ -3,9 +3,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import express, { Application } from "express"
-const swaggerUi = require('swagger-ui-express')
-// const swaggerDocument = require('../swagger.json')
-const swaggerJsdoc = require('swagger-jsdoc')
+import swaggerUi from 'swagger-ui-express'
+import swaggerJsdoc from 'swagger-jsdoc'
 
 import cors from 'cors'
 import helmet from 'helmet'
