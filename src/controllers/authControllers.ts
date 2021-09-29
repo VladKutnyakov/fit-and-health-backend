@@ -84,7 +84,6 @@ const register = async (req: Request, res: Response): Promise<Response> => {
 
 // http://localhost:3031/api/auth/login/
 const login = async (req: Request, res: Response): Promise<Response> => {
-
   try {
     const entityManager = getManager()
 
