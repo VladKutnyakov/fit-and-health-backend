@@ -34,7 +34,7 @@ const swaggerJsDocOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'FH',
+      title: 'Fit and Health',
       version: '1.0.0',
     },
   },
@@ -43,7 +43,7 @@ const swaggerJsDocOptions = {
 
 const swaggerJsDoc = swaggerJsdoc(swaggerJsDocOptions)
 const swaggerOptions = {
-  explorer: true
+  explorer: false
 }
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc, swaggerOptions))
 
