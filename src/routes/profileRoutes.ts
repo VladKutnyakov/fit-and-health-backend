@@ -22,6 +22,19 @@ const router: Router = express.Router()
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: The user ID.
+ *                 username:
+ *                   type: string
+ *                   description: The user name.
+ *       401:
+ *         description: Ошибка авторизации
  */
 router.get('/:profileId', JwtGuard, profileControllers.login)
 
