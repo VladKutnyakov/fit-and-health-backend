@@ -35,6 +35,6 @@ const router: Router = express.Router()
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/:profileId', JwtGuard, profileControllers.login)
+router.get('/:profileId', JwtGuard, profileControllers.fetchProfileInfo)
 
 export default router
