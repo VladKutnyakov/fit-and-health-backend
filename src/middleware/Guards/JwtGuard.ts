@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express"
-import jwt, { DecodeOptions } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { getManager } from "typeorm"
-import { Users } from "../../db/entities/Users"
 import { Tokens } from "../../db/entities/Tokens"
 
-
+// Возможно доработать систему авторизации в будущем
 // отправлять refresh токен в заголовке вместе с access
 // Если access валиден, ничего не делать
 // Если access не валиден селать проверку на наличие пары access-refresh в БД
