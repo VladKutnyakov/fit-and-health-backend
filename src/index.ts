@@ -36,6 +36,19 @@ const swaggerJsDocOptions = {
       title: 'Fit and Health',
       version: '1.0.0',
     },
+    components: {
+      securitySchemes: {
+        jwt: {
+          type: "http",
+          scheme: "bearer",
+          in: "header",
+          bearerFormat: "JWT"
+        },
+      }
+    },
+    security: {
+      jwt: []
+    }
   },
   apis: ['**/*.ts'],
 }

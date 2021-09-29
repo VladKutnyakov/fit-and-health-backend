@@ -16,6 +16,8 @@ const router: Router = express.Router()
 *         type: number
 *         format: number
 *         required: true
+*     security:
+*	     - jwt: []
 *     responses:
 *       200:
 *         description: Returns a mysterious string.
