@@ -14,9 +14,39 @@ const fetchProfileInfo = async (req: Request, res: Response): Promise<Response> 
 
     if (req.body.userId == targetUserId) {
       // Данные об авторизованном пользователе
-      return res.status(200).json({
-        message: 'full profile data'
-      })
+      const entityManager = getManager()
+
+      const UserInfo = await entityManager.findOne(
+        Users,
+        {
+          select: [
+            'id',
+            'firstName',
+            'middleName',
+            'lastName',
+            'birthday',
+            'phone',
+            'gender',
+            'weight',
+            'height',
+            'city',
+            'site',
+            'vk',
+            'facebook',
+            'instagram',
+            'youtube',
+            'twitter',
+            'skype',
+          ],
+          where: {
+            id: req.body.userId
+          }
+        }
+      )
+
+      // console.log(UserInfo)
+
+      return res.status(200).json(UserInfo)
     } else {
       // Данные о НЕавторизованном пользователе
       return res.status(200).json({
