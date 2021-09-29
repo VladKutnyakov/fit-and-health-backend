@@ -29,8 +29,6 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
     const token: string = req.headers.authorization.replace('Bearer ', '')
     const decodedToken: any = jwt.decode(token, keys.jwt)
 
-    // console.log(token);
-
     // Проверка валидности токена
     jwt.verify(token, keys.jwt, async (error: any) => {
       // Если токен не валиден, проверить рефреш на валидность.
@@ -41,37 +39,22 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
             // Если рефреш НЕ валиден - проверить все токены пользователя и удалить записи с не валидными рефреш токенами. Отправить ошибку авторизации.
             const entityManager = getManager()
 
-            const candidate = await entityManager.findOne(Users, {where: {id: decodedToken.id}})
+            const UserTokens = await entityManager.find(Tokens, {
+              where: {
+                user: {
+                  id: decodedToken.id
+                }
+              },
+            })
 
-            // const User = await Users.findOne({
-            //   where: {
-            //     id: decodedToken.id
-            //   },
-            //   include: {
-            //     model: Tokens,
-            //     attributes: {
-            //       exclude: ['createdAt', 'updatedAt']
-            //     },
-            //     raw: true
-            //   },
-            //   attributes: {
-            //     exclude: ['createdAt', 'updatedAt']
-            //   }
-            // })
-
-            // const UserTokens = User.toJSON().tokens
-
-            // UserTokens.forEach(async element => {
-            //   jwt.verify(element.refreshToken, keys.jwtRefresh, async (error) => {
-            //     if (error) {
-            //       await Tokens.destroy({
-            //         where: {
-            //           id: element.id
-            //         }
-            //       })
-            //     }
-            //   })
-            // })
+            // Удалить все невалидные токены из БД
+            UserTokens.forEach(async element => {
+              jwt.verify(element.refreshToken, keys.jwtRefresh, async (error: any) => {
+                if (error) {
+                  await entityManager.delete(Tokens, { id: element.id })
+                }
+              })
+            })
 
             res.status(401).json({
               message: 'Ошибка авторизации.'
@@ -80,63 +63,62 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
             // Если рефреш валиден - обновить accessToken и refreshToken ЕСЛИ они совпадают с теми что есть в БД
             try {
               // Получить все токены пользователя.
-              // const User = await Users.findOne({
-              //   where: {
-              //     id: decodedToken.id
-              //   },
-              //   include: {
-              //     model: Tokens,
-              //     attributes: {
-              //       exclude: ['createdAt', 'updatedAt']
-              //     },
-              //     raw: true
-              //   },
-              //   attributes: {
-              //     exclude: ['createdAt', 'updatedAt']
-              //   }
-              // })
+              const entityManager = getManager()
 
-              // const UserTokens = User.toJSON().tokens
+              const UserTokens = await entityManager.find(Tokens, {
+                where: {
+                  user: {
+                    id: decodedToken.id
+                  }
+                },
+              })
 
-              // let targetToken = null
+              let targetToken: any = null
 
-              // UserTokens.forEach(async element => {
-              //   // Поиск совпадения присланного токена с записями в БД
-              //   if (element.accessToken === token && element.refreshToken === decodedToken.refreshToken) {
-              //     targetToken = element
-              //   }
-              // })
+              UserTokens.forEach(async element => {
+                // Поиск совпадения присланного токена с записями в БД
+                if (element.accessToken === token && element.refreshToken === decodedToken.refreshToken) {
+                  targetToken = element
+                }
+              })
 
-              // // Если токен найден в БД обновить accessToken и refreshToken
-              // if (targetToken) {
-              //   // Генерируем рефреш токен для нового пользователя
-              //   const refreshToken = jwt.sign({
-              //     id: User.toJSON().id,
-              //   }, keys.jwtRefresh, { expiresIn: '30d' })
+              // Если токен найден в БД обновить accessToken и refreshToken
+              if (targetToken) {
+                // Генерируем рефреш токен для нового пользователя
+                const refreshToken = jwt.sign({
+                  id: decodedToken.id,
+                }, keys.jwtRefresh, { expiresIn: '30d' })
 
-              //   // Генерируем token для нового пользователя
-              //   const accessToken = jwt.sign({
-              //     id: User.toJSON().id,
-              //     refreshToken: refreshToken
-              //   }, keys.jwt, { expiresIn: '15m' })
+                // Генерируем token для нового пользователя
+                const accessToken = jwt.sign({
+                  id: decodedToken.id,
+                  refreshToken: refreshToken
+                }, keys.jwt, { expiresIn: '15m' })
 
-              //   await Tokens.update(
-              //     { accessToken, refreshToken },
-              //     { where: { id: targetToken.id } }
-              //   )
+                // Обновление токена в БД
+                await entityManager.update(
+                  Tokens,
+                  {
+                    id: targetToken.id
+                  },
+                  {
+                    accessToken,
+                    refreshToken
+                  }
+                )
 
-              //   // Добавить данные с обновленным token и id пользователя в body запроса
-              //   req.body.updatedToken = accessToken
-              //   req.body.userId = decodedToken.id
+                // Добавить данные с обновленным token и id пользователя в body запроса
+                req.body.updatedToken = accessToken
+                req.body.userId = decodedToken.id
 
-              //   next()
-              // } else {
-              //   // Если токен НЕ НАЙДЕН в БД
-              //   res.status(400).json({
-              //     message: 'Проверьте актуальность данных авторизации.'
-              //   })
-              //   // ошибка и запрос обновленного токена. Если токен отправленный не равен тому что есть в сторе выполнить повторный запрос иначе перенаправить на странциу авторизации.
-              // }
+                next()
+              } else {
+                // Если токен НЕ НАЙДЕН в БД
+                res.status(400).json({
+                  message: 'Проверьте актуальность данных авторизации.'
+                })
+                // ошибка и запрос обновленного токена. Если токен отправленный не равен тому что есть в сторе выполнить повторный запрос иначе перенаправить на странциу авторизации.
+              }
             } catch (error) {
               res.status(500).json({
                 message: 'Неизвестная ошибка при авторизации.'
@@ -153,7 +135,7 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
     })
   } else {
     res.status(401).json({
-      message: 'Ошибка авторизации.'
+      message: 'Отсутствуют данные для авторизации.'
     })
   }
 }
