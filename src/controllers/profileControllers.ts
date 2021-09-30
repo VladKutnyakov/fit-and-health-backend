@@ -1,12 +1,9 @@
 import { Request, Response } from "express"
 import { getManager } from "typeorm"
-// import bcrypt from 'bcrypt'
-// import jwt, { Secret } from 'jsonwebtoken'
-import { Users } from "../db/entities/Users"
-// import { Tokens } from "../db/entities/Tokens"
+import { UsersProfiles } from "../db/entities/UsersProfiles"
 
 // http://localhost:3031/api/auth/login/
-const fetchProfileInfo = async (req: Request, res: Response): Promise<Response> => {
+const getProfileInfo = async (req: Request, res: Response): Promise<Response> => {
 
   try {
     const targetUserId = req.params.profileId
@@ -16,37 +13,20 @@ const fetchProfileInfo = async (req: Request, res: Response): Promise<Response> 
       // Данные об авторизованном пользователе
       const entityManager = getManager()
 
-      const UserInfo = await entityManager.findOne(
-        Users,
+      const Profile = await entityManager.findOne(
+        UsersProfiles,
         {
-          select: [
-            'id',
-            'firstName',
-            'middleName',
-            'lastName',
-            'birthday',
-            'phone',
-            'gender',
-            'weight',
-            'height',
-            'city',
-            'site',
-            'vk',
-            'facebook',
-            'instagram',
-            'youtube',
-            'twitter',
-            'skype',
-          ],
           where: {
-            id: req.body.userId
+            user: {
+              id: 10
+            }
           }
         }
       )
 
-      // console.log(UserInfo)
+      // console.log(Profile)
 
-      return res.status(200).json(UserInfo)
+      return res.status(200).json(Profile)
     } else {
       // Данные о НЕавторизованном пользователе
       return res.status(200).json({
@@ -63,5 +43,5 @@ const fetchProfileInfo = async (req: Request, res: Response): Promise<Response> 
 }
 
 export default {
-  fetchProfileInfo
+  getProfileInfo
 }
