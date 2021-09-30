@@ -4,12 +4,35 @@ import { UsersProfiles } from "../db/entities/UsersProfiles"
 
 // http://localhost:3031/api/auth/login/
 const getProfileInfo = async (req: Request, res: Response): Promise<Response> => {
-
   try {
-    const targetUserId = req.params.profileId
-    // console.log(targetUserId, req.body.userId)
+    if (req.params.profileId !== 'undefined') {
+      // console.log('НЕавторизованный пользователь', req.params.profileId)
 
-    if (req.body.userId == targetUserId) {
+      // Данные о НЕ авторизованном пользователе
+      const entityManager = getManager()
+
+      const Profile = await entityManager.findOne(
+        UsersProfiles,
+        {
+          where: {
+            user: {
+              id: req.params.profileId
+            }
+          }
+        }
+      )
+
+      // console.log(Profile)
+
+      const response = {
+        updatedToken: req.body.updatedToken,
+        data: Profile
+      }
+  
+      return res.status(200).json(response)
+    } else {
+      // console.log('авторизованный пользователь', req.body.userId)
+
       // Данные об авторизованном пользователе
       const entityManager = getManager()
 
@@ -18,7 +41,7 @@ const getProfileInfo = async (req: Request, res: Response): Promise<Response> =>
         {
           where: {
             user: {
-              id: 10
+              id: req.body.userId
             }
           }
         }
@@ -26,14 +49,13 @@ const getProfileInfo = async (req: Request, res: Response): Promise<Response> =>
 
       // console.log(Profile)
 
-      return res.status(200).json(Profile)
-    } else {
-      // Данные о НЕавторизованном пользователе
-      return res.status(200).json({
-        message: 'part profile data'
-      })
+      const response = {
+        updatedToken: req.body.updatedToken,
+        data: Profile
+      }
+  
+      return res.status(200).json(response)
     }
-
   } catch (erro: any) {
     return res.status(500).json({
       message: 'Неизвестная ошибка.'
