@@ -29,22 +29,6 @@ const register = async (req: Request, res: Response): Promise<Response> => {
         const NewUser = new Users()
         NewUser.email = req.body.email
         NewUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-        NewUser.firstName = null
-        NewUser.middleName = null
-        NewUser.lastName = null
-        NewUser.birthday = null
-        NewUser.phone = null
-        NewUser.gender = null
-        NewUser.weight = null
-        NewUser.height = null
-        NewUser.city = null
-        NewUser.site = null
-        NewUser.vk = null
-        NewUser.facebook = null
-        NewUser.instagram = null
-        NewUser.youtube = null
-        NewUser.twitter = null
-        NewUser.skype = null
 
         const CreatedUser = await transactionalEntityManager.save(NewUser)
 
