@@ -28,13 +28,58 @@ const router: Router = express.Router()
 *               properties:
 *                 id:
 *                   type: integer
-*                   description: Id пользователя
-*                 userName:
+*                   description: Id информации профиля
+*                 firstName:
 *                   type: string
-*                   description: Имя пользователя
+*                   description: Имя
+*                 middleName:
+*                   type: string
+*                   description: Отчество
+*                 lastName:
+*                   type: string
+*                   description: Фамилия
+*                 birthday:
+*                   type: string
+*                   description: День рождения
+*                 phone:
+*                   type: string
+*                   description: Телефон
+*                 gender:
+*                   type: string
+*                   description: Пол
+*                 weight:
+*                   type: string
+*                   description: Вес
+*                 height:
+*                   type: string
+*                   description: Рост
+*                 city:
+*                   type: string
+*                   description: Город
+*                 site:
+*                   type: string
+*                   description: Сайт
+*                 vk:
+*                   type: string
+*                   description: Ссылка на профиль vk
+*                 facebook:
+*                   type: string
+*                   description: Ссылка на профиль facebook
+*                 instagram:
+*                   type: string
+*                   description: Ссылка на профиль instagram
+*                 youtube:
+*                   type: string
+*                   description: Ссылка на профиль youtube
+*                 twitter:
+*                   type: string
+*                   description: Ссылка на профиль twitter
+*                 skype:
+*                   type: string
+*                   description: Ссылка на профиль skype
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/:profileId', JwtGuard, profileControllers.fetchProfileInfo)
+router.get('/:profileId', JwtGuard, profileControllers.getProfileInfo)
 
 export default router
