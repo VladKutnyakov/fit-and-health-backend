@@ -5,15 +5,15 @@ import { Products } from "../db/entities/Products"
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   const entityManager = getManager()
 
-  const AllProducts = await entityManager.findOne(
+  const AllProducts = await entityManager.find(
     Products,
-    {
+    // {
       // where: {
       //   user: {
       //     id: req.params.profileId
       //   }
       // }
-    }
+    // }
   )
 
   console.log(AllProducts)
