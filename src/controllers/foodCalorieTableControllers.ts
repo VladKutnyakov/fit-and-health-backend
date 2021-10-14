@@ -1,29 +1,39 @@
 import { Request, Response } from "express"
 import { getManager } from "typeorm"
 import { Products } from "../db/entities/Products"
+// import { ProductCategories } from "../db/entities/ProductCategories"
 
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
-  const entityManager = getManager()
+  try {
+    const entityManager = getManager()
 
-  const AllProducts = await entityManager.find(
-    Products,
-    // {
-      // where: {
-      //   user: {
-      //     id: req.params.profileId
-      //   }
-      // }
-    // }
-  )
+    // await entityManager.find(ProductCategories)
 
-  console.log(AllProducts)
+    const AllProducts = await entityManager.find(
+      Products,
+      {
+        where: [
+          { user: req.body.userId },
+          { user: null }
+        ],
+        relations: ['category']
+      }
+    )
 
-  const response = {
-    updatedToken: req.body.updatedToken,
-    data: AllProducts
+    // console.log(AllProducts)
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: AllProducts
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: 'Неизвестная ошибка.'
+    })
   }
 
-  return res.status(200).json(response)
   // try {
   //   const products = await sequelize.transaction( async (t) => {
   //     const AllProducts = await Products.findAll({
