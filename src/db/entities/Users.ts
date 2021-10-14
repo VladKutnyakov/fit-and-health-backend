@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
 import { Tokens } from './Tokens'
 import { UsersProfiles } from './UsersProfiles'
+import { Products } from './Products'
 
 @Entity()
 export class Users {
@@ -33,5 +34,8 @@ export class Users {
 
   @OneToOne(() => UsersProfiles, profile => profile.user)
   profile: UsersProfiles
+
+  @OneToMany(() => Products, products => products.user)
+  products: Products[]
 
 }

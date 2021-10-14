@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, OneToOne } from "typeorm"
-import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
-import { Tokens } from './Tokens'
-import { UsersProfiles } from './UsersProfiles'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany } from "typeorm"
+import { Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max } from "class-validator"
+import { Users } from './Users'
+import { ProductCategories } from './ProductCategories'
 
 @Entity()
 export class Products {
@@ -17,69 +17,60 @@ export class Products {
     unique: true,
     comment: 'Название продукта'
   })
-  @IsEmail()
   title: string
 
   @Column({
-    type: 'text',
+    type: 'float',
     nullable: false,
     unique: false,
     comment: 'Вес'
   })
-  weight: string
+  weight: number
 
   @Column({
-    type: 'text',
+    type: 'float',
     nullable: false,
     unique: false,
     comment: 'Кол-во белков'
   })
-  protein: string
+  protein: number
 
   @Column({
-    type: 'text',
+    type: 'float',
     nullable: false,
     unique: false,
     comment: 'Кол-во жиров'
   })
-  fats: string
+  fats: number
 
   @Column({
-    type: 'text',
+    type: 'float',
     nullable: false,
     unique: false,
     comment: 'Кол-во углеводов'
   })
-  carb: string
+  carb: number
 
   @Column({
-    type: 'text',
+    type: 'float',
     nullable: false,
     unique: false,
     comment: 'Калорийность'
   })
-  kkal: string
+  kkal: number
 
-  @Column({
-    type: 'text',
-    nullable: false,
-    unique: false,
-    comment: 'Категория'
-  })
-  category: string
+  // @Column({
+  //   type: 'text',
+  //   nullable: false,
+  //   unique: false,
+  //   comment: 'Категория'
+  // })
+  // category: string
 
-  @Column({
-    type: 'text',
-    nullable: false,
-    unique: false,
-    comment: 'ID пользователя, которому принадлежит продукт'
-  })
-  userId: string
+  @ManyToOne(() => Users, user => user.tokens)
+  user: Users
 
-  // @OneToMany(() => Tokens, tokens => tokens.user)
-  // tokens: Tokens[]
-
-  // @OneToOne(() => UsersProfiles, profile => profile.user)
-  // profile: UsersProfiles
+  @ManyToOne(() => ProductCategories, category => category.products)
+  category: ProductCategories
 
 }
