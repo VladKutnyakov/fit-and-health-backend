@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
 // import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
 import { Products } from './Products'
 import { Users } from './Users'
@@ -19,14 +19,10 @@ export class FavoriteProducts {
   })
   isActive: boolean
 
-  // @ManyToOne(() => Users, user => user.favoriteProducts)
-  // user: Users
+  @ManyToOne(() => Users, user => user.favoriteProducts)
+  user: Users
 
-  @ManyToMany(() => Users)
-  @JoinTable()
-  users: Users[]
-
-  // @ManyToOne(() => Products, products => products.favoriteProducts)
-  // products: Products
+  @ManyToOne(() => Products, products => products.favoriteProducts)
+  products: Products
 
 }
