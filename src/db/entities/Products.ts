@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany } from "typeorm"
-import { Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max } from "class-validator"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm"
+// import { Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max } from "class-validator"
 import { Users } from './Users'
 import { ProductCategories } from './ProductCategories'
+// import { FavoriteProducts } from './FavoriteProducts'
 
 @Entity()
 export class Products {
@@ -59,18 +60,13 @@ export class Products {
   })
   kkal: number
 
-  // @Column({
-  //   type: 'text',
-  //   nullable: false,
-  //   unique: false,
-  //   comment: 'Категория'
-  // })
-  // category: string
-
-  @ManyToOne(() => Users, user => user.tokens)
+  @ManyToOne(() => Users, user => user.products)
   user: Users
 
   @ManyToOne(() => ProductCategories, category => category.products)
   category: ProductCategories
+
+  // @OneToMany(() => FavoriteProducts, favoriteProducts => favoriteProducts.user)
+  // favoriteProducts: FavoriteProducts[]
 
 }

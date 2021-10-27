@@ -2,12 +2,15 @@ import { Request, Response } from "express"
 import { getManager } from "typeorm"
 import { Products } from "../db/entities/Products"
 // import { ProductCategories } from "../db/entities/ProductCategories"
+// import { FavoriteProducts } from "../db/entities/FavoriteProducts"
 
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
     const entityManager = getManager()
 
     // await entityManager.find(ProductCategories)
+    // const test = await entityManager.find(FavoriteProducts, {relations: ['users']})
+    // console.log(test);
 
     const AllProducts = await entityManager.find(
       Products,

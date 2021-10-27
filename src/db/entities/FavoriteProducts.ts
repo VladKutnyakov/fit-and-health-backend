@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable } from "typeorm"
 // import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
 import { Products } from './Products'
 import { Users } from './Users'
@@ -11,10 +11,22 @@ export class FavoriteProducts {
   })
   id: number
 
-  // @ManyToOne(() => Products, product => product.user)
-  // product: Products
+  @Column({
+    type: 'boolean',
+    nullable: false,
+    unique: false,
+    comment: 'Признак активности избранного продукта (true -> "избранный"; false -> "удален из избранного")'
+  })
+  isActive: boolean
 
   // @ManyToOne(() => Users, user => user.favoriteProducts)
   // user: Users
+
+  @ManyToMany(() => Users)
+  @JoinTable()
+  users: Users[]
+
+  // @ManyToOne(() => Products, products => products.favoriteProducts)
+  // products: Products
 
 }
