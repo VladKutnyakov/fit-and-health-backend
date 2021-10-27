@@ -23,6 +23,6 @@ export class FavoriteProducts {
   user: Users
 
   @ManyToOne(() => Products, products => products.favoriteProducts)
-  products: Products
+  product: Products
 
 }
