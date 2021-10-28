@@ -298,6 +298,18 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
 const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
   try {
 
+    const user = await getManager()
+    .createQueryBuilder()
+    .relation(Products, 'products')
+    // .delete()
+    // .select("user.id")
+    // .from(Users, "user")
+    // .where("user.pinnedProducts = :productId", { productId: 1 })
+    .getSql()
+    // .getOne()
+
+    console.log(user)
+
     const response = {
       updatedToken: req.body.updatedToken,
       data: null
