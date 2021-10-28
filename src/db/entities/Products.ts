@@ -65,13 +65,10 @@ export class Products {
   @ManyToOne(() => ProductCategories, category => category.products)
   category: ProductCategories
 
-  // @ManyToMany(() => Users, user => user.favoriteProducts )
-  // @ManyToMany(() => Users )
-  // @JoinTable()
-  // favorite: Users[]
+  @ManyToMany(() => Users )
+  favoriteToUsers: Users[]
 
-  // @ManyToMany(() => Users)
-  // @JoinTable()
-  // pinned: Users[]
+  @ManyToMany(() => Users)
+  pinnedToUsers: Users[]
 
 }
