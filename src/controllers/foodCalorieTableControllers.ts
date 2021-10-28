@@ -1,30 +1,13 @@
 import { Request, Response } from "express"
 import { getManager } from "typeorm"
 import { Products } from "../db/entities/Products"
-// import { ProductCategories } from "../db/entities/ProductCategories"
-import { FavoriteProducts } from "../db/entities/FavoriteProducts"
+import { Users } from "../db/entities/Users"
 
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
     const entityManager = getManager()
 
-    // await entityManager.find(ProductCategories)
-    const test = await entityManager.find(FavoriteProducts, {
-      where: [
-        {
-          isActive: true
-        },
-        {
-          user: {
-            id: 1
-          }
-        }
-      ],
-      relations: ['product']
-    })
-    console.log(test);
-
-    const AllProducts = await entityManager.find(
+    const ProductsList = await entityManager.find(
       Products,
       {
         where: [
@@ -35,11 +18,22 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
       }
     )
 
-    // console.log(AllProducts)
+    const FavoriteProducts = await entityManager.find(
+      Users,
+      {
+        select: ['id'],
+        where: [
+          { id: req.body.userId }
+        ],
+        relations: ['favoriteProducts']
+      }
+    )
+
+    console.log(FavoriteProducts)
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: AllProducts
+      data: ProductsList
     }
 
     return res.status(200).json(response)
