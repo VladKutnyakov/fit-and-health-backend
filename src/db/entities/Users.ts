@@ -41,4 +41,8 @@ export class Users {
   @JoinTable()
   favoriteProducts: Products[]
 
+  @ManyToMany(() => Products)
+  @JoinTable()
+  pinnedProducts: Products[]
+
 }

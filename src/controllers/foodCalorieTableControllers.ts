@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import { resolve } from "path/posix"
 import { getManager } from "typeorm"
 import { Products } from "../db/entities/Products"
 import { Users } from "../db/entities/Users"
@@ -30,6 +31,18 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
     )
     // console.log(UserFavoriteProducts?.favoriteProducts)
 
+    const UserPinnedProducts = await entityManager.findOne(
+      Users,
+      {
+        select: ['id'],
+        where: [
+          { id: req.body.userId }
+        ],
+        relations: ['pinnedProducts']
+      }
+    )
+    // console.log(UserPinnedProducts?.pinnedProducts)
+
     const AllProducts: any = []
 
     for (let i = 0; i < ProductsList.length; i++) {
@@ -53,13 +66,23 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
       if (UserFavoriteProducts) {
         const favoriteProducts = UserFavoriteProducts?.favoriteProducts
 
-        for (let j = 0; j < favoriteProducts.length; j++) {
-          if (favoriteProducts[j].id === item.id) {
+        for (let f = 0; f < favoriteProducts.length; f++) {
+          if (favoriteProducts[f].id === item.id) {
             item.favorite = true
           }
         }
       }
-      
+
+      if (UserPinnedProducts) {
+        const pinnedProducts = UserPinnedProducts?.pinnedProducts
+
+        for (let p = 0; p < pinnedProducts.length; p++) {
+          if (pinnedProducts[p].id === item.id) {
+            item.pinned = true
+          }
+        }
+      }
+
       AllProducts.push(item)
     }
     // console.log(AllProducts)
@@ -273,54 +296,68 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
 //   }
 // }
 
-// module.exports.changePinnedParam = async function (req, res) {
-//   try {
-//     const isPinned = await sequelize.transaction( async (t) => {
-//       const pinnedProduct = await PinnedProducts.findOne({
-//         where: {
-//           [Op.and]: [
-//             { userId: req.body.userId },
-//             { productId: req.body.productId }
-//           ]
-//         },
-//       }, { transaction: t })
+const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
+  try {
 
-//       if (pinnedProduct) {
-//         await PinnedProducts.destroy({
-//           where: {
-//             [Op.and]: [
-//               { userId: req.body.userId },
-//               { productId: req.body.productId }
-//             ]
-//           }
-//         }, { transaction: t })
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: null
+    }
 
-//         return false
-//       } else {
-//         await PinnedProducts.create({
-//           userId: req.body.userId,
-//           productId: req.body.productId
-//         }, { transaction: t })
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: 'Неизвестная ошибка.'
+    })
+  }
+  // try {
+  //   const isPinned = await sequelize.transaction( async (t) => {
+  //     const pinnedProduct = await PinnedProducts.findOne({
+  //       where: {
+  //         [Op.and]: [
+  //           { userId: req.body.userId },
+  //           { productId: req.body.productId }
+  //         ]
+  //       },
+  //     }, { transaction: t })
 
-//         return true
-//       }
-//     })
+  //     if (pinnedProduct) {
+  //       await PinnedProducts.destroy({
+  //         where: {
+  //           [Op.and]: [
+  //             { userId: req.body.userId },
+  //             { productId: req.body.productId }
+  //           ]
+  //         }
+  //       }, { transaction: t })
 
-//     const response = {
-//       updatedToken: req.body.updatedToken,
-//       data: {
-//         productId: req.body.productId,
-//         pinned: isPinned
-//       }
-//     }
+  //       return false
+  //     } else {
+  //       await PinnedProducts.create({
+  //         userId: req.body.userId,
+  //         productId: req.body.productId
+  //       }, { transaction: t })
 
-//     res.status(200).json(response)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json(error)
-//   }
-// }
+  //       return true
+  //     }
+  //   })
+
+  //   const response = {
+  //     updatedToken: req.body.updatedToken,
+  //     data: {
+  //       productId: req.body.productId,
+  //       pinned: isPinned
+  //     }
+  //   }
+
+  //   res.status(200).json(response)
+  // } catch (error) {
+  //   console.log(error)
+  //   res.status(500).json(error)
+  // }
+}
 
 export default {
-  getAllProducts
+  getAllProducts,
+  changePinnedParam
 }
