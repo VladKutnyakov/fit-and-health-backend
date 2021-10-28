@@ -14,11 +14,11 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
           { user: req.body.userId },
           { user: null }
         ],
-        relations: ['category']
+        relations: ['user', 'category']
       }
     )
 
-    const FavoriteProducts = await entityManager.find(
+    const UserFavoriteProducts = await entityManager.findOne(
       Users,
       {
         select: ['id'],
@@ -28,12 +28,45 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
         relations: ['favoriteProducts']
       }
     )
+    // console.log(UserFavoriteProducts?.favoriteProducts)
 
-    console.log(FavoriteProducts)
+    const AllProducts: any = []
+
+    for (let i = 0; i < ProductsList.length; i++) {
+      const item = {
+        id: ProductsList[i].id,
+        title: ProductsList[i].title,
+        weight: ProductsList[i].weight,
+        protein: ProductsList[i].protein,
+        fats: ProductsList[i].fats,
+        carb: ProductsList[i].carb,
+        kkal: ProductsList[i].kkal,
+        user: ProductsList[i]?.user?.id || null,
+        category: {
+          id: ProductsList[i]?.category?.id || null,
+          title: ProductsList[i]?.category?.title || null,
+        },
+        favorite: false,
+        pinned: false,
+      }
+
+      if (UserFavoriteProducts) {
+        const favoriteProducts = UserFavoriteProducts?.favoriteProducts
+
+        for (let j = 0; j < favoriteProducts.length; j++) {
+          if (favoriteProducts[j].id === item.id) {
+            item.favorite = true
+          }
+        }
+      }
+      
+      AllProducts.push(item)
+    }
+    // console.log(AllProducts)
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: ProductsList
+      data: AllProducts
     }
 
     return res.status(200).json(response)
@@ -42,69 +75,6 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
       message: 'Неизвестная ошибка.'
     })
   }
-
-  // try {
-  //   const products = await sequelize.transaction( async (t) => {
-  //     const AllProducts = await Products.findAll({
-  //       where: {
-  //         [Op.or]: [
-  //           { userId: null }, // получить все базовые продукты (id null)
-  //           { userId: req.body.userId } // получить продукты пользователя по его id
-  //         ]
-  //       },
-  //       attributes: {
-  //         exclude: ['createdAt', 'updatedAt']
-  //       },
-  //       raw: true
-  //     }, { transaction: t })
-
-  //     const UserFavoriteProducts = await FavoriteProducts.findAll({
-  //       where: {
-  //         userId: req.body.userId // получить продукты которые пользователь отметил как избранные
-  //       },
-  //       raw: true
-  //     }, { transaction: t })
-
-  //     const UserPinnedProducts = await PinnedProducts.findAll({
-  //       where: {
-  //         userId: req.body.userId // получить продукты которые пользователь отметил как избранные
-  //       },
-  //       raw: true
-  //     }, { transaction: t })
-
-  //     for (let i = 0; i < AllProducts.length; i++) {
-  //       // Добавляем параметр "избранный" и "закрепленый" для продукта
-  //       AllProducts[i].favorite = false
-  //       AllProducts[i].pinned = false
-
-  //       // Проверяем и обновляем параметр "избранный продукт"
-  //       UserFavoriteProducts.forEach((element) => {
-  //         if (element.productId === AllProducts[i].id) {
-  //           AllProducts[i].favorite = true
-  //         }
-  //       })
-
-  //       // Проверяем и обновляем параметр "закрепленый продукт"
-  //       UserPinnedProducts.forEach((element) => {
-  //         if (element.productId === AllProducts[i].id) {
-  //           AllProducts[i].pinned = true
-  //         }
-  //       })
-  //     }
-
-  //     return AllProducts
-  //   })
-
-  //   const response = {
-  //     updatedToken: req.body.updatedToken,
-  //     data: products
-  //   }
-
-  //   res.status(200).json(response)
-  // } catch (error) {
-  //   console.log(error)
-  //   res.status(500).json(error)
-  // }
 }
 
 // module.exports.saveNewProduct = async function (req, res) {
