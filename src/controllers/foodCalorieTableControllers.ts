@@ -1,5 +1,4 @@
 import { Request, Response } from "express"
-import { resolve } from "path/posix"
 import { getManager } from "typeorm"
 import { Products } from "../db/entities/Products"
 import { Users } from "../db/entities/Users"
@@ -299,24 +298,6 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
 const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
   try {
 
-    // const entityManager = getManager()
-
-    // const test = entityManager.update(
-    //   Users,
-    //   {
-    //     pinnedProducts: {
-    //       // userId: req.body.userId,
-    //       productId: '2',
-    //     }
-    //   },
-    //   {
-    //     pinnedProducts: {
-    //       // userId: req.body.userId,
-    //       productId: [1, 2],
-    //     }
-    //   }
-    // )
-
     const response = {
       updatedToken: req.body.updatedToken,
       data: null
@@ -328,51 +309,6 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
       message: 'Неизвестная ошибка.'
     })
   }
-  // try {
-  //   const isPinned = await sequelize.transaction( async (t) => {
-  //     const pinnedProduct = await PinnedProducts.findOne({
-  //       where: {
-  //         [Op.and]: [
-  //           { userId: req.body.userId },
-  //           { productId: req.body.productId }
-  //         ]
-  //       },
-  //     }, { transaction: t })
-
-  //     if (pinnedProduct) {
-  //       await PinnedProducts.destroy({
-  //         where: {
-  //           [Op.and]: [
-  //             { userId: req.body.userId },
-  //             { productId: req.body.productId }
-  //           ]
-  //         }
-  //       }, { transaction: t })
-
-  //       return false
-  //     } else {
-  //       await PinnedProducts.create({
-  //         userId: req.body.userId,
-  //         productId: req.body.productId
-  //       }, { transaction: t })
-
-  //       return true
-  //     }
-  //   })
-
-  //   const response = {
-  //     updatedToken: req.body.updatedToken,
-  //     data: {
-  //       productId: req.body.productId,
-  //       pinned: isPinned
-  //     }
-  //   }
-
-  //   res.status(200).json(response)
-  // } catch (error) {
-  //   console.log(error)
-  //   res.status(500).json(error)
-  // }
 }
 
 export default {
