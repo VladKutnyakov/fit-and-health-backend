@@ -299,6 +299,24 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
 const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
   try {
 
+    // const entityManager = getManager()
+
+    // const test = entityManager.update(
+    //   Users,
+    //   {
+    //     pinnedProducts: {
+    //       // userId: req.body.userId,
+    //       productId: '2',
+    //     }
+    //   },
+    //   {
+    //     pinnedProducts: {
+    //       // userId: req.body.userId,
+    //       productId: [1, 2],
+    //     }
+    //   }
+    // )
+
     const response = {
       updatedToken: req.body.updatedToken,
       data: null
