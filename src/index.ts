@@ -28,36 +28,39 @@ const app: Application = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-// Настройки swagger
-const swaggerJsDocOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Fit and Health',
-      version: '1.0.0',
-    },
-    components: {
-      securitySchemes: {
-        jwt: {
-          type: "http",
-          scheme: "bearer",
-          in: "header",
-          bearerFormat: "JWT"
-        },
+// Использование swagger в режиме разработки
+if (process.env.NODE_ENV !== 'production') {
+  // Настройки swagger
+  const swaggerJsDocOptions = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Fit and Health',
+        version: '1.0.0',
+      },
+      components: {
+        securitySchemes: {
+          jwt: {
+            type: "http",
+            scheme: "bearer",
+            in: "header",
+            bearerFormat: "JWT"
+          },
+        }
+      },
+      security: {
+        jwt: []
       }
     },
-    security: {
-      jwt: []
-    }
-  },
-  apis: ['**/*.ts'],
-}
+    apis: ['**/*.ts'],
+  }
 
-const swaggerJsDoc = swaggerJsdoc(swaggerJsDocOptions)
-const swaggerOptions = {
-  explorer: false
+  const swaggerJsDoc = swaggerJsdoc(swaggerJsDocOptions)
+  const swaggerOptions = {
+    explorer: false
+  }
+  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc, swaggerOptions))
 }
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc, swaggerOptions))
 
 // Настройки и инициализация CORS
 const corsOptions = {
