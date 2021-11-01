@@ -1,5 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToMany, JoinTable } from "typeorm"
-// import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from "typeorm"
 import { Tokens } from './Tokens'
 import { UsersProfiles } from './UsersProfiles'
 import { Products } from './Products'
@@ -36,13 +35,5 @@ export class Users {
 
   @OneToMany(() => Products, products => products.user)
   products: Products[]
-
-  @ManyToMany(() => Products)
-  @JoinTable()
-  favoriteProducts: Products[]
-
-  @ManyToMany(() => Products)
-  @JoinTable()
-  pinnedProducts: Products[]
 
 }

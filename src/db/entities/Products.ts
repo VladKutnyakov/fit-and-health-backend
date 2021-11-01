@@ -1,5 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany, JoinTable } from "typeorm"
-// import { Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max } from "class-validator"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
 import { Users } from './Users'
 import { ProductCategories } from './ProductCategories'
 
@@ -64,11 +63,5 @@ export class Products {
 
   @ManyToOne(() => ProductCategories, category => category.products)
   category: ProductCategories
-
-  @ManyToMany(() => Users )
-  favoriteToUsers: Users[]
-
-  @ManyToMany(() => Users)
-  pinnedToUsers: Users[]
 
 }
