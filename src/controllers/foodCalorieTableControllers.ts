@@ -3,6 +3,8 @@ import { getManager } from "typeorm"
 import { Products } from "../db/entities/Products"
 import { FavoriteProducts } from '../db/entities/FavoriteProducts'
 import { PinnedProducts } from '../db/entities/PinnedProducts'
+import { ProductCategories } from '../db/entities/ProductCategories'
+import { Users } from '../db/entities/Users'
 
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -91,54 +93,71 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
   }
 }
 
-// module.exports.saveNewProduct = async function (req, res) {
-//   try {
-//     const product = await sequelize.transaction( async (t) => {
-//       const savedProduct = await Products.create({
-//         title: req.body.product.title,
-//         weight: req.body.product.weight,
-//         protein: req.body.product.protein,
-//         fats: req.body.product.fats,
-//         carb: req.body.product.carb,
-//         kkal: req.body.product.kkal,
-//         category: req.body.product.category,
-//         userId: req.body.userId,
-//       }, { transaction: t })
+const saveNewProduct = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const ProductUser = await getManager().findOne(Users, { where: { id: req.body.userId } })
 
-//       if (req.body.product.favorite) {
-//         await FavoriteProducts.create({
-//           userId: req.body.userId,
-//           productId: savedProduct.dataValues.id
-//         }, { transaction: t })
-//       }
+    const ProductCategory = await getManager().findOne(ProductCategories, { where: { id: req.body.product.category.id } })
 
-//       if (req.body.product.pinned) {
-//         await PinnedProducts.create({
-//           userId: req.body.userId,
-//           productId: savedProduct.dataValues.id
-//         }, { transaction: t })
-//       }
+    const CreatedProduct = await getManager().save(Products, {
+      title: req.body.product.title.toString(),
+      weight: parseFloat(req.body.product.weight),
+      protein: parseFloat(req.body.product.protein),
+      fats: parseFloat(req.body.product.fats),
+      carb: parseFloat(req.body.product.carb),
+      kkal: parseFloat(req.body.product.kkal),
+      user: ProductUser,
+      category: ProductCategory
+    })
+    // console.log(CreatedProduct);
 
-//       const product = {...savedProduct.toJSON()}
-//       product.favorite = req.body.product.favorite
-//       product.pinned = req.body.product.pinned
+    const Product = {
+      id: CreatedProduct.id,
+      title: CreatedProduct.title,
+      weight: CreatedProduct.weight,
+      protein: CreatedProduct.protein,
+      fats: CreatedProduct.fats,
+      carb: CreatedProduct.carb,
+      kkal: CreatedProduct.kkal,
+      favorite: false,
+      pinned: false,
+      user: CreatedProduct.user.id,
+      category: {
+        id: CreatedProduct.category.id,
+        title: CreatedProduct.category.title,
+      }
+    }
 
-//       return product
-//     })
+    if (req.body.product.favorite) {
+      await getManager().save(FavoriteProducts, {
+        userId: req.body.userId,
+        productId: CreatedProduct.id
+      })
+      Product.favorite = true
+    }
 
-//     const response = {
-//       updatedToken: req.body.updatedToken,
-//       data: {
-//         product: product
-//       }
-//     }
+    if (req.body.product.pinned) {
+      await getManager().save(PinnedProducts, {
+        userId: req.body.userId,
+        productId: CreatedProduct.id
+      })
+      Product.pinned = true
+    }
 
-//     res.status(200).json(response)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json(error)
-//   }
-// }
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        product: Product
+      }
+    }
+
+    return res.status(200).json(response)
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Неизвестная ошибка.'
+    })
+  }
+}
 
 // module.exports.updateProduct = async function (req, res) {
 //   try {
@@ -261,7 +280,7 @@ const changeFavoriteParam = async (req: Request, res: Response): Promise<Respons
       isFavorite = false
     } else {
       // Добавить продукт в избранное
-      getManager().save(FavoriteProducts, {
+      await getManager().save(FavoriteProducts, {
         userId: req.body.userId,
         productId: req.body.productId
       })
@@ -306,7 +325,7 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
       isPinned = false
     } else {
       // Добавить продукт в избранное
-      getManager().save(PinnedProducts, {
+      await getManager().save(PinnedProducts, {
         userId: req.body.userId,
         productId: req.body.productId
       })
@@ -331,6 +350,7 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
 
 export default {
   getAllProducts,
+  saveNewProduct,
   changeFavoriteParam,
   changePinnedParam
 }

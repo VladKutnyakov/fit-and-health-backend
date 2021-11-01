@@ -31,10 +31,15 @@ const router: Router = express.Router()
 *         description: Ошибка авторизации
 */
 router.get('/', JwtGuard, foodCalorieTableControllers.getAllProducts)
-// router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduct)
+
+router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduct)
+
 // router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduct)
+
 // router.delete('/remove-product/:id', JwtGuard, foodCalorieTableControllers.removeProduct)
+
 router.post('/change-favorite-param', JwtGuard, foodCalorieTableControllers.changeFavoriteParam)
+
 router.post('/change-pinned-param', JwtGuard, foodCalorieTableControllers.changePinnedParam)
 
 export default router
