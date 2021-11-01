@@ -239,53 +239,50 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
 //   }
 // }
 
-// module.exports.changeFavoriteParam = async function (req, res) {
-//   try {
-//     const isFavorite = await sequelize.transaction( async (t) => {
-//       const favoriteProduct = await FavoriteProducts.findOne({
-//         where: {
-//           [Op.and]: [
-//             { userId: req.body.userId },
-//             { productId: req.body.productId }
-//           ]
-//         },
-//       }, { transaction: t })
+const changeFavoriteParam = async (req: Request, res: Response): Promise<Response> => {
+  try {
 
-//       if (favoriteProduct) {
-//         await FavoriteProducts.destroy({
-//           where: {
-//             [Op.and]: [
-//               { userId: req.body.userId },
-//               { productId: req.body.productId }
-//             ]
-//           }
-//         }, { transaction: t })
+    // Поиск, есть ли продукт в избранном у пользователя
+    const FavoriteProduct = await getManager().findOne(
+      FavoriteProducts,
+      {
+        where: {
+          userId: req.body.userId,
+          productId: req.body.productId
+        }
+      }
+    )
 
-//         return false
-//       } else {
-//         await FavoriteProducts.create({
-//           userId: req.body.userId,
-//           productId: req.body.productId
-//         }, { transaction: t })
+    let isFavorite = false
 
-//         return true
-//       }
-//     })
+    if (FavoriteProduct) {
+      // Удалить продукт из избранного
+      await getManager().delete(FavoriteProducts, FavoriteProduct)
+      isFavorite = false
+    } else {
+      // Добавить продукт в избранное
+      getManager().save(FavoriteProducts, {
+        userId: req.body.userId,
+        productId: req.body.productId
+      })
+      isFavorite = true
+    }
 
-//     const response = {
-//       updatedToken: req.body.updatedToken,
-//       data: {
-//         productId: req.body.productId,
-//         favorite: isFavorite
-//       }
-//     }
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        productId: req.body.productId,
+        favorite: isFavorite
+      }
+    }
 
-//     res.status(200).json(response)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json(error)
-//   }
-// }
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      message: 'Неизвестная ошибка.'
+    })
+  }
+}
 
 const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -334,5 +331,6 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
 
 export default {
   getAllProducts,
+  changeFavoriteParam,
   changePinnedParam
 }
