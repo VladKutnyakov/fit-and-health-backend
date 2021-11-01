@@ -13,7 +13,7 @@ export class Products {
   @Column({
     type: 'text',
     nullable: false,
-    unique: true,
+    unique: false,
     comment: 'Название продукта'
   })
   title: string
