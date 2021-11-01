@@ -1,7 +1,8 @@
 import { Request, Response } from "express"
 import { getManager } from "typeorm"
 import { Products } from "../db/entities/Products"
-import { Users } from "../db/entities/Users"
+import { FavoriteProducts } from '../db/entities/FavoriteProducts'
+import { PinnedProducts } from '../db/entities/PinnedProducts'
 
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -18,29 +19,25 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
       }
     )
 
-    const UserFavoriteProducts = await entityManager.findOne(
-      Users,
+    const UserFavoriteProducts = await entityManager.find(
+      FavoriteProducts,
       {
-        select: ['id'],
-        where: [
-          { id: req.body.userId }
-        ],
-        relations: ['favoriteProducts']
+        where: {
+          userId: req.body.userId
+        },
       }
     )
-    // console.log(UserFavoriteProducts?.favoriteProducts)
+    // console.log(UserFavoriteProducts)
 
-    const UserPinnedProducts = await entityManager.findOne(
-      Users,
+    const UserPinnedProducts = await entityManager.find(
+      PinnedProducts,
       {
-        select: ['id'],
-        where: [
-          { id: req.body.userId }
-        ],
-        relations: ['pinnedProducts']
+        where: {
+          userId: req.body.userId
+        },
       }
     )
-    // console.log(UserPinnedProducts?.pinnedProducts)
+    // console.log(UserPinnedProducts)
 
     const AllProducts: any = []
 
@@ -63,20 +60,16 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
       }
 
       if (UserFavoriteProducts) {
-        const favoriteProducts = UserFavoriteProducts?.favoriteProducts
-
-        for (let f = 0; f < favoriteProducts.length; f++) {
-          if (favoriteProducts[f].id === item.id) {
+        for (let f = 0; f < UserFavoriteProducts.length; f++) {
+          if (UserFavoriteProducts[f].productId === item.id) {
             item.favorite = true
           }
         }
       }
 
       if (UserPinnedProducts) {
-        const pinnedProducts = UserPinnedProducts?.pinnedProducts
-
-        for (let p = 0; p < pinnedProducts.length; p++) {
-          if (pinnedProducts[p].id === item.id) {
+        for (let p = 0; p < UserPinnedProducts.length; p++) {
+          if (UserPinnedProducts[p].productId === item.id) {
             item.pinned = true
           }
         }
@@ -84,6 +77,7 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
 
       AllProducts.push(item)
     }
+
     // console.log(AllProducts)
 
     const response = {
