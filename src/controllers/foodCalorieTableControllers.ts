@@ -6,9 +6,7 @@ import { PinnedProducts } from '../db/entities/PinnedProducts'
 
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const entityManager = getManager()
-
-    const ProductsList = await entityManager.find(
+    const ProductsList = await getManager().find(
       Products,
       {
         where: [
@@ -19,7 +17,7 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
       }
     )
 
-    const UserFavoriteProducts = await entityManager.find(
+    const UserFavoriteProducts = await getManager().find(
       FavoriteProducts,
       {
         where: {
@@ -29,7 +27,7 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
     )
     // console.log(UserFavoriteProducts)
 
-    const UserPinnedProducts = await entityManager.find(
+    const UserPinnedProducts = await getManager().find(
       PinnedProducts,
       {
         where: {
@@ -292,21 +290,38 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
 const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
   try {
 
-    const user = await getManager()
-    .createQueryBuilder()
-    .relation(Products, 'products')
-    // .delete()
-    // .select("user.id")
-    // .from(Users, "user")
-    // .where("user.pinnedProducts = :productId", { productId: 1 })
-    .getSql()
-    // .getOne()
+    // Поиск, есть ли продукт в избранном у пользователя
+    const PinnedProduct = await getManager().findOne(
+      PinnedProducts,
+      {
+        where: {
+          userId: req.body.userId,
+          productId: req.body.productId
+        }
+      }
+    )
 
-    console.log(user)
+    let isPinned = false
+
+    if (PinnedProduct) {
+      // Удалить продукт из избранного
+      await getManager().delete(PinnedProducts, PinnedProduct)
+      isPinned = false
+    } else {
+      // Добавить продукт в избранное
+      getManager().save(PinnedProducts, {
+        userId: req.body.userId,
+        productId: req.body.productId
+      })
+      isPinned = true
+    }
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: null
+      data: {
+        productId: req.body.productId,
+        pinned: isPinned
+      }
     }
 
     return res.status(200).json(response)
