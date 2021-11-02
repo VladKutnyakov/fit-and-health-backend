@@ -34,7 +34,7 @@ router.get('/', JwtGuard, foodCalorieTableControllers.getAllProducts)
 
 router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduct)
 
-// router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduct)
+router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduct)
 
 router.delete('/remove-product/:productId', JwtGuard, foodCalorieTableControllers.removeProduct)
 

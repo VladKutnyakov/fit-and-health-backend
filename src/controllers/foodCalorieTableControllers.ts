@@ -159,78 +159,85 @@ const saveNewProduct = async (req: Request, res: Response): Promise<Response> =>
   }
 }
 
-// module.exports.updateProduct = async function (req, res) {
-//   try {
-//     const product = await sequelize.transaction( async (t) => {
-//       await Products.update(
-//         {
-//           title: req.body.product.title,
-//           weight: req.body.product.weight,
-//           protein: req.body.product.protein,
-//           fats: req.body.product.fats,
-//           carb: req.body.product.carb,
-//           kkal: req.body.product.kkal,
-//           category: req.body.product.category,
-//         },
-//         {
-//           where: {
-//             [Op.and]: [
-//               { id: req.body.product.id },
-//               { userId: req.body.userId }
-//             ]
-//           }
-//         },
-//         { transaction: t }
-//       )
+const updateProduct = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const TargetProductCategory = await getManager().findOne(ProductCategories, { where: { id: req.body.product?.category?.id } })
 
-//       if (req.body.product.favorite) {
-//         await FavoriteProducts.create({
-//           userId: req.body.userId,
-//           productId: req.body.product.id
-//         }, { transaction: t })
-//       } else {
-//         await FavoriteProducts.destroy({
-//           where: {
-//             [Op.and]: [
-//               { userId: req.body.userId },
-//               { productId: req.body.product.id }
-//             ]
-//           }
-//         }, { transaction: t })
-//       }
+    const UpdatedProduct = await getManager().update(
+      Products,
+      req.body.product.id,
+      {
+        title: req.body.product.title,
+        weight: req.body.product.weight,
+        protein: req.body.product.protein,
+        fats: req.body.product.fats,
+        carb: req.body.product.carb,
+        kkal: req.body.product.kkal,
+        category: TargetProductCategory,
+      }
+    )
+    // console.log(UpdatedProduct)
 
-//       if (req.body.product.pinned) {
-//         await PinnedProducts.create({
-//           userId: req.body.userId,
-//           productId: req.body.product.id
-//         }, { transaction: t })
-//       } else {
-//         await PinnedProducts.destroy({
-//           where: {
-//             [Op.and]: [
-//               { userId: req.body.userId },
-//               { productId: req.body.product.id }
-//             ]
-//           }
-//         }, { transaction: t })
-//       }
+    // Обновить информацию в таблице "Избранные продукты"
+    const FavoriteProduct = await getManager().findOne(
+      FavoriteProducts,
+      {
+        where: {
+          userId: req.body.userId,
+          productId: req.body.product.id
+        }
+      }
+    )
+    // console.log(FavoriteProduct)
 
-//       return true
-//     })
+    if (req.body.product.favorite && !FavoriteProduct) {
+      // Добавить продукт в избранное
+      await getManager().save(FavoriteProducts, {
+        userId: req.body.userId,
+        productId: req.body.product.id
+      })
+    } else if (!req.body.product.favorite && FavoriteProduct) {
+      // Удалить продукт из избранного
+      await getManager().delete(FavoriteProducts, FavoriteProduct)
+    }
 
-//     const response = {
-//       updatedToken: req.body.updatedToken,
-//       data: {
-//         product: product ? {...req.body.product} : false
-//       }
-//     }
+    // Обновить информацию в таблице "Закрепленные продукты"
+    const PinnedProduct = await getManager().findOne(
+      PinnedProducts,
+      {
+        where: {
+          userId: req.body.userId,
+          productId: req.body.product.id
+        }
+      }
+    )
+    // console.log(PinnedProduct)
 
-//     res.status(200).json(response)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json(error)
-//   }
-// }
+    if (req.body.product.pinned && !PinnedProduct) {
+      // Добавить продукт в избранное
+      await getManager().save(PinnedProducts, {
+        userId: req.body.userId,
+        productId: req.body.product.id
+      })
+    } else if (!req.body.product.pinned && PinnedProduct) {
+      // Удалить продукт из избранного
+      await getManager().delete(PinnedProducts, PinnedProduct)
+    }
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        product: req.body.product
+      }
+    }
+
+    return res.status(200).json(response)
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Неизвестная ошибка.'
+    })
+  }
+}
 
 const removeProduct = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -362,6 +369,7 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
 export default {
   getAllProducts,
   saveNewProduct,
+  updateProduct,
   removeProduct,
   changeFavoriteParam,
   changePinnedParam
