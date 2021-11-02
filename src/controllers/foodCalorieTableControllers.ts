@@ -88,7 +88,8 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      message: 'Неизвестная ошибка.'
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
     })
   }
 }
@@ -154,7 +155,8 @@ const saveNewProduct = async (req: Request, res: Response): Promise<Response> =>
     return res.status(200).json(response)
   } catch (error) {
     return res.status(500).json({
-      message: 'Неизвестная ошибка.'
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
     })
   }
 }
@@ -234,7 +236,8 @@ const updateProduct = async (req: Request, res: Response): Promise<Response> => 
     return res.status(200).json(response)
   } catch (error) {
     return res.status(500).json({
-      message: 'Неизвестная ошибка.'
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
     })
   }
 }
@@ -271,7 +274,8 @@ const removeProduct = async (req: Request, res: Response): Promise<Response> => 
     return res.status(200).json(response)
   } catch (error) {
     return res.status(500).json({
-      message: 'Неизвестная ошибка.'
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
     })
   }
 }
@@ -316,7 +320,8 @@ const changeFavoriteParam = async (req: Request, res: Response): Promise<Respons
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      message: 'Неизвестная ошибка.'
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
     })
   }
 }
@@ -361,7 +366,8 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      message: 'Неизвестная ошибка.'
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
     })
   }
 }
