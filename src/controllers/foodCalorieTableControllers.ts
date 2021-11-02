@@ -102,7 +102,7 @@ const saveNewProduct = async (req: Request, res: Response): Promise<Response> =>
 
     const CreatedProduct = await getManager().save(Products, {
       title: req.body.product.title.toString(),
-      weight: parseFloat(req.body.product.weight),
+      weight: 100,
       protein: parseFloat(req.body.product.protein),
       fats: parseFloat(req.body.product.fats),
       carb: parseFloat(req.body.product.carb),
@@ -170,7 +170,6 @@ const updateProduct = async (req: Request, res: Response): Promise<Response> => 
       req.body.product.id,
       {
         title: req.body.product.title,
-        weight: req.body.product.weight,
         protein: req.body.product.protein,
         fats: req.body.product.fats,
         carb: req.body.product.carb,
