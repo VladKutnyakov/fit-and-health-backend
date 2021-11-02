@@ -36,7 +36,7 @@ router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduc
 
 // router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduct)
 
-// router.delete('/remove-product/:id', JwtGuard, foodCalorieTableControllers.removeProduct)
+router.delete('/remove-product/:productId', JwtGuard, foodCalorieTableControllers.removeProduct)
 
 router.post('/change-favorite-param', JwtGuard, foodCalorieTableControllers.changeFavoriteParam)
 

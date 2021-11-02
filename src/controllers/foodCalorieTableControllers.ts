@@ -232,31 +232,42 @@ const saveNewProduct = async (req: Request, res: Response): Promise<Response> =>
 //   }
 // }
 
-// module.exports.removeProduct = async function (req, res) {
-//   try {
-//     const RemoveProduct = await Products.destroy({
-//       where: {
-//         [Op.and]: [
-//           {id: req.params.id},
-//           {userId: req.body.userId}
-//         ]
-//       }
-//     })
+const removeProduct = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const Product = await getManager().findOne(
+      Products,
+      {
+        where: {
+          id: req.params.productId,
+          user: req.body.userId
+        }
+      }
+    )
 
-//     const response = {
-//       updatedToken: req.body.updatedToken,
-//       data: {
-//         removed: RemoveProduct ? true : false,
-//         productId: req.params.id
-//       }
-//     }
+    let isRemoved = false
 
-//     res.status(200).json(response)
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json(error)
-//   }
-// }
+    if (Product) {
+      await getManager().remove(Products, Product)
+      await getManager().delete(FavoriteProducts, { productId: req.params.productId })
+      await getManager().delete(PinnedProducts, { productId: req.params.productId })
+      isRemoved = true
+    }
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        removed: isRemoved,
+        productId: req.params.productId
+      }
+    }
+
+    return res.status(200).json(response)
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Неизвестная ошибка.'
+    })
+  }
+}
 
 const changeFavoriteParam = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -351,6 +362,7 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
 export default {
   getAllProducts,
   saveNewProduct,
+  removeProduct,
   changeFavoriteParam,
   changePinnedParam
 }
