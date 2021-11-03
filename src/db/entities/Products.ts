@@ -65,7 +65,7 @@ export class Products {
   @ManyToOne(() => ProductCategories, category => category.products)
   category: ProductCategories
 
-  @ManyToMany(() => Users)
+  @ManyToMany(() => Users, user => user.favoriteProducts)
   favoriteForUsers: Users[]
 
   @ManyToMany(() => Users)

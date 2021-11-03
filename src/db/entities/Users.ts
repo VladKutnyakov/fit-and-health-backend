@@ -40,7 +40,7 @@ export class Users {
   @OneToMany(() => Products, recipes => recipes.user)
   recipes: Recipes[]
 
-  @ManyToMany(() => Products)
+  @ManyToMany(() => Products, product => product.favoriteForUsers)
   @JoinTable({ name: 'favorite_products' })
   favoriteProducts: Products[]
 
