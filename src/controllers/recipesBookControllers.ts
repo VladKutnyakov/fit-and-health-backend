@@ -4,8 +4,6 @@ import { Recipes } from "../db/entities/Recipes"
 
 const getRecipes = async (req: Request, res: Response): Promise<Response> => {
   try {
-    // console.log(req.body, req.params)
-
     const RecipesList = await getRepository(Recipes)
       .createQueryBuilder('recipes')
       .where([{user: req.body.userId}, {user: null}])
@@ -19,29 +17,11 @@ const getRecipes = async (req: Request, res: Response): Promise<Response> => {
       .limit(10)
       .orderBy({'recipes.id': 'ASC'})
       .getMany()
-      // .getSql()
     // console.log(RecipesList)
-
-    const AllRecipes: any = []
-
-    for (let i = 0; i < RecipesList.length; i++) {
-      const item = {
-        id: RecipesList[i].id,
-        title: RecipesList[i].title,
-        description: RecipesList[i].description,
-        cookingTimes: RecipesList[i].cookingTimes,
-        cookingSkill: RecipesList[i].cookingSkill,
-        products: RecipesList[i].recipeProducts,
-        user: RecipesList[i]?.user?.id || null,
-      }
-
-      AllRecipes.push(item)
-    }
-    // console.log(AllRecipes)
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: AllRecipes
+      data: RecipesList
     }
 
     return res.status(200).json(response)
