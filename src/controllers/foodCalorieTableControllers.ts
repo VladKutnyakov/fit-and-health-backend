@@ -1,8 +1,6 @@
 import { Request, Response } from "express"
 import { getManager } from "typeorm"
 import { Products } from "../db/entities/Products"
-import { FavoriteProducts } from '../db/entities/FavoriteProducts'
-import { PinnedProducts } from '../db/entities/PinnedProducts'
 import { ProductCategories } from '../db/entities/ProductCategories'
 import { Users } from '../db/entities/Users'
 
@@ -19,24 +17,24 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
       }
     )
 
-    const UserFavoriteProducts = await getManager().find(
-      FavoriteProducts,
-      {
-        where: {
-          userId: req.body.userId
-        },
-      }
-    )
+    // const UserFavoriteProducts = await getManager().find(
+    //   FavoriteProducts,
+    //   {
+    //     where: {
+    //       userId: req.body.userId
+    //     },
+    //   }
+    // )
     // console.log(UserFavoriteProducts)
 
-    const UserPinnedProducts = await getManager().find(
-      PinnedProducts,
-      {
-        where: {
-          userId: req.body.userId
-        },
-      }
-    )
+    // const UserPinnedProducts = await getManager().find(
+    //   PinnedProducts,
+    //   {
+    //     where: {
+    //       userId: req.body.userId
+    //     },
+    //   }
+    // )
     // console.log(UserPinnedProducts)
 
     const AllProducts: any = []
@@ -59,21 +57,21 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
         pinned: false,
       }
 
-      if (UserFavoriteProducts) {
-        for (let f = 0; f < UserFavoriteProducts.length; f++) {
-          if (UserFavoriteProducts[f].productId === item.id) {
-            item.favorite = true
-          }
-        }
-      }
+      // if (UserFavoriteProducts) {
+      //   for (let f = 0; f < UserFavoriteProducts.length; f++) {
+      //     if (UserFavoriteProducts[f].productId === item.id) {
+      //       item.favorite = true
+      //     }
+      //   }
+      // }
 
-      if (UserPinnedProducts) {
-        for (let p = 0; p < UserPinnedProducts.length; p++) {
-          if (UserPinnedProducts[p].productId === item.id) {
-            item.pinned = true
-          }
-        }
-      }
+      // if (UserPinnedProducts) {
+      //   for (let p = 0; p < UserPinnedProducts.length; p++) {
+      //     if (UserPinnedProducts[p].productId === item.id) {
+      //       item.pinned = true
+      //     }
+      //   }
+      // }
 
       AllProducts.push(item)
     }
@@ -129,21 +127,21 @@ const saveNewProduct = async (req: Request, res: Response): Promise<Response> =>
       }
     }
 
-    if (req.body.product.favorite) {
-      await getManager().save(FavoriteProducts, {
-        userId: req.body.userId,
-        productId: CreatedProduct.id
-      })
-      Product.favorite = true
-    }
+    // if (req.body.product.favorite) {
+    //   await getManager().save(FavoriteProducts, {
+    //     userId: req.body.userId,
+    //     productId: CreatedProduct.id
+    //   })
+    //   Product.favorite = true
+    // }
 
-    if (req.body.product.pinned) {
-      await getManager().save(PinnedProducts, {
-        userId: req.body.userId,
-        productId: CreatedProduct.id
-      })
-      Product.pinned = true
-    }
+    // if (req.body.product.pinned) {
+    //   await getManager().save(PinnedProducts, {
+    //     userId: req.body.userId,
+    //     productId: CreatedProduct.id
+    //   })
+    //   Product.pinned = true
+    // }
 
     const response = {
       updatedToken: req.body.updatedToken,
@@ -180,50 +178,50 @@ const updateProduct = async (req: Request, res: Response): Promise<Response> => 
     // console.log(UpdatedProduct)
 
     // Обновить информацию в таблице "Избранные продукты"
-    const FavoriteProduct = await getManager().findOne(
-      FavoriteProducts,
-      {
-        where: {
-          userId: req.body.userId,
-          productId: req.body.product.id
-        }
-      }
-    )
+    // const FavoriteProduct = await getManager().findOne(
+    //   FavoriteProducts,
+    //   {
+    //     where: {
+    //       userId: req.body.userId,
+    //       productId: req.body.product.id
+    //     }
+    //   }
+    // )
     // console.log(FavoriteProduct)
 
-    if (req.body.product.favorite && !FavoriteProduct) {
-      // Добавить продукт в избранное
-      await getManager().save(FavoriteProducts, {
-        userId: req.body.userId,
-        productId: req.body.product.id
-      })
-    } else if (!req.body.product.favorite && FavoriteProduct) {
-      // Удалить продукт из избранного
-      await getManager().delete(FavoriteProducts, FavoriteProduct)
-    }
+    // if (req.body.product.favorite && !FavoriteProduct) {
+    //   // Добавить продукт в избранное
+    //   await getManager().save(FavoriteProducts, {
+    //     userId: req.body.userId,
+    //     productId: req.body.product.id
+    //   })
+    // } else if (!req.body.product.favorite && FavoriteProduct) {
+    //   // Удалить продукт из избранного
+    //   await getManager().delete(FavoriteProducts, FavoriteProduct)
+    // }
 
     // Обновить информацию в таблице "Закрепленные продукты"
-    const PinnedProduct = await getManager().findOne(
-      PinnedProducts,
-      {
-        where: {
-          userId: req.body.userId,
-          productId: req.body.product.id
-        }
-      }
-    )
+    // const PinnedProduct = await getManager().findOne(
+    //   PinnedProducts,
+    //   {
+    //     where: {
+    //       userId: req.body.userId,
+    //       productId: req.body.product.id
+    //     }
+    //   }
+    // )
     // console.log(PinnedProduct)
 
-    if (req.body.product.pinned && !PinnedProduct) {
-      // Добавить продукт в избранное
-      await getManager().save(PinnedProducts, {
-        userId: req.body.userId,
-        productId: req.body.product.id
-      })
-    } else if (!req.body.product.pinned && PinnedProduct) {
-      // Удалить продукт из избранного
-      await getManager().delete(PinnedProducts, PinnedProduct)
-    }
+    // if (req.body.product.pinned && !PinnedProduct) {
+    //   // Добавить продукт в избранное
+    //   await getManager().save(PinnedProducts, {
+    //     userId: req.body.userId,
+    //     productId: req.body.product.id
+    //   })
+    // } else if (!req.body.product.pinned && PinnedProduct) {
+    //   // Удалить продукт из избранного
+    //   await getManager().delete(PinnedProducts, PinnedProduct)
+    // }
 
     const response = {
       updatedToken: req.body.updatedToken,
@@ -257,8 +255,8 @@ const removeProduct = async (req: Request, res: Response): Promise<Response> => 
 
     if (Product) {
       await getManager().remove(Products, Product)
-      await getManager().delete(FavoriteProducts, { productId: req.params.productId })
-      await getManager().delete(PinnedProducts, { productId: req.params.productId })
+      // await getManager().delete(FavoriteProducts, { productId: req.params.productId })
+      // await getManager().delete(PinnedProducts, { productId: req.params.productId })
       isRemoved = true
     }
 
@@ -283,30 +281,30 @@ const changeFavoriteParam = async (req: Request, res: Response): Promise<Respons
   try {
 
     // Поиск, есть ли продукт в избранном у пользователя
-    const FavoriteProduct = await getManager().findOne(
-      FavoriteProducts,
-      {
-        where: {
-          userId: req.body.userId,
-          productId: req.body.productId
-        }
-      }
-    )
+    // const FavoriteProduct = await getManager().findOne(
+    //   FavoriteProducts,
+    //   {
+    //     where: {
+    //       userId: req.body.userId,
+    //       productId: req.body.productId
+    //     }
+    //   }
+    // )
 
     let isFavorite = false
 
-    if (FavoriteProduct) {
-      // Удалить продукт из избранного
-      await getManager().delete(FavoriteProducts, FavoriteProduct)
-      isFavorite = false
-    } else {
-      // Добавить продукт в избранное
-      await getManager().save(FavoriteProducts, {
-        userId: req.body.userId,
-        productId: req.body.productId
-      })
-      isFavorite = true
-    }
+    // if (FavoriteProduct) {
+    //   // Удалить продукт из избранного
+    //   await getManager().delete(FavoriteProducts, FavoriteProduct)
+    //   isFavorite = false
+    // } else {
+    //   // Добавить продукт в избранное
+    //   await getManager().save(FavoriteProducts, {
+    //     userId: req.body.userId,
+    //     productId: req.body.productId
+    //   })
+    //   isFavorite = true
+    // }
 
     const response = {
       updatedToken: req.body.updatedToken,
@@ -329,30 +327,30 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
   try {
 
     // Поиск, есть ли продукт в избранном у пользователя
-    const PinnedProduct = await getManager().findOne(
-      PinnedProducts,
-      {
-        where: {
-          userId: req.body.userId,
-          productId: req.body.productId
-        }
-      }
-    )
+    // const PinnedProduct = await getManager().findOne(
+    //   PinnedProducts,
+    //   {
+    //     where: {
+    //       userId: req.body.userId,
+    //       productId: req.body.productId
+    //     }
+    //   }
+    // )
 
     let isPinned = false
 
-    if (PinnedProduct) {
-      // Удалить продукт из избранного
-      await getManager().delete(PinnedProducts, PinnedProduct)
-      isPinned = false
-    } else {
-      // Добавить продукт в избранное
-      await getManager().save(PinnedProducts, {
-        userId: req.body.userId,
-        productId: req.body.productId
-      })
-      isPinned = true
-    }
+    // if (PinnedProduct) {
+    //   // Удалить продукт из избранного
+    //   await getManager().delete(PinnedProducts, PinnedProduct)
+    //   isPinned = false
+    // } else {
+    //   // Добавить продукт в избранное
+    //   await getManager().save(PinnedProducts, {
+    //     userId: req.body.userId,
+    //     productId: req.body.productId
+    //   })
+    //   isPinned = true
+    // }
 
     const response = {
       updatedToken: req.body.updatedToken,

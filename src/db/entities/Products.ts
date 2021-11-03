@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany } from "typeorm"
 import { Users } from './Users'
 import { ProductCategories } from './ProductCategories'
 
@@ -63,5 +63,11 @@ export class Products {
 
   @ManyToOne(() => ProductCategories, category => category.products)
   category: ProductCategories
+
+  @ManyToMany(() => Users)
+  favoriteForUsers: Users[]
+
+  @ManyToMany(() => Users)
+  pinnedForUsers: Users[]
 
 }

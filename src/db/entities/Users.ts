@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToMany, JoinTable } from "typeorm"
 import { Tokens } from './Tokens'
 import { UsersProfiles } from './UsersProfiles'
 import { Products } from './Products'
@@ -39,5 +39,13 @@ export class Users {
 
   @OneToMany(() => Products, recipes => recipes.user)
   recipes: Recipes[]
+
+  @ManyToMany(() => Products)
+  @JoinTable({ name: 'favorite_products' })
+  favoriteProducts: Products[]
+
+  @ManyToMany(() => Products)
+  @JoinTable({ name: 'pinned_products' })
+  pinnedProducts: Products[]
 
 }
