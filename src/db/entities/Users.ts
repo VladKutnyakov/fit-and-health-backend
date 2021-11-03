@@ -44,7 +44,7 @@ export class Users {
   @JoinTable({ name: 'favorite_products' })
   favoriteProducts: Products[]
 
-  @ManyToMany(() => Products)
+  @ManyToMany(() => Products, product => product.pinnedForUsers)
   @JoinTable({ name: 'pinned_products' })
   pinnedProducts: Products[]
 

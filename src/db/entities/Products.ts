@@ -68,7 +68,7 @@ export class Products {
   @ManyToMany(() => Users, user => user.favoriteProducts)
   favoriteForUsers: Users[]
 
-  @ManyToMany(() => Users)
+  @ManyToMany(() => Users, user => user.pinnedProducts)
   pinnedForUsers: Users[]
 
   @OneToMany(() => RecipeProducts, recipeProducts => recipeProducts.product)
