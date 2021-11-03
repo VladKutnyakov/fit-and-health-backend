@@ -21,12 +21,56 @@ const router: Router = express.Router()
 *             schema:
 *               type: object
 *               properties:
-*                 id:
-*                   type: integer
-*                   description: Id информации профиля
-*                 title:
+*                 updatedToken:
 *                   type: string
-*                   description: Название продукта
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: Id продукта
+*                       title:
+*                         type: string
+*                         description: Название продукта
+*                       weight:
+*                         type: integer
+*                         description: Вес продукта (по умолчанию 100 гр.)
+*                       protein:
+*                         type: integer
+*                         description: Кол-во белков (на 100 гр.)
+*                       fats:
+*                         type: integer
+*                         description: Кол-во жиров (на 100 гр.)
+*                       carb:
+*                         type: integer
+*                         description: Кол-во углеводов (на 100 гр.)
+*                       kkal:
+*                         type: integer
+*                         description: Калорийность (на 100 гр.)
+*                       user:
+*                         type: object
+*                         properties:
+*                           id:
+*                             type: integer
+*                             description: Id пользователя
+*                       category:
+*                         type: object
+*                         properties:
+*                           id:
+*                             type: integer
+*                             description: Id категории продукта
+*                           title:
+*                             type: string
+*                             description: Название категории продукта
+*                       favorite:
+*                         type: boolean
+*                         description: Признак добавления в избранное у авторизованного пользователя
+*                       pinned:
+*                         type: boolean
+*                         description: Признак добавления в закрепленное у авторизованного пользователя
 *       401:
 *         description: Ошибка авторизации
 */
