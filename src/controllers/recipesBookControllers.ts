@@ -9,8 +9,10 @@ const getRecipes = async (req: Request, res: Response): Promise<Response> => {
     const RecipesList = await getRepository(Recipes)
       .createQueryBuilder('recipes')
       .where([{user: req.body.userId}, {user: null}])
-      .leftJoin("recipes.products", "products")
-      .addSelect(['products.id', 'products.title', 'products.weight', 'products.protein', 'products.fats', 'products.carb', 'products.kkal',])
+      .leftJoin("recipes.recipeProducts", "recipeProducts")
+      .addSelect(['recipeProducts.weigthInRecipe', 'recipeProducts.product'])
+      .leftJoin('recipeProducts.product', 'product')
+      .addSelect(['product.id', 'product.title', 'product.weight', 'product.protein', 'product.fats', 'product.carb', 'product.kkal'])
       .leftJoin("recipes.user", "user")
       .addSelect(['user.id'])
       .offset(0)
@@ -29,7 +31,7 @@ const getRecipes = async (req: Request, res: Response): Promise<Response> => {
         description: RecipesList[i].description,
         cookingTimes: RecipesList[i].cookingTimes,
         cookingSkill: RecipesList[i].cookingSkill,
-        products: RecipesList[i].products,
+        products: RecipesList[i].recipeProducts,
         user: RecipesList[i]?.user?.id || null,
       }
 
