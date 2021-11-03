@@ -6,49 +6,20 @@ import { Users } from '../db/entities/Users'
 
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
-    // const FetchedProductsList = await getRepository(Products)
-    //   .createQueryBuilder('products')
-    //   .where([{user: req.body.userId}, {user: null}])
-    //   .leftJoin("products.user", "user")
-    //   .addSelect(['user.id'])
-    //   .leftJoinAndSelect('products.category', 'category')
-    //   .leftJoin('products.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
-    //   .addSelect(['favoriteForUsers.id'])
-    //   .orderBy({'products.id': 'ASC'})
-    //   .getMany()
-    // console.log(FetchedProductsList)
-    // console.log(FetchedProductsList[0].favoriteForUsers)
-
-    const ProductsList = await getManager().find(
-      Products,
-      {
-        where: [
-          { user: req.body.userId },
-          { user: null }
-        ],
-        relations: ['user', 'category']
-      }
-    )
-
-    // const UserFavoriteProducts = await getManager().find(
-    //   FavoriteProducts,
-    //   {
-    //     where: {
-    //       userId: req.body.userId
-    //     },
-    //   }
-    // )
-    // console.log(UserFavoriteProducts)
-
-    // const UserPinnedProducts = await getManager().find(
-    //   PinnedProducts,
-    //   {
-    //     where: {
-    //       userId: req.body.userId
-    //     },
-    //   }
-    // )
-    // console.log(UserPinnedProducts)
+    const ProductsList = await getRepository(Products)
+      .createQueryBuilder('products')
+      .where([{user: req.body.userId}, {user: null}])
+      .leftJoin("products.user", "user")
+      .addSelect(['user.id'])
+      .leftJoinAndSelect('products.category', 'category')
+      .leftJoin('products.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['favoriteForUsers.id'])
+      .leftJoin('products.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['pinnedForUsers.id'])
+      .orderBy({'products.id': 'ASC'})
+      .getMany()
+    // console.log(ProductsList)
+    // console.log(ProductsList[0].favoriteForUsers)
 
     const AllProducts: any = []
 
@@ -61,34 +32,17 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
         fats: ProductsList[i].fats,
         carb: ProductsList[i].carb,
         kkal: ProductsList[i].kkal,
-        user: ProductsList[i]?.user?.id || null,
+        user: ProductsList[i].user?.id || null,
         category: {
-          id: ProductsList[i]?.category?.id || null,
-          title: ProductsList[i]?.category?.title || null,
+          id: ProductsList[i].category?.id || null,
+          title: ProductsList[i].category?.title || null,
         },
-        favorite: false,
-        pinned: false,
+        favorite: ProductsList[i].favoriteForUsers.length > 0 ? true : false,
+        pinned: ProductsList[i].pinnedForUsers.length > 0 ? true : false,
       }
-
-      // if (UserFavoriteProducts) {
-      //   for (let f = 0; f < UserFavoriteProducts.length; f++) {
-      //     if (UserFavoriteProducts[f].productId === item.id) {
-      //       item.favorite = true
-      //     }
-      //   }
-      // }
-
-      // if (UserPinnedProducts) {
-      //   for (let p = 0; p < UserPinnedProducts.length; p++) {
-      //     if (UserPinnedProducts[p].productId === item.id) {
-      //       item.pinned = true
-      //     }
-      //   }
-      // }
 
       AllProducts.push(item)
     }
-
     // console.log(AllProducts)
 
     const response = {
