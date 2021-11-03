@@ -1,11 +1,24 @@
 import { Request, Response } from "express"
-import { getManager } from "typeorm"
+import { getManager, getRepository } from "typeorm"
 import { Products } from "../db/entities/Products"
 import { ProductCategories } from '../db/entities/ProductCategories'
 import { Users } from '../db/entities/Users'
 
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
+    // const FetchedProductsList = await getRepository(Products)
+    //   .createQueryBuilder('products')
+    //   .where([{user: req.body.userId}, {user: null}])
+    //   .leftJoin("products.user", "user")
+    //   .addSelect(['user.id'])
+    //   .leftJoinAndSelect('products.category', 'category')
+    //   .leftJoin('products.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+    //   .addSelect(['favoriteForUsers.id'])
+    //   .orderBy({'products.id': 'ASC'})
+    //   .getMany()
+    // console.log(FetchedProductsList)
+    // console.log(FetchedProductsList[0].favoriteForUsers)
+
     const ProductsList = await getManager().find(
       Products,
       {
