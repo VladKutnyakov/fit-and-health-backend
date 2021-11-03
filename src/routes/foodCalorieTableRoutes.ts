@@ -15,7 +15,7 @@ const router: Router = express.Router()
 *	     - jwt: []
 *     responses:
 *       200:
-*         description: Список продуктов.
+*         description: Список продуктов
 *         content:
 *           application/json:
 *             schema:
@@ -80,6 +80,46 @@ router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduc
 
 router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduct)
 
+// http://localhost:3031/api/food-calorie-table/remove-product/:productId
+/**
+* @swagger
+* /api/food-calorie-table/remove-product/{productId}:
+*   delete:
+*     tags:
+*       - Таблица калорийности продуктов
+*     summary: Удаление продукта
+*     security:
+*	     - jwt: []
+*     parameters:
+*       - in: path
+*         name: productId
+*         required: true
+*         schema:
+*           type: integer
+*         description: ID продукта
+*     responses:
+*       200:
+*         description: Продукт удален
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: object
+*                   properties:
+*                     removed:
+*                       type: boolean
+*                       description: Признак успешного удаления продукта
+*                     productId:
+*                       type: integer
+*                       description: Id продукта
+*       401:
+*         description: Ошибка авторизации
+*/
 router.delete('/remove-product/:productId', JwtGuard, foodCalorieTableControllers.removeProduct)
 
 router.post('/change-favorite-param', JwtGuard, foodCalorieTableControllers.changeFavoriteParam)

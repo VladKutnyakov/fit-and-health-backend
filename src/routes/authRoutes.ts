@@ -43,7 +43,7 @@ const router: Router = express.Router()
 *                   description: Текст ошибки
 *               example: Пользователь не найден.
 *       500:
-*         description: Неизвестная ошибка. Обратитесь к разработчику.
+*         description: Неизвестная ошибка. Обратитесь к разработчику
 */
 router.post('/login', authControllers.login)
 
@@ -86,9 +86,9 @@ router.post('/login', authControllers.login)
 *                 message:
 *                   type: string
 *                   description: Текст ошибки
-*               example: Введенный E-mail уже используется.
+*               example: Введенный E-mail уже используется
 *       500:
-*         description: Неизвестная ошибка. Обратитесь к разработчику.
+*         description: Неизвестная ошибка. Обратитесь к разработчику
 */
 router.post('/register', authControllers.register)
 
