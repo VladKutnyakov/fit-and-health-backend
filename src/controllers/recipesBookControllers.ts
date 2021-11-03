@@ -10,7 +10,7 @@ const getRecipes = async (req: Request, res: Response): Promise<Response> => {
       .createQueryBuilder('recipes')
       .where([{user: req.body.userId}, {user: null}])
       .leftJoin("recipes.recipeProducts", "recipeProducts")
-      .addSelect(['recipeProducts.weigthInRecipe', 'recipeProducts.product'])
+      .addSelect(['recipeProducts.weightInRecipe', 'recipeProducts.product'])
       .leftJoin('recipeProducts.product', 'product')
       .addSelect(['product.id', 'product.title', 'product.weight', 'product.protein', 'product.fats', 'product.carb', 'product.kkal'])
       .leftJoin("recipes.user", "user")

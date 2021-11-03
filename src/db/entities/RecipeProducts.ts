@@ -27,7 +27,7 @@ export class RecipeProducts {
     unique: false,
     comment: 'Вес продукта в рецепте'
   })
-  weigthInRecipe!: number
+  weightInRecipe!: number
 
   @ManyToOne(() => Recipes, recipe => recipe.recipeProducts)
   recipe!: Recipes
