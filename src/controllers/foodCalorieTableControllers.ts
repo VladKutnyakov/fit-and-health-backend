@@ -33,10 +33,7 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
         carb: ProductsList[i].carb,
         kkal: ProductsList[i].kkal,
         user: ProductsList[i].user,
-        category: {
-          id: ProductsList[i].category?.id || null,
-          title: ProductsList[i].category?.title || null,
-        },
+        category: ProductsList[i].category,
         favorite: ProductsList[i].favoriteForUsers.length > 0 ? true : false,
         pinned: ProductsList[i].pinnedForUsers.length > 0 ? true : false,
       }
