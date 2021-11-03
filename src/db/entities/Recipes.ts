@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany, JoinTable } from "typeorm"
 import { Users } from './Users'
-import { Products } from './Products'
+import { RecipeProducts } from './RecipeProducts'
 
 @Entity()
 export class Recipes {
@@ -45,8 +45,7 @@ export class Recipes {
   @ManyToOne(() => Users, user => user.recipes)
   user: Users
 
-  @ManyToMany(() => Products)
-  @JoinTable({ name: 'recipe_products' })
-  products: Products[]
+  @OneToMany(() => RecipeProducts, recipeProducts => recipeProducts.recipe)
+  recipeProducts!: RecipeProducts[]
 
 }

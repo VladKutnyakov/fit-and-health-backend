@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany } from "typeorm"
 import { Users } from './Users'
 import { ProductCategories } from './ProductCategories'
+import { RecipeProducts } from './RecipeProducts'
 
 @Entity()
 export class Products {
@@ -69,5 +70,8 @@ export class Products {
 
   @ManyToMany(() => Users)
   pinnedForUsers: Users[]
+
+  @OneToMany(() => RecipeProducts, recipeProducts => recipeProducts.product)
+  recipeProducts!: RecipeProducts[]
 
 }
