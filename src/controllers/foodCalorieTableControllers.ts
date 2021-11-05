@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getManager, getRepository } from "typeorm"
+import { getManager, getRepository, getConnection } from "typeorm"
 import { Products } from "../db/entities/Products"
 import { ProductCategories } from '../db/entities/ProductCategories'
 import { Users } from '../db/entities/Users'
@@ -243,38 +243,46 @@ const removeProduct = async (req: Request, res: Response): Promise<Response> => 
 
 const changeFavoriteParam = async (req: Request, res: Response): Promise<Response> => {
   try {
-
-    // Поиск, есть ли продукт в избранном у пользователя
-    // const FavoriteProduct = await getManager().findOne(
-    //   FavoriteProducts,
-    //   {
-    //     where: {
-    //       userId: req.body.userId,
-    //       productId: req.body.productId
-    //     }
-    //   }
-    // )
+    const User = await getRepository(Users)
+    .createQueryBuilder('users')
+    .where({id: req.body.userId})
+    .select(['users.id'])
+    .leftJoin('users.favoriteProducts', 'favoriteProducts')
+    .addSelect(['favoriteProducts.id'])
+    .getOne()
+    // console.log(User)
 
     let isFavorite = false
 
-    // if (FavoriteProduct) {
-    //   // Удалить продукт из избранного
-    //   await getManager().delete(FavoriteProducts, FavoriteProduct)
-    //   isFavorite = false
-    // } else {
-    //   // Добавить продукт в избранное
-    //   await getManager().save(FavoriteProducts, {
-    //     userId: req.body.userId,
-    //     productId: req.body.productId
-    //   })
-    //   isFavorite = true
-    // }
+    if (User) {
+      for (let i = 0; i < User?.favoriteProducts.length; i++) {
+        if (User?.favoriteProducts[i].id === req.body.productId) {
+          isFavorite = true
+        }
+      }
+    }
+
+    if (isFavorite) {
+      // Для user с id=1 удалить занчение favoriteProducts productsId=2
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "favoriteProducts")
+      .of(req.body.userId)
+      .remove(req.body.productId)
+    } else {
+      // Для user с id=1 установить занчение favoriteProducts productsId=2
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "favoriteProducts")
+      .of(req.body.userId)
+      .add(req.body.productId)
+    }
 
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
         productId: req.body.productId,
-        favorite: isFavorite
+        favorite: !isFavorite
       }
     }
 
@@ -289,38 +297,46 @@ const changeFavoriteParam = async (req: Request, res: Response): Promise<Respons
 
 const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
   try {
-
-    // Поиск, есть ли продукт в избранном у пользователя
-    // const PinnedProduct = await getManager().findOne(
-    //   PinnedProducts,
-    //   {
-    //     where: {
-    //       userId: req.body.userId,
-    //       productId: req.body.productId
-    //     }
-    //   }
-    // )
+    const User = await getRepository(Users)
+    .createQueryBuilder('users')
+    .where({id: req.body.userId})
+    .select(['users.id'])
+    .leftJoin('users.pinnedProducts', 'pinnedProducts')
+    .addSelect(['pinnedProducts.id'])
+    .getOne()
+    // console.log(User)
 
     let isPinned = false
 
-    // if (PinnedProduct) {
-    //   // Удалить продукт из избранного
-    //   await getManager().delete(PinnedProducts, PinnedProduct)
-    //   isPinned = false
-    // } else {
-    //   // Добавить продукт в избранное
-    //   await getManager().save(PinnedProducts, {
-    //     userId: req.body.userId,
-    //     productId: req.body.productId
-    //   })
-    //   isPinned = true
-    // }
+    if (User) {
+      for (let i = 0; i < User?.pinnedProducts.length; i++) {
+        if (User?.pinnedProducts[i].id === req.body.productId) {
+          isPinned = true
+        }
+      }
+    }
+
+    if (isPinned) {
+      // Для user с id=1 удалить занчение pinnedProducts productsId=2
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "pinnedProducts")
+      .of(req.body.userId)
+      .remove(req.body.productId)
+    } else {
+      // Для user с id=1 установить занчение pinnedProducts productsId=2
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "pinnedProducts")
+      .of(req.body.userId)
+      .add(req.body.productId)
+    }
 
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
         productId: req.body.productId,
-        pinned: isPinned
+        pinned: !isPinned
       }
     }
 
