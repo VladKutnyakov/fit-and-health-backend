@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
 import { Users } from './Users'
+import { Muscles } from './Muscles'
 
 @Entity()
 export class Exercises {
@@ -65,8 +66,13 @@ export class Exercises {
   })
   techniqueDescription: string
 
+  @ManyToOne(() => Muscles, targetMuscles => targetMuscles.exerciseTargetMuscle)
+  targetMuscles: Muscles
+
+  @ManyToOne(() => Muscles, additionalMuscles => additionalMuscles.exerciseAdditionalMuscle)
+  additionalMuscles: Muscles
+
   // targetMuscles: ['Широчайшие'],
-  // additionalMuscles: ['Бицепсы', 'Средняя часть спины'],
   // analogs: [{id: 1, title: 'test'}],
 
   @ManyToOne(() => Users, user => user.exercises)
