@@ -76,6 +76,8 @@ const router: Router = express.Router()
 */
 router.get('/', JwtGuard, foodCalorieTableControllers.getAllProducts)
 
+router.get('/product-categories', JwtGuard, foodCalorieTableControllers.getProductCategories)
+
 router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduct)
 
 router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduct)

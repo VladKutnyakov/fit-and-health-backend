@@ -4,6 +4,27 @@ import { Products } from "../db/entities/Products"
 import { ProductCategories } from '../db/entities/ProductCategories'
 import { Users } from '../db/entities/Users'
 
+const getProductCategories = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const ProductCategoriesList = await getRepository(ProductCategories)
+      .createQueryBuilder('categories')
+      .orderBy({'id': 'ASC'})
+      .getMany()
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: ProductCategoriesList
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+}
+
 const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
     const ProductsList = await getRepository(Products)
@@ -350,6 +371,7 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
 }
 
 export default {
+  getProductCategories,
   getAllProducts,
   saveNewProduct,
   updateProduct,
