@@ -3,6 +3,43 @@ import foodCalorieTableControllers from '../controllers/foodCalorieTableControll
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
+// http://localhost:3031/api/food-calorie-table/product-categories
+/**
+* @swagger
+* /api/food-calorie-table/product-categories:
+*   get:
+*     tags:
+*       - Таблица калорийности продуктов
+*     summary: Список категорий продуктов
+*     security:
+*	     - jwt: []
+*     responses:
+*       200:
+*         description: Список категорий продуктов
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: Id категории
+*                       title:
+*                         type: string
+*                         description: Название категории
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/product-categories', JwtGuard, foodCalorieTableControllers.getProductCategories)
+
 // http://localhost:3031/api/food-calorie-table/
 /**
 * @swagger
@@ -75,8 +112,6 @@ const router: Router = express.Router()
 *         description: Ошибка авторизации
 */
 router.get('/', JwtGuard, foodCalorieTableControllers.getAllProducts)
-
-router.get('/product-categories', JwtGuard, foodCalorieTableControllers.getProductCategories)
 
 router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduct)
 
