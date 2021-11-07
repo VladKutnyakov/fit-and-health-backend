@@ -3,6 +3,7 @@ import { Tokens } from './Tokens'
 import { UsersProfiles } from './UsersProfiles'
 import { Products } from './Products'
 import { Recipes } from './Recipes'
+import { Exercises } from './Exercises'
 
 @Entity()
 export class Users {
@@ -47,5 +48,8 @@ export class Users {
   @ManyToMany(() => Products, product => product.pinnedForUsers)
   @JoinTable({ name: 'pinned_products' })
   pinnedProducts: Products[]
+
+  @OneToMany(() => Exercises, exercises => exercises.user)
+  exercises: Exercises[]
 
 }

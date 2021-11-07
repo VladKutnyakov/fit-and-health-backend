@@ -59,7 +59,9 @@ export class Products {
   })
   kkal: number
 
-  @ManyToOne(() => Users, user => user.products)
+  @ManyToOne(() => Users, user => user.products, {
+    cascade: true
+  })
   user: Users
 
   @ManyToOne(() => ProductCategories, category => category.products)
