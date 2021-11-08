@@ -1,8 +1,8 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
 import { MealPlaners } from '../entities/MealPlaners'
-import { Products } from "./Products"
-import { Recipes } from "./Recipes"
+import { Products } from './Products'
+import { Recipes } from './Recipes'
 
 @Entity()
 export class MealParts {
