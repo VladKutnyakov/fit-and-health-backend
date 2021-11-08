@@ -17,7 +17,34 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
       .leftJoin("mealPlaners.user", "user")
       .addSelect(['user.id'])
       .getOne()
-    // console.log(MealPlanerInfo)
+    console.log(MealPlanerInfo)
+
+    const EmptyMealPlanerInfo = {
+      id: null,
+      date: null,
+      title: null,
+      description: null,
+      targetProtein: 1,
+      targetFats: 0.5,
+      targetCarb: 2,
+      targetWeight: null,
+      currentWeight: null,
+      marks: [],
+      like: null,
+      dislike: null,
+      share: null,
+      mealParts: [
+        {
+          title: 'Затрак',
+          mealTime: '07:00',
+          recipes: [],
+          products: []
+        },
+      ],
+      user: {
+        id: null
+      }
+    }
 
     const test = {
       ...MealPlanerInfo,
@@ -37,7 +64,7 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: test
+      data: MealPlanerInfo ? test : EmptyMealPlanerInfo
     }
 
     return res.status(200).json(response)

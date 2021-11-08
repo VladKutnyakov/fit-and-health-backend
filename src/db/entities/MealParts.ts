@@ -1,6 +1,8 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm"
 import { MealPlaners } from '../entities/MealPlaners'
+import { Products } from "./Products"
+import { Recipes } from "./Recipes"
 
 @Entity()
 export class MealParts {
@@ -26,10 +28,15 @@ export class MealParts {
   })
   mealTime: string
 
-  // recipes: [],
-  // products: []
-
   @ManyToOne(() => MealPlaners, mealPlaner => mealPlaner.mealParts)
   mealPlaner: MealPlaners
+
+  @ManyToMany(() => Products, product => product.addedToMealParts)
+  @JoinTable({ name: 'meal_part_products' })
+  mealPartProducts: Products[]
+
+  @ManyToMany(() => Recipes, recipes => recipes.addedToMealParts)
+  @JoinTable({ name: 'meal_part_recipes' })
+  mealPartRecipes: Recipes[]
 
 }

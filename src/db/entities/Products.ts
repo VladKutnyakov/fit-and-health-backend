@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany } from 'typeorm'
 import { Users } from './Users'
 import { ProductCategories } from './ProductCategories'
 import { RecipeProducts } from './RecipeProducts'
+import { MealParts } from './MealParts'
 
 @Entity()
 export class Products {
@@ -73,6 +74,9 @@ export class Products {
 
   @OneToMany(() => RecipeProducts, recipeProducts => recipeProducts.product)
   recipeProducts!: RecipeProducts[]
+
+  @ManyToMany(() => MealParts, mealParts => mealParts.mealPartProducts)
+  addedToMealParts: MealParts[]
 
   @CreateDateColumn({
     type: 'timestamp',

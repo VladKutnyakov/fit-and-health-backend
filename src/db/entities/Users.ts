@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, OneToOne, ManyToMany, JoinTable } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, OneToOne, ManyToMany, JoinTable } from 'typeorm'
 import { Tokens } from './Tokens'
 import { UsersProfiles } from './UsersProfiles'
 import { Products } from './Products'
 import { Recipes } from './Recipes'
 import { Exercises } from './Exercises'
-import { MealPlaners } from "./MealPlaners"
+import { MealPlaners } from './MealPlaners'
 
 @Entity()
 export class Users {

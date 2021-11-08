@@ -1,7 +1,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from "typeorm"
-import { Users } from '../entities/Users'
-import { MealParts } from '../entities/MealParts'
+import { Users } from './Users'
+import { MealParts } from './MealParts'
 
 @Entity()
 export class MealPlaners {
