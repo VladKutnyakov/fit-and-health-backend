@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany } from 'typeorm'
 import { Users } from './Users'
 import { RecipeProducts } from './RecipeProducts'
 import { MealParts } from './MealParts'
@@ -51,5 +51,20 @@ export class Recipes {
 
   @ManyToMany(() => MealParts, mealParts => mealParts.mealPartRecipes)
   addedToMealParts: MealParts[]
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    comment: 'Дата создания'
+  })
+  createdAt: Date
+
+  // @UpdateDateColumn()
+  // updatedAt: Date
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    comment: 'Дата удаления'
+  })
+  deletedAt: Date
 
 }
