@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne } from "typeorm"
 import { Users } from './Users'
 import { Muscles } from './Muscles'
 
@@ -72,10 +72,24 @@ export class Exercises {
   @ManyToOne(() => Muscles, additionalMuscles => additionalMuscles.exerciseAdditionalMuscle)
   additionalMuscles: Muscles
 
-  // targetMuscles: ['Широчайшие'],
   // analogs: [{id: 1, title: 'test'}],
 
   @ManyToOne(() => Users, user => user.exercises)
   user: Users
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    comment: 'Дата создания'
+  })
+  createdAt: Date
+
+  // @UpdateDateColumn()
+  // updatedAt: Date
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    comment: 'Дата удаления'
+  })
+  deletedAt: Date
 
 }
