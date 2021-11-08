@@ -4,7 +4,7 @@ import { getRepository, getConnection } from "typeorm"
 // import { ProductCategories } from '../db/entities/ProductCategories'
 // import { Users } from '../db/entities/Users'
 
-const getProductCategories = async (req: Request, res: Response): Promise<Response> => {
+const fetchExercisesList = async (req: Request, res: Response): Promise<Response> => {
   try {
 
     const response = {
@@ -56,7 +56,7 @@ const saveNewExercise = async (req: Request, res: Response): Promise<Response> =
 }
 
 export default {
-  getProductCategories,
+  fetchExercisesList,
   fetchExerciseInfo,
   saveNewExercise
 }
