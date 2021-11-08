@@ -4,6 +4,7 @@ import { UsersProfiles } from './UsersProfiles'
 import { Products } from './Products'
 import { Recipes } from './Recipes'
 import { Exercises } from './Exercises'
+import { MealPlaners } from "./MealPlaners"
 
 @Entity()
 export class Users {
@@ -48,6 +49,9 @@ export class Users {
   @ManyToMany(() => Products, product => product.pinnedForUsers)
   @JoinTable({ name: 'pinned_products' })
   pinnedProducts: Products[]
+
+  @OneToMany(() => MealPlaners, mealPlaners => mealPlaners.user)
+  mealPlaners: MealPlaners[]
 
   @OneToMany(() => Exercises, exercises => exercises.user)
   exercises: Exercises[]
