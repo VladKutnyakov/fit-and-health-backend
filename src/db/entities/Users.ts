@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToMany, JoinTable } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, OneToOne, ManyToMany, JoinTable } from "typeorm"
 import { Tokens } from './Tokens'
 import { UsersProfiles } from './UsersProfiles'
 import { Products } from './Products'
@@ -28,6 +28,17 @@ export class Users {
     comment: 'Пароль пользователя для входа'
   })
   password: string
+
+  @CreateDateColumn({
+    comment: 'Дата создания'
+  })
+  createdAt: Date
+
+  // @UpdateDateColumn()
+  // updatedAt: Date
+
+  @DeleteDateColumn()
+  deletedAt: Date
 
   @OneToMany(() => Tokens, tokens => tokens.user)
   tokens: Tokens[]
