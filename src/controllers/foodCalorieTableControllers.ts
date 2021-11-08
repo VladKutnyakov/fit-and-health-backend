@@ -79,59 +79,59 @@ const getAllProducts = async (req: Request, res: Response): Promise<Response> =>
 
 const saveNewProduct = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const ProductUser = await getManager().findOne(Users, { where: { id: req.body.userId } })
+    const CreatedProduct = await getRepository(Products)
+    .createQueryBuilder('products')
+    .insert()
+    .into(Products)
+    .values([{
+        title: req.body.product.title,
+        weight: 100,
+        protein: req.body.product.protein,
+        fats: req.body.product.fats,
+        carb: req.body.product.carb,
+        kkal: req.body.product.kkal,
+        user: getRepository(Users).create({
+          id: req.body.userId,
+        }),
+        category: getRepository(ProductCategories).create({
+          id: req.body.product.category.id,
+        })
+      }])
+    .execute()
 
-    const ProductCategory = await getManager().findOne(ProductCategories, { where: { id: req.body.product.category.id } })
+    // console.log(CreatedProduct)
+    // console.log(CreatedProduct.raw[0].id)
 
-    const CreatedProduct = await getManager().save(Products, {
-      title: req.body.product.title.toString(),
-      weight: 100,
-      protein: parseFloat(req.body.product.protein),
-      fats: parseFloat(req.body.product.fats),
-      carb: parseFloat(req.body.product.carb),
-      kkal: parseFloat(req.body.product.kkal),
-      user: ProductUser,
-      category: ProductCategory
-    })
-    // console.log(CreatedProduct);
-
-    const Product = {
-      id: CreatedProduct.id,
-      title: CreatedProduct.title,
-      weight: CreatedProduct.weight,
-      protein: CreatedProduct.protein,
-      fats: CreatedProduct.fats,
-      carb: CreatedProduct.carb,
-      kkal: CreatedProduct.kkal,
-      favorite: false,
-      pinned: false,
-      user: CreatedProduct.user.id,
-      category: {
-        id: CreatedProduct.category.id,
-        title: CreatedProduct.category.title,
-      }
+    if (req.body.product.favorite) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "favoriteProducts")
+      .of(req.body.userId)
+      .add(CreatedProduct.raw[0].id)
     }
 
-    // if (req.body.product.favorite) {
-    //   await getManager().save(FavoriteProducts, {
-    //     userId: req.body.userId,
-    //     productId: CreatedProduct.id
-    //   })
-    //   Product.favorite = true
-    // }
-
-    // if (req.body.product.pinned) {
-    //   await getManager().save(PinnedProducts, {
-    //     userId: req.body.userId,
-    //     productId: CreatedProduct.id
-    //   })
-    //   Product.pinned = true
-    // }
+    if (req.body.product.pinned) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "pinnedProducts")
+      .of(req.body.userId)
+      .add(CreatedProduct.raw[0].id)
+    }
 
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
-        product: Product
+        product: {
+          id: CreatedProduct.raw[0].id,
+          title: req.body.product.title,
+          weight: 100,
+          protein: req.body.product.protein,
+          fats: req.body.product.fats,
+          carb: req.body.product.carb,
+          kkal: req.body.product.kkal,
+          user: { id: req.body.userId },
+          category: req.body.product.category,
+        }
       }
     }
 
