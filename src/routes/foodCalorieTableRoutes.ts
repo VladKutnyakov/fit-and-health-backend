@@ -159,6 +159,49 @@ router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduc
 */
 router.delete('/remove-product/:productId', JwtGuard, foodCalorieTableControllers.removeProduct)
 
+// http://localhost:3031/api/food-calorie-table/change-favorite-param
+/**
+* @swagger
+* /api/food-calorie-table/change-favorite-param:
+*   post:
+*     tags:
+*       - Таблица калорийности продуктов
+*     summary: Изменить признак "избранного" для продукта у пользователя
+*     security:
+*	     - jwt: []
+*     requestBody:
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             required: true
+*             properties:
+*               productId:
+*                 type: number
+*                 description: ID продутка
+*     responses:
+*       200:
+*         description: Продукт удален
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: object
+*                   properties:
+*                     favorite:
+*                       type: boolean
+*                       description: Признак "изранного" для продукта у пользователя
+*                     productId:
+*                       type: integer
+*                       description: Id продукта
+*       401:
+*         description: Ошибка авторизации
+*/
 router.post('/change-favorite-param', JwtGuard, foodCalorieTableControllers.changeFavoriteParam)
 
 router.post('/change-pinned-param', JwtGuard, foodCalorieTableControllers.changePinnedParam)
