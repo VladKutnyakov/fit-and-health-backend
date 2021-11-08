@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getManager, getRepository, getConnection } from "typeorm"
+import { getRepository, getConnection } from "typeorm"
 import { Products } from "../db/entities/Products"
 import { ProductCategories } from '../db/entities/ProductCategories'
 import { Users } from '../db/entities/Users'

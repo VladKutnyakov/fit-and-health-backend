@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany, Timestamp } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany } from "typeorm"
 import { Users } from './Users'
 import { ProductCategories } from './ProductCategories'
 import { RecipeProducts } from './RecipeProducts'

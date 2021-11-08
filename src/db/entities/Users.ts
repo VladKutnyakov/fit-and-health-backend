@@ -29,17 +29,6 @@ export class Users {
   })
   password: string
 
-  @CreateDateColumn({
-    comment: 'Дата создания'
-  })
-  createdAt: Date
-
-  // @UpdateDateColumn()
-  // updatedAt: Date
-
-  @DeleteDateColumn()
-  deletedAt: Date
-
   @OneToMany(() => Tokens, tokens => tokens.user)
   tokens: Tokens[]
 
@@ -62,5 +51,20 @@ export class Users {
 
   @OneToMany(() => Exercises, exercises => exercises.user)
   exercises: Exercises[]
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    comment: 'Дата создания'
+  })
+  createdAt: Date
+
+  // @UpdateDateColumn()
+  // updatedAt: Date
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    comment: 'Дата удаления'
+  })
+  deletedAt: Date
 
 }
