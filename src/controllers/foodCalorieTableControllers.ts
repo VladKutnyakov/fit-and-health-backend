@@ -129,8 +129,10 @@ const saveNewProduct = async (req: Request, res: Response): Promise<Response> =>
           fats: req.body.product.fats,
           carb: req.body.product.carb,
           kkal: req.body.product.kkal,
-          user: { id: req.body.userId },
           category: req.body.product.category,
+          favorite: req.body.product.favorite,
+          pinned: req.body.product.pinned,
+          user: { id: req.body.userId }
         }
       }
     }
