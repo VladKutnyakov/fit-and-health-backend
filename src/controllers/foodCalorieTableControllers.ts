@@ -229,29 +229,17 @@ const updateProduct = async (req: Request, res: Response): Promise<Response> => 
 
 const removeProduct = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const Product = await getManager().findOne(
-      Products,
-      {
-        where: {
-          id: req.params.productId,
-          user: req.body.userId
-        }
-      }
-    )
-
-    let isRemoved = false
-
-    if (Product) {
-      await getManager().remove(Products, Product)
-      // await getManager().delete(FavoriteProducts, { productId: req.params.productId })
-      // await getManager().delete(PinnedProducts, { productId: req.params.productId })
-      isRemoved = true
-    }
+    await getConnection()
+    .createQueryBuilder()
+    .softDelete()
+    .from(Products)
+    .where(`id = ${req.params.productId}`)
+    .execute()
 
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
-        removed: isRemoved,
+        removed: true,
         productId: req.params.productId
       }
     }

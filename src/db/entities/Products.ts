@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany, Timestamp } from "typeorm"
 import { Users } from './Users'
 import { ProductCategories } from './ProductCategories'
 import { RecipeProducts } from './RecipeProducts'
@@ -59,9 +59,7 @@ export class Products {
   })
   kkal: number
 
-  @ManyToOne(() => Users, user => user.products, {
-    cascade: true
-  })
+  @ManyToOne(() => Users, user => user.products)
   user: Users
 
   @ManyToOne(() => ProductCategories, category => category.products)
@@ -75,5 +73,20 @@ export class Products {
 
   @OneToMany(() => RecipeProducts, recipeProducts => recipeProducts.product)
   recipeProducts!: RecipeProducts[]
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    comment: 'Дата создания'
+  })
+  createdAt: Date
+
+  // @UpdateDateColumn()
+  // updatedAt: Date
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    comment: 'Дата удаления'
+  })
+  deletedAt: Date
 
 }
