@@ -148,67 +148,68 @@ const saveNewProduct = async (req: Request, res: Response): Promise<Response> =>
 
 const updateProduct = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const TargetProductCategory = await getManager().findOne(ProductCategories, { where: { id: req.body.product?.category?.id } })
-
-    const UpdatedProduct = await getManager().update(
-      Products,
-      req.body.product.id,
-      {
+    // Обновить основные данные о продукте
+    const UpdatedProduct = await getRepository(Products)
+    .createQueryBuilder('products')
+    .update(Products)
+    .set({
         title: req.body.product.title,
+        weight: 100,
         protein: req.body.product.protein,
         fats: req.body.product.fats,
         carb: req.body.product.carb,
         kkal: req.body.product.kkal,
-        category: TargetProductCategory,
-      }
-    )
-    // console.log(UpdatedProduct)
+        user: getRepository(Users).create({
+          id: req.body.userId,
+        }),
+        category: getRepository(ProductCategories).create({
+          id: req.body.product.category.id,
+        })
+      })
+    .where(`id = ${req.body.product.id}`)
+    .execute()
 
-    // Обновить информацию в таблице "Избранные продукты"
-    // const FavoriteProduct = await getManager().findOne(
-    //   FavoriteProducts,
-    //   {
-    //     where: {
-    //       userId: req.body.userId,
-    //       productId: req.body.product.id
-    //     }
-    //   }
-    // )
-    // console.log(FavoriteProduct)
+    // Узнать есть ли продукт в избранном и закрепленном у пользователя
+    const Product = await getRepository(Products)
+      .createQueryBuilder('products')
+      .select('products.id')
+      .where([{id: req.body.product.id}])
+      .leftJoin('products.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['favoriteForUsers.id'])
+      .leftJoin('products.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['pinnedForUsers.id'])
+      .getOne()
 
-    // if (req.body.product.favorite && !FavoriteProduct) {
-    //   // Добавить продукт в избранное
-    //   await getManager().save(FavoriteProducts, {
-    //     userId: req.body.userId,
-    //     productId: req.body.product.id
-    //   })
-    // } else if (!req.body.product.favorite && FavoriteProduct) {
-    //   // Удалить продукт из избранного
-    //   await getManager().delete(FavoriteProducts, FavoriteProduct)
-    // }
+    // console.log(Product?.favoriteForUsers.length)
+    // console.log(Product?.pinnedForUsers.length)
 
-    // Обновить информацию в таблице "Закрепленные продукты"
-    // const PinnedProduct = await getManager().findOne(
-    //   PinnedProducts,
-    //   {
-    //     where: {
-    //       userId: req.body.userId,
-    //       productId: req.body.product.id
-    //     }
-    //   }
-    // )
-    // console.log(PinnedProduct)
+    if (Product?.favoriteForUsers && Product?.favoriteForUsers.length === 0 && req.body.product.favorite) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "favoriteProducts")
+      .of(req.body.userId)
+      .add(req.body.product.id)
+    } else if (Product?.favoriteForUsers && Product?.favoriteForUsers.length > 0 && !req.body.product.favorite) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "favoriteProducts")
+      .of(req.body.userId)
+      .remove(req.body.product.id)
+    }
 
-    // if (req.body.product.pinned && !PinnedProduct) {
-    //   // Добавить продукт в избранное
-    //   await getManager().save(PinnedProducts, {
-    //     userId: req.body.userId,
-    //     productId: req.body.product.id
-    //   })
-    // } else if (!req.body.product.pinned && PinnedProduct) {
-    //   // Удалить продукт из избранного
-    //   await getManager().delete(PinnedProducts, PinnedProduct)
-    // }
+    if (Product?.pinnedForUsers && Product?.pinnedForUsers.length === 0 && req.body.product.pinned) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "pinnedProducts")
+      .of(req.body.userId)
+      .add(req.body.product.id)
+    } else if (Product?.pinnedForUsers && Product?.pinnedForUsers.length > 0 && !req.body.product.pinned) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "pinnedProducts")
+      .of(req.body.userId)
+      .remove(req.body.product.id)
+    }
 
     const response = {
       updatedToken: req.body.updatedToken,
