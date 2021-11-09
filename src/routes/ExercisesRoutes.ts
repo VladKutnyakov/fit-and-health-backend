@@ -31,10 +31,27 @@ const router: Router = express.Router()
 *                     properties:
 *                       id:
 *                         type: integer
-*                         description: Id категории
+*                         description: ID мышечной группы
 *                       title:
 *                         type: string
-*                         description: Название категории
+*                         description: Название мышечной группы
+*                       exercises:
+*                         type: array
+*                         items:
+*                           type: object
+*                           properties:
+*                             id:
+*                               type: integer
+*                               description: ID упражнения
+*                             title:
+*                               type: string
+*                               description: Название упражнения
+*                             user:
+*                               type: object
+*                               properties:
+*                                 id:
+*                                   type: integer
+*                                   description: ID пользователя
 *       401:
 *         description: Ошибка авторизации
 */

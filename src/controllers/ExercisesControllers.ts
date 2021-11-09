@@ -8,7 +8,7 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
   try {
     const ExercisesList = await getRepository(Muscles)
       .createQueryBuilder('muscles')
-      .leftJoin('muscles.exercises', 'exercises', `exercises.user = ${2} OR exercises.user IS NULL`)
+      .leftJoin('muscles.exercises', 'exercises', `exercises.user = ${req.body.userId} OR exercises.user IS NULL`)
       .addSelect(['exercises.id', 'exercises.title'])
       .leftJoin("exercises.user", "user")
       .addSelect(['user.id'])
@@ -16,7 +16,7 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
       .getMany()
       // .getSql()
 
-    console.log(ExercisesList)
+    // console.log(ExercisesList)
 
     const response = {
       // updatedToken: req.body.updatedToken,
