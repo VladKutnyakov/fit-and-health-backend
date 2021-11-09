@@ -268,7 +268,7 @@ const changeFavoriteParam = async (req: Request, res: Response): Promise<Respons
 
     if (User) {
       for (let i = 0; i < User?.favoriteProducts.length; i++) {
-        if (User?.favoriteProducts[i].id === req.body.productId) {
+        if (User?.favoriteProducts[i].id === parseInt(req.params.productId)) {
           isFavorite = true
         }
       }
@@ -280,20 +280,20 @@ const changeFavoriteParam = async (req: Request, res: Response): Promise<Respons
       .createQueryBuilder()
       .relation(Users, "favoriteProducts")
       .of(req.body.userId)
-      .remove(req.body.productId)
+      .remove(req.params.productId)
     } else {
       // Для user с id=1 установить занчение favoriteProducts productsId=2
       await getConnection()
       .createQueryBuilder()
       .relation(Users, "favoriteProducts")
       .of(req.body.userId)
-      .add(req.body.productId)
+      .add(req.params.productId)
     }
 
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
-        productId: req.body.productId,
+        productId: req.params.productId,
         favorite: !isFavorite
       }
     }
@@ -322,7 +322,7 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
 
     if (User) {
       for (let i = 0; i < User?.pinnedProducts.length; i++) {
-        if (User?.pinnedProducts[i].id === req.body.productId) {
+        if (User?.pinnedProducts[i].id === parseInt(req.params.productId)) {
           isPinned = true
         }
       }
@@ -334,20 +334,20 @@ const changePinnedParam = async (req: Request, res: Response): Promise<Response>
       .createQueryBuilder()
       .relation(Users, "pinnedProducts")
       .of(req.body.userId)
-      .remove(req.body.productId)
+      .remove(req.params.productId)
     } else {
       // Для user с id=1 установить занчение pinnedProducts productsId=2
       await getConnection()
       .createQueryBuilder()
       .relation(Users, "pinnedProducts")
       .of(req.body.userId)
-      .add(req.body.productId)
+      .add(req.params.productId)
     }
 
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
-        productId: req.body.productId,
+        productId: req.params.productId,
         pinned: !isPinned
       }
     }
