@@ -19,7 +19,7 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
     // console.log(ExercisesList)
 
     const response = {
-      // updatedToken: req.body.updatedToken,
+      updatedToken: req.body.updatedToken,
       data: ExercisesList
     }
 
