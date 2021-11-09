@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
 import { Users } from './Users'
 import { Muscles } from './Muscles'
 
@@ -69,11 +69,9 @@ export class Exercises {
   @ManyToOne(() => Muscles, muscleGroup => muscleGroup.exercises)
   muscleGroup: Muscles
 
-  // @ManyToOne(() => Muscles, targetMuscles => targetMuscles.exerciseTargetMuscle)
-  // targetMuscles: Muscles
-
-  // @ManyToOne(() => Muscles, additionalMuscles => additionalMuscles.exerciseAdditionalMuscle)
-  // additionalMuscles: Muscles
+  @ManyToMany(() => Muscles, muscle => muscle.additionalForExercises)
+  @JoinTable({ name: 'exercise_additional_muscles' })
+  additionalMuscles: Muscles[]
 
   // analogs: [{id: 1, title: 'test'}],
 
