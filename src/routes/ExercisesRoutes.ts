@@ -55,7 +55,7 @@ const router: Router = express.Router()
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/', exercisesControllers.fetchExercisesList)
+router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
 router.post('/fetch-exercise-info', JwtGuard, exercisesControllers.fetchExerciseInfo)
 router.post('/save-new-exercise', JwtGuard, exercisesControllers.saveNewExercise)
 
