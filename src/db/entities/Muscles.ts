@@ -17,10 +17,13 @@ export class Muscles {
   })
   title: string
 
-  @OneToMany(() => Exercises, exercises => exercises.targetMuscles)
-  exerciseTargetMuscle: Exercises[]
+  @OneToMany(() => Exercises, exercises => exercises.muscleGroup)
+  exercises: Exercises[]
 
-  @OneToMany(() => Exercises, exercises => exercises.additionalMuscles)
-  exerciseAdditionalMuscle: Exercises[]
+  // @OneToMany(() => Exercises, exercises => exercises.targetMuscles)
+  // exerciseTargetMuscle: Exercises[]
+
+  // @OneToMany(() => Exercises, exercises => exercises.additionalMuscles)
+  // exerciseAdditionalMuscle: Exercises[]
 
 }

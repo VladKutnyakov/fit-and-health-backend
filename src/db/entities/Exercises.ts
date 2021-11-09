@@ -66,11 +66,14 @@ export class Exercises {
   })
   techniqueDescription: string
 
-  @ManyToOne(() => Muscles, targetMuscles => targetMuscles.exerciseTargetMuscle)
-  targetMuscles: Muscles
+  @ManyToOne(() => Muscles, muscleGroup => muscleGroup.exercises)
+  muscleGroup: Muscles
 
-  @ManyToOne(() => Muscles, additionalMuscles => additionalMuscles.exerciseAdditionalMuscle)
-  additionalMuscles: Muscles
+  // @ManyToOne(() => Muscles, targetMuscles => targetMuscles.exerciseTargetMuscle)
+  // targetMuscles: Muscles
+
+  // @ManyToOne(() => Muscles, additionalMuscles => additionalMuscles.exerciseAdditionalMuscle)
+  // additionalMuscles: Muscles
 
   // analogs: [{id: 1, title: 'test'}],
 
