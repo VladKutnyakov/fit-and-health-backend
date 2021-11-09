@@ -43,7 +43,7 @@ const fetchExerciseInfo = async (req: Request, res: Response): Promise<Response>
       .getOne()
       // .getSql()
 
-    console.log(ExercisesInfo)
+    // console.log(ExercisesInfo)
 
     const response = {
       updatedToken: req.body.updatedToken,
