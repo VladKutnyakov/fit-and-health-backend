@@ -7,7 +7,7 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
   try {
     const ExercisesList = await getRepository(Muscles)
       .createQueryBuilder('muscles')
-      .leftJoin('muscles.exercises', 'exercises', `exercises.user = ${1} OR exercises.user IS NULL`)
+      .leftJoin('muscles.exercises', 'exercises', `exercises.user = ${req.body.userId} OR exercises.user IS NULL`)
       .addSelect(['exercises.id', 'exercises.title'])
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoin("exercises.user", "user")
