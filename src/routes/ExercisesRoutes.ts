@@ -56,7 +56,47 @@ const router: Router = express.Router()
 *         description: Ошибка авторизации
 */
 router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
-router.post('/fetch-exercise-info', JwtGuard, exercisesControllers.fetchExerciseInfo)
-router.post('/save-new-exercise', JwtGuard, exercisesControllers.saveNewExercise)
+
+// http://localhost:3031/api/exercises/exercise-info/:exerciseId
+/**
+* @swagger
+* /api/exercises/fetch-exercise-info/{exerciseId}:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Информация об упражнении
+*     security:
+*       - jwt: []
+*     parameters:
+*       - in: path
+*         name: exerciseId
+*         required: true
+*         schema:
+*           type: integer
+*         description: ID упражнения
+*     responses:
+*       200:
+*         description: Информация об упражнении
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: integer
+*                       description: ID упражнения
+*                     title:
+*                       type: string
+*                       description: Название упражнения
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExerciseInfo)
 
 export default router
