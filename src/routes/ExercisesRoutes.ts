@@ -3,8 +3,42 @@ import exercisesControllers from '../controllers/exercisesControllers'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
-// http://localhost:3000/api/exercises
-router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
+// http://localhost:3031/api/exercises
+/**
+* @swagger
+* /api/exercises:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Список упражнений по мышечным группам
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Список упражнений по мышечным группам
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: Id категории
+*                       title:
+*                         type: string
+*                         description: Название категории
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/', exercisesControllers.fetchExercisesList)
 router.post('/fetch-exercise-info', JwtGuard, exercisesControllers.fetchExerciseInfo)
 router.post('/save-new-exercise', JwtGuard, exercisesControllers.saveNewExercise)
 
