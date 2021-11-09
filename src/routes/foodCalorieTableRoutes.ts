@@ -12,7 +12,7 @@ const router: Router = express.Router()
 *       - Таблица калорийности продуктов
 *     summary: Список категорий продуктов
 *     security:
-*	     - jwt: []
+*       - jwt: []
 *     responses:
 *       200:
 *         description: Список категорий продуктов
@@ -49,7 +49,7 @@ router.get('/product-categories', JwtGuard, foodCalorieTableControllers.getProdu
 *       - Таблица калорийности продуктов
 *     summary: Список продуктов
 *     security:
-*	     - jwt: []
+*       - jwt: []
 *     responses:
 *       200:
 *         description: Список продуктов
@@ -122,7 +122,7 @@ router.get('/', JwtGuard, foodCalorieTableControllers.getAllProducts)
 *       - Таблица калорийности продуктов
 *     summary: Создать новый продукт
 *     security:
-*	     - jwt: []
+*       - jwt: []
 *     requestBody:
 *       content:
 *         application/json:
@@ -242,7 +242,7 @@ router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduc
 *       - Таблица калорийности продуктов
 *     summary: Обновить все данные у продукта
 *     security:
-*	     - jwt: []
+*       - jwt: []
 *     requestBody:
 *       content:
 *         application/json:
@@ -350,7 +350,7 @@ router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduc
 *       - Таблица калорийности продуктов
 *     summary: Изменить признак "избранного" для продукта у пользователя
 *     security:
-*	     - jwt: []
+*       - jwt: []
 *     parameters:
 *       - in: path
 *         name: productId
@@ -392,7 +392,7 @@ router.put('/change-favorite-param/:productId', JwtGuard, foodCalorieTableContro
 *       - Таблица калорийности продуктов
 *     summary: Изменить признак "закрепленного" для продукта у пользователя
 *     security:
-*	     - jwt: []
+*       - jwt: []
 *     parameters:
 *       - in: path
 *         name: productId
@@ -434,7 +434,7 @@ router.put('/change-pinned-param/:productId', JwtGuard, foodCalorieTableControll
 *       - Таблица калорийности продуктов
 *     summary: Удаление продукта
 *     security:
-*	     - jwt: []
+*       - jwt: []
 *     parameters:
 *       - in: path
 *         name: productId
