@@ -60,7 +60,7 @@ router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
 // http://localhost:3031/api/exercises/exercise-info/:exerciseId
 /**
 * @swagger
-* /api/exercises/fetch-exercise-info/{exerciseId}:
+* /api/exercises/exercise-info/{exerciseId}:
 *   get:
 *     tags:
 *       - Справочник упражнений
@@ -94,6 +94,39 @@ router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
 *                     title:
 *                       type: string
 *                       description: Название упражнения
+*                     type:
+*                       type: string
+*                       description: Тип упражнения
+*                     sort:
+*                       type: string
+*                       description: Вид упражнения
+*                     equipment:
+*                       type: string
+*                       description: Необходимое оборудование для упражнения
+*                     exertion:
+*                       type: string
+*                       description: Прилагаемое усилие
+*                     practiceLevel:
+*                       type: string
+*                       description: Уровень подготовки (необходимый для выполнения)
+*                     techniqueDescription:
+*                       type: string
+*                       description: Описание упражнения
+*                     muscleGroup:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID мышечной группы
+*                         title:
+*                           type: string
+*                           description: Название мышечной группы
+*                     user:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID пользователя
 *       401:
 *         description: Ошибка авторизации
 */

@@ -1,8 +1,7 @@
 import { Request, Response } from "express"
 import { getRepository, getConnection } from "typeorm"
 import { Muscles } from "../db/entities/Muscles"
-// import { ProductCategories } from '../db/entities/ProductCategories'
-// import { Users } from '../db/entities/Users'
+import { Exercises } from "../db/entities//Exercises"
 
 const fetchExercisesList = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -34,10 +33,21 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
 
 const fetchExerciseInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
+    const ExercisesInfo = await getRepository(Exercises)
+      .createQueryBuilder('exercises')
+      .where([{id: 1}])
+      .select(['exercises.id', 'exercises.title', 'exercises.type', 'exercises.sort', 'exercises.equipment', 'exercises.exertion', 'exercises.practiceLevel', 'exercises.techniqueDescription'])
+      .leftJoinAndSelect('exercises.muscleGroup', 'muscles')
+      .leftJoin("exercises.user", "user")
+      .addSelect(['user.id'])
+      .getOne()
+      // .getSql()
+
+    console.log(ExercisesInfo)
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: null
+      data: ExercisesInfo
     }
 
     return res.status(200).json(response)
