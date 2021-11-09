@@ -46,6 +46,17 @@ const router: Router = express.Router()
 *                             title:
 *                               type: string
 *                               description: Название упражнения
+*                             additionalMuscles:
+*                               type: array
+*                               items:
+*                                 type: object
+*                                 properties:
+*                                   id:
+*                                     type: number
+*                                     description: ID мышечной группы
+*                                   title:
+*                                     type: string
+*                                     description: Название мышечной группы
 *                             user:
 *                               type: object
 *                               properties:
@@ -121,6 +132,17 @@ router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
 *                         title:
 *                           type: string
 *                           description: Название мышечной группы
+*                     additionalMuscles:
+*                       type: array
+*                       items:
+*                         type: object
+*                         properties:
+*                           id:
+*                             type: number
+*                             description: ID мышечной группы
+*                           title:
+*                             type: string
+*                             description: Название мышечной группы
 *                     user:
 *                       type: object
 *                       properties:

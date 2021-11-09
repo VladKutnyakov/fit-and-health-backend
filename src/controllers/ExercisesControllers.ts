@@ -7,8 +7,9 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
   try {
     const ExercisesList = await getRepository(Muscles)
       .createQueryBuilder('muscles')
-      .leftJoin('muscles.exercises', 'exercises', `exercises.user = ${req.body.userId} OR exercises.user IS NULL`)
+      .leftJoin('muscles.exercises', 'exercises', `exercises.user = ${1} OR exercises.user IS NULL`)
       .addSelect(['exercises.id', 'exercises.title'])
+      .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoin("exercises.user", "user")
       .addSelect(['user.id'])
       .orderBy({'muscles.id': 'ASC'})
@@ -38,6 +39,7 @@ const fetchExerciseInfo = async (req: Request, res: Response): Promise<Response>
       .where([{id: req.params.exerciseId}])
       .select(['exercises.id', 'exercises.title', 'exercises.type', 'exercises.sort', 'exercises.equipment', 'exercises.exertion', 'exercises.practiceLevel', 'exercises.techniqueDescription'])
       .leftJoinAndSelect('exercises.muscleGroup', 'muscles')
+      .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoin("exercises.user", "user")
       .addSelect(['user.id'])
       .getOne()
