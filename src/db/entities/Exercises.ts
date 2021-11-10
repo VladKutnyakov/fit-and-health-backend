@@ -51,12 +51,12 @@ export class Exercises {
   exertion: string
 
   @Column({
-    type: 'varchar',
+    type: 'integer',
     nullable: false,
     unique: false,
     comment: 'Уровень подготовки'
   })
-  practiceLevel: string
+  practiceLevel: number
 
   @Column({
     type: 'text',
