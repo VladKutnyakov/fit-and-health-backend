@@ -11,7 +11,7 @@ export class UsersProfiles {
   id: number
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Имя пользователя'
@@ -19,7 +19,7 @@ export class UsersProfiles {
   firstName: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Отчество пользователя'
@@ -27,7 +27,7 @@ export class UsersProfiles {
   middleName: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Фамилия пользователя'
@@ -35,55 +35,31 @@ export class UsersProfiles {
   lastName: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Дата рождения пользователя'
   })
   birthday: string | null
 
-  @Column({
-    type: 'text',
-    nullable: true,
-    unique: false,
-    comment: 'Телефон пользователя'
-  })
-  phone: string | null
+  // @Column({
+  //   type: 'varchar',
+  //   nullable: true,
+  //   unique: false,
+  //   comment: 'Пол пользователя'
+  // })
+  // gender: string | null
+
+  // @Column({
+  //   type: 'varchar',
+  //   nullable: true,
+  //   unique: false,
+  //   comment: 'Город проживания пользователя'
+  // })
+  // city: string | null
 
   @Column({
-    type: 'text',
-    nullable: true,
-    unique: false,
-    comment: 'Пол пользователя'
-  })
-  gender: string | null
-
-  @Column({
-    type: 'integer',
-    nullable: true,
-    unique: false,
-    comment: 'Вес пользователя'
-  })
-  weight: number | null
-
-  @Column({
-    type: 'integer',
-    nullable: true,
-    unique: false,
-    comment: 'Рост пользователя'
-  })
-  height: number | null
-
-  @Column({
-    type: 'text',
-    nullable: true,
-    unique: false,
-    comment: 'Город проживания пользователя'
-  })
-  city: string | null
-
-  @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Личный сайт пользователя'
@@ -91,7 +67,7 @@ export class UsersProfiles {
   site: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в vk пользователя'
@@ -99,7 +75,7 @@ export class UsersProfiles {
   vk: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в facebook пользователя'
@@ -107,7 +83,7 @@ export class UsersProfiles {
   facebook: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в instagram пользователя'
@@ -115,7 +91,7 @@ export class UsersProfiles {
   instagram: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в youtube пользователя'
@@ -123,7 +99,7 @@ export class UsersProfiles {
   youtube: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в twitter пользователя'
@@ -131,7 +107,7 @@ export class UsersProfiles {
   twitter: string | null
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     nullable: true,
     unique: false,
     comment: 'Ссылка на аккаунт в skype пользователя'

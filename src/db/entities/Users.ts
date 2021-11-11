@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, OneToOne, ManyToMany, JoinTable } from 'typeorm'
 import { Tokens } from './Tokens'
 import { UsersProfiles } from './UsersProfiles'
+import { UsersParams } from './UsersParams'
 import { Products } from './Products'
 import { Recipes } from './Recipes'
 import { Exercises } from './Exercises'
@@ -15,16 +16,24 @@ export class Users {
   id: number
 
   @Column({
-    type: 'text',
-    nullable: false,
+    type: 'varchar',
+    nullable: true,
     unique: true,
     comment: 'Электронная почта пользователя'
   })
-  email: string
+  email: string | null
 
   @Column({
-    type: 'text',
-    nullable: false,
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Телефон пользователя'
+  })
+  phone: string | null
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
     unique: false,
     comment: 'Пароль пользователя для входа'
   })
@@ -35,6 +44,9 @@ export class Users {
 
   @OneToOne(() => UsersProfiles, profile => profile.user)
   profile: UsersProfiles
+
+  @OneToMany(() => UsersParams, params => params.user)
+  params: UsersParams[]
 
   @OneToMany(() => Products, products => products.user)
   products: Products[]
