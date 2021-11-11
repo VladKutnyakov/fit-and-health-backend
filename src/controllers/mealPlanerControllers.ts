@@ -5,12 +5,14 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import { MealPlaners } from "../db/entities/MealPlaners"
+import { UsersParams } from "../db/entities/UsersParams"
 
 const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
     const targetDate = req.query.date || new Date().toJSON().split('T')[0]
     // console.log(targetDate)
 
+    // Найти план питания для укзанной даты или для текущего дня если дата не передана в запросе
     const MealPlanerInfo = await getRepository(MealPlaners)
       .createQueryBuilder('mealPlaners')
       .where([{user: req.body.userId, date: targetDate}])
@@ -18,6 +20,17 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
       .addSelect(['user.id'])
       .getOne()
     console.log(MealPlanerInfo)
+
+    // Если план питания для нужной даты не найден, получить послдение данные о "Текущем весе" и "Желаемом весе" пользователя
+    if (!MealPlanerInfo) {
+      // console.log('fetch userParams');
+      const UserParams = await getRepository(UsersParams)
+        .createQueryBuilder('userParams')
+        .where([{user: req.body.userId}])
+        .orderBy('id', 'DESC')
+        .getOne()
+      console.log(UserParams)
+    }
 
     const EmptyMealPlanerInfo = {
       id: null,
@@ -42,7 +55,7 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
         },
       ],
       user: {
-        id: null
+        id: req.body.userId
       }
     }
 
