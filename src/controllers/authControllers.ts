@@ -7,7 +7,6 @@ import { Tokens } from "../db/entities/Tokens"
 
 // http://localhost:3031/api/auth/register/
 const register = async (req: Request, res: Response): Promise<Response> => {
-
   try {
     const entityManager = getManager()
 
@@ -28,6 +27,7 @@ const register = async (req: Request, res: Response): Promise<Response> => {
         // Создать пользователя
         const NewUser = new Users()
         NewUser.email = req.body.email
+        NewUser.phone = req.body.phone
         NewUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
 
         const CreatedUser = await transactionalEntityManager.save(NewUser)
