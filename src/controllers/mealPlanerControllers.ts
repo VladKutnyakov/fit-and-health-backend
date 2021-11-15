@@ -6,6 +6,8 @@ import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import { MealPlaners } from "../db/entities/MealPlaners"
 import { UsersParams } from "../db/entities/UsersParams"
+import { MealPartProducts } from '../db/entities/MealPartProducts'
+import { MealParts } from '../db/entities/MealParts'
 
 const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -16,9 +18,15 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
     const MealPlanerInfo = await getRepository(MealPlaners)
       .createQueryBuilder('mealPlaners')
       .where([{user: req.body.userId, date: targetDate}])
+      .leftJoinAndSelect("mealPlaners.mealParts", "mealParts")
+      // .addFrom(MealParts, 'mealParts')
+      // .addFrom(MealPartProducts, 'mealPartProducts')
+      .leftJoinAndSelect(MealPartProducts, 'mealPartProducts', 'mealPartProducts.mealPartId = mealParts.id')
+      // .leftJoinAndSelect('mealPartProducts.product', 'product')
+      .leftJoinAndSelect('mealParts.mealPartRecipes', 'mealPartRecipes')
       .leftJoin("mealPlaners.user", "user")
       .addSelect(['user.id'])
-      .leftJoinAndSelect("mealPlaners.mealParts", "mealParts") // ПОДЗАПРОС для получения списка продуктов ?
+      // .getSql()
       .getOne()
     console.log(MealPlanerInfo)
 
@@ -65,26 +73,27 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
       EmptyMealPlanerInfo.currentWeight = UserParams?.weight || null
     }
 
-    const test = {
-      ...MealPlanerInfo,
-      marks: [],
-      like: null,
-      dislike: null,
-      share: null,
-      mealParts: [
-        {
-          id: null,
-          title: 'Затрак',
-          mealTime: '07:00',
-          recipes: [],
-          products: []
-        },
-      ],
-    }
+    // const test = {
+    //   ...MealPlanerInfo,
+    //   marks: [],
+    //   like: null,
+    //   dislike: null,
+    //   share: null,
+    //   mealParts: [
+    //     {
+    //       id: null,
+    //       title: 'Затрак',
+    //       mealTime: '07:00',
+    //       recipes: [],
+    //       products: []
+    //     },
+    //   ],
+    // }
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: MealPlanerInfo ? test : EmptyMealPlanerInfo
+      data: EmptyMealPlanerInfo
+      // data: MealPlanerInfo ? test : EmptyMealPlanerInfo
     }
 
     return res.status(200).json(response)
