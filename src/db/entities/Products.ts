@@ -75,7 +75,7 @@ export class Products {
   @OneToMany(() => RecipeProducts, recipeProducts => recipeProducts.product)
   recipeProducts!: RecipeProducts[]
 
-  @ManyToMany(() => MealPartProducts, mealPartProducts => mealPartProducts.product)
+  @OneToMany(() => MealPartProducts, mealPartProducts => mealPartProducts.product)
   mealPartProducts: MealPartProducts[]
 
   @CreateDateColumn({
