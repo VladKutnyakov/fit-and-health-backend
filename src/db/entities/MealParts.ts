@@ -1,7 +1,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
 import { MealPlaners } from '../entities/MealPlaners'
-import { Products } from './Products'
+import { MealPartProducts } from './MealPartProducts'
 import { Recipes } from './Recipes'
 
 @Entity()
@@ -31,9 +31,8 @@ export class MealParts {
   @ManyToOne(() => MealPlaners, mealPlaner => mealPlaner.mealParts)
   mealPlaner: MealPlaners
 
-  @ManyToMany(() => Products, product => product.addedToMealParts)
-  @JoinTable({ name: 'meal_part_products' })
-  mealPartProducts: Products[]
+  @ManyToMany(() => MealPartProducts, mealPartProducts => mealPartProducts.mealPart)
+  mealPartProducts: MealPartProducts[]
 
   @ManyToMany(() => Recipes, recipes => recipes.addedToMealParts)
   @JoinTable({ name: 'meal_part_recipes' })

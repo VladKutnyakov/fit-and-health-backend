@@ -59,22 +59,6 @@ export class MealPlaners {
   })
   targetCarb: number
 
-  @Column({
-    type: 'float',
-    nullable: true,
-    unique: false,
-    comment: 'Целевой вес пользователя'
-  })
-  targetWeight: number
-
-  @Column({
-    type: 'float',
-    nullable: true,
-    unique: false,
-    comment: 'Текущий вес пользователя'
-  })
-  currentWeight: number
-
   @ManyToOne(() => Users, user => user.products)
   user: Users
 

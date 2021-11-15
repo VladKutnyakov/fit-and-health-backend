@@ -76,7 +76,7 @@ export class Products {
   recipeProducts!: RecipeProducts[]
 
   @ManyToMany(() => MealParts, mealParts => mealParts.mealPartProducts)
-  addedToMealParts: MealParts[]
+  mealPartProducts: MealParts[]
 
   @CreateDateColumn({
     type: 'timestamp',
