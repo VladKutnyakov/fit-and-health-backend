@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateCol
 import { Users } from './Users'
 import { ProductCategories } from './ProductCategories'
 import { RecipeProducts } from './RecipeProducts'
-import { MealParts } from './MealParts'
+import { MealPartProducts } from './MealPartProducts'
 
 @Entity()
 export class Products {
@@ -75,8 +75,8 @@ export class Products {
   @OneToMany(() => RecipeProducts, recipeProducts => recipeProducts.product)
   recipeProducts!: RecipeProducts[]
 
-  @ManyToMany(() => MealParts, mealParts => mealParts.mealPartProducts)
-  mealPartProducts: MealParts[]
+  @ManyToMany(() => MealPartProducts, mealPartProducts => mealPartProducts.product)
+  mealPartProducts: MealPartProducts[]
 
   @CreateDateColumn({
     type: 'timestamp',

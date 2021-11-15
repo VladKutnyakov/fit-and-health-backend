@@ -9,7 +9,7 @@ export class MealPartProducts {
     type: 'integer',
     nullable: false,
     unique: false,
-    comment: 'ID рецепта'
+    comment: 'ID приема пищи'
   })
   mealPartId: number
 
@@ -25,7 +25,7 @@ export class MealPartProducts {
     type: 'float',
     nullable: false,
     unique: false,
-    comment: 'Вес продукта в рецепте'
+    comment: 'Вес продукта в приеме пищи'
   })
   weightInMealPart!: number
 
@@ -33,6 +33,6 @@ export class MealPartProducts {
   mealPart!: MealParts
 
   @ManyToOne(() => Products, product => product.mealPartProducts)
-  product!: MealParts
+  product!: Products
 
 }
