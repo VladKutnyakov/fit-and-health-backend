@@ -1,7 +1,8 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm'
 import { Users } from './Users'
 import { MealParts } from './MealParts'
+import { Marks } from './Marks'
 
 @Entity()
 export class MealPlaners {
@@ -64,6 +65,10 @@ export class MealPlaners {
 
   @OneToMany(() => MealParts, mealParts => mealParts.mealPlaner)
   mealParts: MealParts[]
+
+  @ManyToMany(() => Marks, marks => marks.mealPlanerMarks)
+  @JoinTable({ name: 'meal_planer_marks' })
+  marks: Marks[]
 
   @CreateDateColumn({
     type: 'timestamp',
