@@ -42,7 +42,7 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
       .leftJoinAndSelect('mealPlaners.marks', 'marks')
       .leftJoin("mealPlaners.user", "user")
       .addSelect(['user.id'])
-      .leftJoin('user.params', 'params', 'params.id = (SELECT MAX(id) FROM users_params)')
+      .leftJoin('user.params', 'params', `params.id = (SELECT id FROM "users_params" WHERE "date" = '${targetDate}')`)
       .addSelect(['params.weight', 'params.targetWeight'])
       .getOne()
       // .getSql()
