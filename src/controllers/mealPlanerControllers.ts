@@ -39,13 +39,14 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
         'product.kkal'
       ])
       .leftJoinAndSelect('mealParts.mealPartRecipes', 'mealPartRecipes')
+      .leftJoinAndSelect('mealPlaners.marks', 'marks')
       .leftJoin("mealPlaners.user", "user")
       .addSelect(['user.id'])
       .leftJoin('user.params', 'params', 'params.id = (SELECT MAX(id) FROM users_params)')
       .addSelect(['params.weight', 'params.targetWeight'])
       .getOne()
       // .getSql()
-    // console.log(MealPlanerInfo)
+    console.log(MealPlanerInfo)
     // console.log(MealPlanerInfo?.user.params)
     // console.log(MealPlanerInfo?.mealParts[0].mealPartProducts)
 
