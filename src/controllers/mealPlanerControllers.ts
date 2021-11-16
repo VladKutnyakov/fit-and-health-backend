@@ -6,8 +6,6 @@ import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import { MealPlaners } from "../db/entities/MealPlaners"
 import { UsersParams } from "../db/entities/UsersParams"
-import { MealPartProducts } from '../db/entities/MealPartProducts'
-import { MealParts } from '../db/entities/MealParts'
 
 const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -18,16 +16,38 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
     const MealPlanerInfo = await getRepository(MealPlaners)
       .createQueryBuilder('mealPlaners')
       .where([{user: req.body.userId, date: targetDate}])
-      .leftJoin("mealPlaners.user", "user")
-      .addSelect(['user.id'])
+      .select([
+        'mealPlaners.id',
+        'mealPlaners.date',
+        'mealPlaners.title',
+        'mealPlaners.description',
+        'mealPlaners.targetProtein',
+        'mealPlaners.targetCarb',
+        'mealPlaners.targetFats'
+      ])
       .leftJoinAndSelect("mealPlaners.mealParts", "mealParts")
       .leftJoin("mealParts.mealPartProducts", "mealPartProducts")
       .addSelect(['mealPartProducts.weightInMealPart'])
       .leftJoin('mealPartProducts.product', 'product')
-      .addSelect(['product.id', 'product.title', 'product.weight', 'product.protein', 'product.fats', 'product.carb', 'product.kkal'])
+      .addSelect([
+        'product.id',
+        'product.title',
+        'product.weight',
+        'product.protein',
+        'product.fats',
+        'product.carb',
+        'product.kkal'
+      ])
       .leftJoinAndSelect('mealParts.mealPartRecipes', 'mealPartRecipes')
+      .leftJoin("mealPlaners.user", "user")
+      .addSelect(['user.id'])
+      .leftJoin('user.params', 'params', 'params.id = (SELECT MAX(id) FROM users_params)')
+      .addSelect(['params.weight', 'params.targetWeight'])
       .getOne()
-    console.log(MealPlanerInfo?.mealParts[0].mealPartProducts)
+      // .getSql()
+    // console.log(MealPlanerInfo)
+    // console.log(MealPlanerInfo?.user.params)
+    // console.log(MealPlanerInfo?.mealParts[0].mealPartProducts)
 
     // Если план питания не найден возвращается объект с начальными данными
     const EmptyMealPlanerInfo: any = {
@@ -41,20 +61,23 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
       targetWeight: null,
       currentWeight: null,
       marks: [],
-      like: null,
-      dislike: null,
-      share: null,
       mealParts: [
         {
           id: null,
           title: 'Затрак',
           mealTime: '07:00',
-          recipes: [],
-          products: []
+          mealPartProducts: [],
+          mealPartRecipes: []
         },
       ],
       user: {
-        id: req.body.userId
+        id: req.body.userId,
+        params: [
+          {
+            weight: null,
+            targetWeight: null
+          }
+        ]
       }
     }
     // console.log(EmptyMealPlanerInfo)
@@ -68,31 +91,13 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
         .getOne()
       // console.log(UserParams)
 
-      EmptyMealPlanerInfo.targetWeight = UserParams?.targetWeight || null
-      EmptyMealPlanerInfo.currentWeight = UserParams?.weight || null
+      EmptyMealPlanerInfo.user.params[0].targetWeight = UserParams?.targetWeight || null
+      EmptyMealPlanerInfo.user.params[0].weight = UserParams?.weight || null
     }
-
-    // const test = {
-    //   ...MealPlanerInfo,
-    //   marks: [],
-    //   like: null,
-    //   dislike: null,
-    //   share: null,
-    //   mealParts: [
-    //     {
-    //       id: null,
-    //       title: 'Затрак',
-    //       mealTime: '07:00',
-    //       recipes: [],
-    //       products: []
-    //     },
-    //   ],
-    // }
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: EmptyMealPlanerInfo
-      // data: MealPlanerInfo ? test : EmptyMealPlanerInfo
+      data: MealPlanerInfo || EmptyMealPlanerInfo
     }
 
     return res.status(200).json(response)
