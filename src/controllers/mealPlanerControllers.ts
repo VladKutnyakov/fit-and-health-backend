@@ -110,6 +110,25 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
   }
 }
 
+const saveMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    console.log(req.body.mealPlanerInfo)
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: null
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+}
+
 export default {
-  getMealPlanerInfo
+  getMealPlanerInfo,
+  saveMealPlanerInfo
 }
