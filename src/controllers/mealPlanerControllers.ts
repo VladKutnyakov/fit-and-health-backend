@@ -46,7 +46,7 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
       .addSelect(['params.weight', 'params.targetWeight'])
       .getOne()
       // .getSql()
-    console.log(MealPlanerInfo)
+    // console.log(MealPlanerInfo)
     // console.log(MealPlanerInfo?.user.params)
     // console.log(MealPlanerInfo?.mealParts[0].mealPartProducts)
 
