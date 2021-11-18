@@ -110,6 +110,12 @@ export class Exercises {
   @ManyToOne(() => Users, user => user.exercises)
   user: Users
 
+  @ManyToMany(() => Users, user => user.favoriteProducts)
+  favoriteForUsers: Users[]
+
+  @ManyToMany(() => Users, user => user.pinnedProducts)
+  pinnedForUsers: Users[]
+
   @CreateDateColumn({
     type: 'timestamp',
     comment: 'Дата создания'

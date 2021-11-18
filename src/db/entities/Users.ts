@@ -68,6 +68,14 @@ export class Users {
   @OneToMany(() => Exercises, exercises => exercises.user)
   exercises: Exercises[]
 
+  @ManyToMany(() => Exercises, product => product.favoriteForUsers)
+  @JoinTable({ name: 'favorite_exercises' })
+  favoriteExercises: Exercises[]
+
+  @ManyToMany(() => Exercises, product => product.pinnedForUsers)
+  @JoinTable({ name: 'pinned_exercises' })
+  pinnedExercises: Exercises[]
+
   @CreateDateColumn({
     type: 'timestamp',
     comment: 'Дата создания'
