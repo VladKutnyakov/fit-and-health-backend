@@ -20,4 +20,7 @@ export class Marks {
   @ManyToMany(() => MealPlaners, exercise => exercise.marks)
   mealPlanerMarks: MealPlaners[]
 
+  @ManyToMany(() => MealPlaners, exercise => exercise.marks)
+  trainingProgramsMarks: MealPlaners[]
+
 }

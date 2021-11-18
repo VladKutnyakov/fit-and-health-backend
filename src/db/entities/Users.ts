@@ -6,6 +6,7 @@ import { Products } from './Products'
 import { Recipes } from './Recipes'
 import { Exercises } from './Exercises'
 import { MealPlaners } from './MealPlaners'
+import { TrainingPrograms } from './TrainingPrograms'
 
 @Entity()
 export class Users {
@@ -39,19 +40,19 @@ export class Users {
   })
   password: string
 
-  @OneToMany(() => Tokens, tokens => tokens.user)
+  @OneToMany(() => Tokens, token => token.user)
   tokens: Tokens[]
 
   @OneToOne(() => UsersProfiles, profile => profile.user)
   profile: UsersProfiles
 
-  @OneToMany(() => UsersParams, params => params.user)
+  @OneToMany(() => UsersParams, param => param.user)
   params: UsersParams[]
 
-  @OneToMany(() => Products, products => products.user)
+  @OneToMany(() => Products, product => product.user)
   products: Products[]
 
-  @OneToMany(() => Products, recipes => recipes.user)
+  @OneToMany(() => Products, recipe => recipe.user)
   recipes: Recipes[]
 
   @ManyToMany(() => Products, product => product.favoriteForUsers)
@@ -62,19 +63,30 @@ export class Users {
   @JoinTable({ name: 'pinned_products' })
   pinnedProducts: Products[]
 
-  @OneToMany(() => MealPlaners, mealPlaners => mealPlaners.user)
+  @OneToMany(() => MealPlaners, mealPlaner => mealPlaner.user)
   mealPlaners: MealPlaners[]
 
-  @OneToMany(() => Exercises, exercises => exercises.user)
+  @OneToMany(() => Exercises, exercise => exercise.user)
   exercises: Exercises[]
 
-  @ManyToMany(() => Exercises, product => product.favoriteForUsers)
+  @ManyToMany(() => Exercises, exercise => exercise.favoriteForUsers)
   @JoinTable({ name: 'favorite_exercises' })
   favoriteExercises: Exercises[]
 
-  @ManyToMany(() => Exercises, product => product.pinnedForUsers)
+  @ManyToMany(() => Exercises, exercise => exercise.pinnedForUsers)
   @JoinTable({ name: 'pinned_exercises' })
   pinnedExercises: Exercises[]
+
+  @OneToMany(() => MealPlaners, mealPlaner => mealPlaner.user)
+  trainingPrograms: MealPlaners[]
+
+  @ManyToMany(() => TrainingPrograms, trainingProgram => trainingProgram.favoriteForUsers)
+  @JoinTable({ name: 'favorite_training_programs' })
+  favoriteTrainingPrograms: TrainingPrograms[]
+
+  @ManyToMany(() => TrainingPrograms, trainingProgram => trainingProgram.pinnedForUsers)
+  @JoinTable({ name: 'pinned_training_programs' })
+  pinnedTrainingPrograms: TrainingPrograms[]
 
   @CreateDateColumn({
     type: 'timestamp',
