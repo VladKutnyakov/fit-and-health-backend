@@ -66,6 +66,38 @@ export class Exercises {
   })
   techniqueDescription: string
 
+  @Column({
+    type: 'float',
+    nullable: false,
+    unique: false,
+    comment: 'Акцент упражнения для развития силы'
+  })
+  power: number
+
+  @Column({
+    type: 'float',
+    nullable: false,
+    unique: false,
+    comment: 'Акцент упражнения для развития выносливости'
+  })
+  endurance: number
+
+  @Column({
+    type: 'float',
+    nullable: false,
+    unique: false,
+    comment: 'Акцент упражнения для развития гибкости'
+  })
+  flexibility: number
+
+  @Column({
+    type: 'float',
+    nullable: false,
+    unique: false,
+    comment: 'Акцент упражнения для развития кардио'
+  })
+  cardio: number
+
   @ManyToOne(() => Muscles, muscleGroup => muscleGroup.exercises)
   muscleGroup: Muscles
 
