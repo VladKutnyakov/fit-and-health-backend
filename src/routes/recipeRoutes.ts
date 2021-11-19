@@ -9,7 +9,7 @@ const router: Router = express.Router()
 * /api/recipe/{recipeId}:
 *   get:
 *     tags:
-*       - Рецепт
+*       - Рецепты
 *     summary: Получить данные о рецепте
 *     security:
 *       - jwt: []
