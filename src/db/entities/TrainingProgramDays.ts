@@ -1,7 +1,7 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm'
 import { TrainingPrograms } from './TrainingPrograms'
-import { Exercises } from './Exercises'
+import { TrainingProgramDayExercises } from './TrainingProgramDayExercises'
 
 @Entity()
 export class TrainingProgramDays {
@@ -27,9 +27,8 @@ export class TrainingProgramDays {
   })
   comment: string
 
-  @ManyToMany(() => Exercises, exercises => exercises.trainingProgramDayExercises)
-  @JoinTable({ name: 'training_program_day_exercises' })
-  exercises: Exercises[]
+  @OneToMany(() => TrainingProgramDayExercises, trainingProgramDayExercises => trainingProgramDayExercises.trainingProgramDay)
+  trainingProgramDayExercises: TrainingProgramDayExercises[]
 
   @ManyToOne(() => TrainingPrograms, trainingProgram => trainingProgram.trainingProgramDays)
   trainingProgram: TrainingPrograms
