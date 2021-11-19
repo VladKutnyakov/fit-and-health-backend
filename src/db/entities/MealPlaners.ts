@@ -60,7 +60,7 @@ export class MealPlaners {
   })
   targetCarb: number
 
-  @ManyToOne(() => Users, user => user.products)
+  @ManyToOne(() => Users, user => user.mealPlaners)
   user: Users
 
   @OneToMany(() => MealParts, mealParts => mealParts.mealPlaner)
