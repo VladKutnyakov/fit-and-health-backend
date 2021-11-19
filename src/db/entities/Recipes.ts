@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
 import { Users } from './Users'
 import { RecipeProducts } from './RecipeProducts'
 import { RecipeSteps } from './RecipeSteps'
 import { MealParts } from './MealParts'
+import { Marks } from './Marks'
 
 @Entity()
 export class Recipes {
@@ -52,6 +53,10 @@ export class Recipes {
 
   @OneToMany(() => RecipeSteps, recipeSteps => recipeSteps.recipe)
   recipeSteps!: RecipeSteps[]
+
+  @ManyToMany(() => Marks, marks => marks.recipeMarks)
+  @JoinTable({ name: 'recipe_marks' })
+  marks: Marks[]
 
   @ManyToMany(() => MealParts, mealParts => mealParts.mealPartRecipes)
   addedToMealParts: MealParts[]

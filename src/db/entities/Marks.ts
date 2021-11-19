@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm'
 import { MealPlaners } from './MealPlaners'
+import { Recipes } from './Recipes'
 
 @Entity()
 export class Marks {
@@ -19,6 +20,9 @@ export class Marks {
 
   @ManyToMany(() => MealPlaners, exercise => exercise.marks)
   mealPlanerMarks: MealPlaners[]
+
+  @ManyToMany(() => Recipes, exercise => exercise.marks)
+  recipeMarks: Recipes[]
 
   @ManyToMany(() => MealPlaners, exercise => exercise.marks)
   trainingProgramsMarks: MealPlaners[]
