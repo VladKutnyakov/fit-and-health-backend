@@ -2,7 +2,24 @@ import { Request, Response } from "express"
 import { getManager } from "typeorm"
 import { UsersProfiles } from "../db/entities/UsersProfiles"
 
-// http://localhost:3031/api/auth/login/
+const getProfilesList = async (req: Request, res: Response): Promise<Response> => {
+  try {
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: null
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+
+}
+
 const getProfileInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
     if (req.params.profileId !== 'undefined') {
@@ -65,5 +82,6 @@ const getProfileInfo = async (req: Request, res: Response): Promise<Response> =>
 }
 
 export default {
+  getProfilesList,
   getProfileInfo
 }

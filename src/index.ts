@@ -14,7 +14,7 @@ import { createConnection } from 'typeorm'
 
 // Импорт роутов
 import authRoutes from './routes/authRoutes'
-import profileRoutes from './routes/profileRoutes'
+import profilesRoutes from './routes/profilesRoutes'
 import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
 import recipesRoutes from './routes/recipesRoutes'
 import mealPlanerRoutes from './routes/mealPlanerRoutes'
@@ -79,7 +79,7 @@ app.use('/public', express.static('public'))
 
 // Routes
 app.use('/api/auth', authRoutes)
-app.use('/api/profile', profileRoutes)
+app.use('/api/profiles', profilesRoutes)
 app.use('/api/food-calorie-table', foodCalorieTableRoutes)
 app.use('/api/recipes', recipesRoutes)
 app.use('/api/meal-planer', mealPlanerRoutes)

@@ -1,14 +1,39 @@
 import express, { Router } from 'express'
-import profileControllers from '../controllers/profileControllers'
+import profilesControllers from '../controllers/profilesControllers'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
 /**
 * @swagger
-* /api/profile/{profileId}:
+* /api/profiles:
 *   get:
 *     tags:
-*       - Профиль пользователя
+*       - Пользователи
+*     summary: Получить список пользователей
+*     security:
+*	     - jwt: []
+*     responses:
+*       200:
+*         description: Returns a mysterious string.
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 id:
+*                   type: integer
+*                   description: Id информации профиля
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/', JwtGuard, profilesControllers.getProfilesList)
+
+/**
+* @swagger
+* /api/profiles/{profileId}:
+*   get:
+*     tags:
+*       - Пользователи
 *     summary: Получить данные о пользователе
 *     parameters:
 *       - in: path
@@ -80,6 +105,6 @@ const router: Router = express.Router()
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/:profileId', JwtGuard, profileControllers.getProfileInfo)
+router.get('/:profileId', JwtGuard, profilesControllers.getProfileInfo)
 
 export default router
