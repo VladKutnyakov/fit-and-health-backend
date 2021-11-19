@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
 import { Users } from './Users'
 import { Muscles } from './Muscles'
+import { TrainingProgramDays } from './TrainingProgramDays'
 
 @Entity()
 export class Exercises {
@@ -115,6 +116,9 @@ export class Exercises {
 
   @ManyToMany(() => Users, user => user.pinnedProducts)
   pinnedForUsers: Users[]
+
+  @OneToMany(() => TrainingProgramDays, trainingProgramExercises => trainingProgramExercises.exercises)
+  trainingProgramExercises: TrainingProgramDays[]
 
   @CreateDateColumn({
     type: 'timestamp',
