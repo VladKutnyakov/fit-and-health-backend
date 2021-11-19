@@ -33,6 +33,44 @@ const getTrainingPrograms = async (req: Request, res: Response): Promise<Respons
   }
 }
 
+const getTrainingProgramInfo = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    // const RecipeInfo = await getRepository(Recipes)
+    //   .createQueryBuilder('recipe')
+    //   .select([
+    //     'recipe.id',
+    //     'recipe.title',
+    //     'recipe.description',
+    //     'recipe.cookingTimes',
+    //     'recipe.cookingSkill'
+    //   ])
+    //   .where([{id: req.params.recipeId}])
+    //   .leftJoin("recipe.recipeProducts", "recipeProducts")
+    //   .addSelect(['recipeProducts.weightInRecipe', 'recipeProducts.product'])
+    //   .leftJoin('recipeProducts.product', 'product')
+    //   .addSelect(['product.id', 'product.title', 'product.weight', 'product.protein', 'product.fats', 'product.carb', 'product.kkal'])
+    //   .leftJoinAndSelect('recipe.recipeSteps', 'recipeSteps')
+    //   .leftJoinAndSelect('recipe.marks', 'marks')
+    //   .leftJoin("recipe.user", "user")
+    //   .addSelect(['user.id'])
+    //   .getOne()
+    // console.log(RecipeInfo)
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: null
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+}
+
 export default {
-  getTrainingPrograms
+  getTrainingPrograms,
+  getTrainingProgramInfo
 }
