@@ -63,6 +63,14 @@ export class Users {
   @JoinTable({ name: 'pinned_products' })
   pinnedProducts: Products[]
 
+  @ManyToMany(() => Recipes, favoriteRecipes => favoriteRecipes.favoriteForUsers)
+  @JoinTable({ name: 'favorite_recipes' })
+  favoriteRecipes: Recipes[]
+
+  @ManyToMany(() => Recipes, pinnedRecipes => pinnedRecipes.pinnedForUsers)
+  @JoinTable({ name: 'pinned_recipes' })
+  pinnedRecipes: Recipes[]
+
   @OneToMany(() => MealPlaners, mealPlaner => mealPlaner.user)
   mealPlaners: MealPlaners[]
 

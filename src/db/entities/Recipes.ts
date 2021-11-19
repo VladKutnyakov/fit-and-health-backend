@@ -61,6 +61,12 @@ export class Recipes {
   @ManyToMany(() => MealParts, mealParts => mealParts.mealPartRecipes)
   addedToMealParts: MealParts[]
 
+  @ManyToMany(() => Users, user => user.favoriteRecipes)
+  favoriteForUsers: Users[]
+
+  @ManyToMany(() => Users, user => user.pinnedRecipes)
+  pinnedForUsers: Users[]
+
   @CreateDateColumn({
     type: 'timestamp',
     comment: 'Дата создания'
