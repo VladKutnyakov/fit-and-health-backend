@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
-// import { Recipes } from "../db/entities/Recipes"
+import { TrainingPrograms } from "../db/entities/TrainingPrograms"
 
 const getTrainingPrograms = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -35,30 +35,19 @@ const getTrainingPrograms = async (req: Request, res: Response): Promise<Respons
 
 const getTrainingProgramInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
-    // const RecipeInfo = await getRepository(Recipes)
-    //   .createQueryBuilder('recipe')
-    //   .select([
-    //     'recipe.id',
-    //     'recipe.title',
-    //     'recipe.description',
-    //     'recipe.cookingTimes',
-    //     'recipe.cookingSkill'
-    //   ])
-    //   .where([{id: req.params.recipeId}])
-    //   .leftJoin("recipe.recipeProducts", "recipeProducts")
-    //   .addSelect(['recipeProducts.weightInRecipe', 'recipeProducts.product'])
-    //   .leftJoin('recipeProducts.product', 'product')
-    //   .addSelect(['product.id', 'product.title', 'product.weight', 'product.protein', 'product.fats', 'product.carb', 'product.kkal'])
-    //   .leftJoinAndSelect('recipe.recipeSteps', 'recipeSteps')
-    //   .leftJoinAndSelect('recipe.marks', 'marks')
-    //   .leftJoin("recipe.user", "user")
-    //   .addSelect(['user.id'])
-    //   .getOne()
-    // console.log(RecipeInfo)
+    const TrainingProgramInfo = await getRepository(TrainingPrograms)
+      .createQueryBuilder('trainingProgram')
+      .where([{id: req.params.trainingProgramId}])
+      .leftJoinAndSelect("trainingProgram.trainingProgramDays", "trainingProgramDays")
+      .leftJoinAndSelect('trainingProgram.marks', 'marks')
+      .leftJoin("trainingProgram.user", "user")
+      .addSelect(['user.id'])
+      .getOne()
+    console.log(TrainingProgramInfo)
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: null
+      data: TrainingProgramInfo
     }
 
     return res.status(200).json(response)
