@@ -1,5 +1,5 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, OneToMany, JoinTable } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
 import { TrainingPrograms } from './TrainingPrograms'
 import { Exercises } from './Exercises'
 
@@ -27,7 +27,7 @@ export class TrainingProgramDays {
   })
   comment: string
 
-  @ManyToMany(() => Exercises, exercises => exercises.favoriteForUsers)
+  @ManyToMany(() => Exercises, exercises => exercises.trainingProgramDayExercises)
   @JoinTable({ name: 'training_program_day_exercises' })
   exercises: Exercises[]
 

@@ -117,8 +117,8 @@ export class Exercises {
   @ManyToMany(() => Users, user => user.pinnedProducts)
   pinnedForUsers: Users[]
 
-  @OneToMany(() => TrainingProgramDays, trainingProgramExercises => trainingProgramExercises.exercises)
-  trainingProgramExercises: TrainingProgramDays[]
+  @OneToMany(() => TrainingProgramDays, trainingProgramDayExercises => trainingProgramDayExercises.exercises)
+  trainingProgramDayExercises: TrainingProgramDays[]
 
   @CreateDateColumn({
     type: 'timestamp',
