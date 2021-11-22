@@ -22,12 +22,44 @@ export class TrainingProgramDayExercises {
   exerciseId: number
 
   @Column({
-    type: 'float',
-    nullable: false,
+    type: 'varchar',
+    nullable: true,
     unique: false,
-    comment: 'test'
+    comment: 'Кол-во подходов'
   })
-  testField!: number
+  approaches!: string
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Кол-во повторений'
+  })
+  repeats!: string
+
+  @Column({
+    type: 'float',
+    nullable: true,
+    unique: false,
+    comment: 'Дополнительный вес (отягощение)'
+  })
+  additionalWeight!: number
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Время выполнения упражнения'
+  })
+  implementationTime!: string
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Время отдыха после выполнения упражнения'
+  })
+  restTime!: string
 
   @ManyToOne(() => TrainingProgramDays, trainingProgramDay => trainingProgramDay.trainingProgramDayExercises)
   trainingProgramDay!: TrainingProgramDays
