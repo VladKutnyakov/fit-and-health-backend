@@ -34,7 +34,7 @@ const getTrainingDiaryInfo = async (req: Request, res: Response): Promise<Respon
       .leftJoin("trainingDiaries.user", "user")
       .addSelect(['user.id'])
       .getOne()
-    console.log(TrainingDiaryInfo)
+    // console.log(TrainingDiaryInfo)
 
     const response = {
       updatedToken: req.body.updatedToken,
