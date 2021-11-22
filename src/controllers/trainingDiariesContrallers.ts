@@ -19,6 +19,18 @@ const getTrainingDiaryInfo = async (req: Request, res: Response): Promise<Respon
         'trainingProgram.trainingSkill',
       ])
       .leftJoinAndSelect('trainingProgram.marks', 'marks')
+      .leftJoinAndSelect('trainingProgram.trainingProgramDays', 'trainingProgramDays')
+      .leftJoin('trainingProgram.trainingProcesses', 'trainingProcesses')
+      .addSelect([
+        'trainingProcesses.id',
+        'trainingProcesses.approach',
+        'trainingProcesses.repeats',
+        'trainingProcesses.additionalWeight',
+        'trainingProcesses.implementationTime',
+        'trainingProcesses.restTime',
+      ])
+      .leftJoin('trainingProcesses.exercise', 'exercise')
+      .addSelect(['exercise.id', 'exercise.title'])
       .leftJoin("trainingDiaries.user", "user")
       .addSelect(['user.id'])
       .getOne()
