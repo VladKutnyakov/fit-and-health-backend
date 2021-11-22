@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateCol
 import { Users } from './Users'
 import { Marks } from './Marks'
 import { TrainingProgramDays } from './TrainingProgramDays'
+import { TrainingProcesses } from './TrainingProcesses'
 
 @Entity()
 export class TrainingPrograms {
@@ -41,6 +42,9 @@ export class TrainingPrograms {
 
   @OneToMany(() => TrainingProgramDays, trainingProgramDay => trainingProgramDay.trainingProgram)
   trainingProgramDays: TrainingProgramDays[]
+
+  @OneToMany(() => TrainingProcesses, trainingProcesses => trainingProcesses.trainingProgram)
+  trainingProcesses: TrainingProcesses[]
 
   @ManyToOne(() => Users, user => user.trainingPrograms)
   user: Users

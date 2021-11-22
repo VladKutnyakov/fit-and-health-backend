@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateCol
 import { Users } from './Users'
 import { Muscles } from './Muscles'
 import { TrainingProgramDayExercises } from './TrainingProgramDayExercises'
+import { TrainingProcesses } from './TrainingProcesses'
 
 @Entity()
 export class Exercises {
@@ -119,6 +120,9 @@ export class Exercises {
 
   @OneToMany(() => TrainingProgramDayExercises, trainingProgramDayExercises => trainingProgramDayExercises.exercise)
   trainingProgramDayExercises: TrainingProgramDayExercises[]
+
+  @OneToMany(() => TrainingProcesses, trainingProcesses => trainingProcesses.exercise)
+  trainingProcesses: TrainingProcesses[]
 
   @CreateDateColumn({
     type: 'timestamp',
