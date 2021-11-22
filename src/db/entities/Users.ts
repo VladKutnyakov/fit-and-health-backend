@@ -34,7 +34,7 @@ export class Users {
 
   @Column({
     type: 'varchar',
-    nullable: true,
+    nullable: false,
     unique: false,
     comment: 'Пароль пользователя для входа'
   })
