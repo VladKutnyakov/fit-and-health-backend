@@ -19,6 +19,7 @@ import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
 import recipesRoutes from './routes/recipesRoutes'
 import mealPlanerRoutes from './routes/mealPlanerRoutes'
 import exercisesRoutes from './routes/exercisesRoutes'
+import trainingDiariesRoutes from './routes/trainingDiariesRoutes'
 import trainingProgramsRoutes from './routes/trainingProgramsRoutes'
 
 // Инициализация приложения
@@ -84,6 +85,7 @@ app.use('/api/food-calorie-table', foodCalorieTableRoutes)
 app.use('/api/recipes', recipesRoutes)
 app.use('/api/meal-planer', mealPlanerRoutes)
 app.use('/api/exercises', exercisesRoutes)
+app.use('/api/training-diary', trainingDiariesRoutes)
 app.use('/api/training-programs', trainingProgramsRoutes)
 
 // Подключение к базе данных
