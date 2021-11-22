@@ -7,6 +7,7 @@ import { Recipes } from './Recipes'
 import { Exercises } from './Exercises'
 import { MealPlaners } from './MealPlaners'
 import { TrainingPrograms } from './TrainingPrograms'
+import { TrainingDiaries } from './TrainingDiaries'
 
 @Entity()
 export class Users {
@@ -95,6 +96,9 @@ export class Users {
   @ManyToMany(() => TrainingPrograms, trainingProgram => trainingProgram.pinnedForUsers)
   @JoinTable({ name: 'pinned_training_programs' })
   pinnedTrainingPrograms: TrainingPrograms[]
+
+  @OneToMany(() => TrainingDiaries, trainingDiaries => trainingDiaries.user)
+  trainingDiaries: TrainingDiaries[]
 
   @CreateDateColumn({
     type: 'timestamp',

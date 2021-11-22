@@ -3,6 +3,7 @@ import { Users } from './Users'
 import { Marks } from './Marks'
 import { TrainingProgramDays } from './TrainingProgramDays'
 import { TrainingProcesses } from './TrainingProcesses'
+import { TrainingDiaries } from './TrainingDiaries'
 
 @Entity()
 export class TrainingPrograms {
@@ -54,6 +55,9 @@ export class TrainingPrograms {
 
   @ManyToMany(() => Users, user => user.pinnedProducts)
   pinnedForUsers: Users[]
+
+  @OneToMany(() => TrainingDiaries, trainingDiaries => trainingDiaries.trainingProgram)
+  trainingDiaries: TrainingDiaries
 
   @CreateDateColumn({
     type: 'timestamp',

@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany, OneToMany, JoinTable } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany, OneToOne, JoinTable } from 'typeorm'
 import { Users } from './Users'
 import { TrainingPrograms } from './TrainingPrograms'
 import { TrainingProgramDays } from './TrainingProgramDays'
 import { Exercises } from './Exercises'
+import { TrainingDiaries } from './TrainingDiaries'
 
 @Entity()
 export class TrainingProcesses {
@@ -63,6 +64,9 @@ export class TrainingProcesses {
 
   @ManyToOne(() => Users, user => user.trainingPrograms)
   user: Users
+
+  @OneToOne(() => TrainingDiaries, trainingDiaries => trainingDiaries.trainingProcesses)
+  trainingDiary: TrainingDiaries
 
   @CreateDateColumn({
     type: 'timestamp',
