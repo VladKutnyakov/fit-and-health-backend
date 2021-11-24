@@ -21,6 +21,7 @@ import mealPlanerRoutes from './routes/mealPlanerRoutes'
 import exercisesRoutes from './routes/exercisesRoutes'
 import trainingDiariesRoutes from './routes/trainingDiariesRoutes'
 import trainingProgramsRoutes from './routes/trainingProgramsRoutes'
+import trainingProcessRoutes from './routes/trainingProcessRoutes'
 
 // Инициализация приложения
 const app: Application = express()
@@ -87,6 +88,7 @@ app.use('/api/meal-planer', mealPlanerRoutes)
 app.use('/api/exercises', exercisesRoutes)
 app.use('/api/training-diary', trainingDiariesRoutes)
 app.use('/api/training-programs', trainingProgramsRoutes)
+app.use('/api/training-process', trainingProcessRoutes)
 
 // Подключение к базе данных
 createConnection().then(connection => {
