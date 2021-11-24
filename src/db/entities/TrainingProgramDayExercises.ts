@@ -1,9 +1,14 @@
-import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, ManyToOne } from 'typeorm'
 import { Exercises } from './Exercises'
 import { TrainingProgramDays } from './TrainingProgramDays'
 
 @Entity()
 export class TrainingProgramDayExercises {
+
+  @PrimaryGeneratedColumn({
+    comment: 'ID упражнения тренировочного дня у программы тренировок'
+  })
+  id: number
 
   @PrimaryColumn({
     type: 'integer',

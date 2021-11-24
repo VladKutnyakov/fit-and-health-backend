@@ -1,20 +1,20 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import { TrainingPrograms } from "../db/entities/TrainingPrograms"
+import { TrainingProgramDays } from '../db/entities/TrainingProgramDays'
 
 const getTrainingProgramInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
     const TrainingProgramInfo = await getRepository(TrainingPrograms)
       .createQueryBuilder('trainingProgram')
-      .where([{id: req.params.trainingProgramId}])
-      .leftJoinAndSelect("trainingProgram.trainingProgramDays", "trainingProgramDays")
-      .leftJoinAndSelect('trainingProgramDays.trainingProgramDayExercises', 'trainingProgramDayExercises')
-      .leftJoinAndSelect('trainingProgramDayExercises.exercise', 'exercise')
-      .leftJoinAndSelect('trainingProgram.marks', 'marks')
+      .where([{id: req.params.trainingProgramId || 1}])
+      .select(['trainingProgram.id', 'trainingProgram.title'])
+      .leftJoin("trainingProgram.trainingProgramDays", "trainingProgramDays")
+      .addSelect(['trainingProgramDays.id', 'trainingProgramDays.title'])
       .leftJoin("trainingProgram.user", "user")
       .addSelect(['user.id'])
       .getOne()
-    console.log(TrainingProgramInfo?.trainingProgramDays[0])
+    // console.log(TrainingProgramInfo)
 
     const response = {
       updatedToken: req.body.updatedToken,
@@ -31,22 +31,26 @@ const getTrainingProgramInfo = async (req: Request, res: Response): Promise<Resp
 }
 
 const getTrainingDayInfo = async (req: Request, res: Response): Promise<Response> => {
+  // console.log(req.query.trainingDayId)
+
   try {
-    const TrainingProgramInfo = await getRepository(TrainingPrograms)
-      .createQueryBuilder('trainingProgram')
-      .where([{id: req.params.trainingProgramId}])
-      .leftJoinAndSelect("trainingProgram.trainingProgramDays", "trainingProgramDays")
-      .leftJoinAndSelect('trainingProgramDays.trainingProgramDayExercises', 'trainingProgramDayExercises')
-      .leftJoinAndSelect('trainingProgramDayExercises.exercise', 'exercise')
-      .leftJoinAndSelect('trainingProgram.marks', 'marks')
-      .leftJoin("trainingProgram.user", "user")
-      .addSelect(['user.id'])
+    const TrainingDayInfo = await getRepository(TrainingProgramDays)
+      .createQueryBuilder('trainingProgramDays')
+      .where([{id: req.query.trainingDayId}])
+      .leftJoin("trainingProgramDays.trainingProgramDayExercises", "trainingProgramDayExercises")
+      .addSelect([
+        'trainingProgramDayExercises.approaches',
+        'trainingProgramDayExercises.repeats',
+        'trainingProgramDayExercises.additionalWeight'
+      ])
+      .leftJoin('trainingProgramDayExercises.exercise', 'exercise')
+      .addSelect(['exercise.id', 'exercise.title'])
       .getOne()
-    console.log(TrainingProgramInfo?.trainingProgramDays[0])
+    console.log(TrainingDayInfo)
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: TrainingProgramInfo
+      data: TrainingDayInfo
     }
 
     return res.status(200).json(response)

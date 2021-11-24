@@ -24,7 +24,7 @@ export class TrainingProgramDays {
     type: 'varchar',
     nullable: true,
     unique: false,
-    comment: 'Время приема пищи'
+    comment: 'Комментарий к тренировочному дню'
   })
   comment: string
 

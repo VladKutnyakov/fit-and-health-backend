@@ -40,12 +40,12 @@ const router: Router = express.Router()
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/:trainingProgramId', JwtGuard, trainingProcessContrallers.getTrainingProgramInfo)
+router.get('/training-program-info', JwtGuard, trainingProcessContrallers.getTrainingProgramInfo)
 
-// http://localhost:3031/api/training-process/training-day-info/:trainingProgramId
+// http://localhost:3031/api/training-process/training-day-info/:trainingDayId
 /**
 * @swagger
-* /api/training-process/training-day-info/{trainingProgramId}:
+* /api/training-process/training-day-info/{trainingDayId}:
 *   get:
 *     tags:
 *       - Тренировочный процесс
@@ -79,6 +79,6 @@ router.get('/:trainingProgramId', JwtGuard, trainingProcessContrallers.getTraini
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/:trainingDayId', JwtGuard, trainingProcessContrallers.getTrainingDayInfo)
+router.get('/training-day-info', JwtGuard, trainingProcessContrallers.getTrainingDayInfo)
 
 export default router
