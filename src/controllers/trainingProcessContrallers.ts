@@ -45,8 +45,9 @@ const getTrainingDayInfo = async (req: Request, res: Response): Promise<Response
       ])
       .leftJoin('trainingProgramDayExercises.exercise', 'exercise')
       .addSelect(['exercise.id', 'exercise.title'])
+      .leftJoinAndSelect('exercise.exerciseApproaches', 'exerciseApproaches', "exerciseApproaches.date = '2021-11-24'")
       .getOne()
-    console.log(TrainingDayInfo)
+    console.log(TrainingDayInfo?.trainingProgramDayExercises[0].exercise.exerciseApproaches)
 
     const response = {
       updatedToken: req.body.updatedToken,
