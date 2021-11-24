@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'
 import { Exercises } from './Exercises'
+import { Users } from './Users'
 
 @Entity()
 export class TrainingProgramDayExerciseApproaches {
@@ -59,5 +60,8 @@ export class TrainingProgramDayExerciseApproaches {
 
   @ManyToOne(() => Exercises, exercise => exercise.exerciseApproaches)
   exercise: Exercises
+
+  @ManyToOne(() => Users, user => user.exerciseApproaches)
+  user: Users
 
 }

@@ -8,6 +8,7 @@ import { Exercises } from './Exercises'
 import { MealPlaners } from './MealPlaners'
 import { TrainingPrograms } from './TrainingPrograms'
 import { TrainingDiaries } from './TrainingDiaries'
+import { TrainingProgramDayExerciseApproaches } from './TrainingProgramDayExerciseApproaches'
 
 @Entity()
 export class Users {
@@ -99,6 +100,9 @@ export class Users {
 
   @OneToMany(() => TrainingDiaries, trainingDiaries => trainingDiaries.user)
   trainingDiaries: TrainingDiaries[]
+
+  @OneToMany(() => TrainingProgramDayExerciseApproaches, exerciseApproaches => exerciseApproaches.user)
+  exerciseApproaches: TrainingProgramDayExerciseApproaches[]
 
   @CreateDateColumn({
     type: 'timestamp',
