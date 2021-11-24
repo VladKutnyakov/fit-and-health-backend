@@ -1,6 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'
 import { Exercises } from './Exercises'
-import { TrainingProgramDays } from './TrainingProgramDays'
 
 @Entity()
 export class TrainingProgramDayExerciseApproaches {
@@ -9,6 +8,22 @@ export class TrainingProgramDayExerciseApproaches {
     comment: 'ID подхода'
   })
   id: number
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Дата выполнения подхода'
+  })
+  date!: string
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Порядковый номер подхода'
+  })
+  order!: string
 
   @Column({
     type: 'varchar',
@@ -42,10 +57,7 @@ export class TrainingProgramDayExerciseApproaches {
   })
   restTime!: string
 
-  // @ManyToOne(() => TrainingProgramDays, trainingProgramDay => trainingProgramDay.trainingProgramDayExercises)
-  // trainingProgramDay!: TrainingProgramDays
-
-  // @ManyToOne(() => Exercises, exercise => exercise.trainingProgramDayExercises)
-  // exercise!: Exercises
+  @ManyToOne(() => Exercises, exercise => exercise.exerciseApproaches)
+  exercise: Exercises
 
 }
