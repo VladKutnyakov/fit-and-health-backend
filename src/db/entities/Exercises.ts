@@ -3,6 +3,7 @@ import { Users } from './Users'
 import { Muscles } from './Muscles'
 import { ExerciseTypes } from './ExerciseTypes'
 import { ExerciseSorts } from './ExerciseSorts'
+import { ExerciseExertions } from './ExerciseExertions'
 import { TrainingProgramDayExercises } from './TrainingProgramDayExercises'
 import { TrainingProcesses } from './TrainingProcesses'
 import { TrainingProgramDayExerciseApproaches } from './TrainingProgramDayExerciseApproaches'
@@ -31,13 +32,13 @@ export class Exercises {
   })
   equipment: string
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: false,
-    comment: 'Усилие'
-  })
-  exertion: string
+  // @Column({
+  //   type: 'varchar',
+  //   nullable: false,
+  //   unique: false,
+  //   comment: 'Усилие'
+  // })
+  // exertion: string
 
   @Column({
     type: 'integer',
@@ -92,6 +93,9 @@ export class Exercises {
 
   @ManyToOne(() => ExerciseSorts, sort => sort.exercises)
   sort: ExerciseSorts
+
+  @ManyToOne(() => ExerciseExertions, exertion => exertion.exercises)
+  exertion: ExerciseExertions
 
   @ManyToOne(() => Muscles, muscleGroup => muscleGroup.exercises)
   muscleGroup: Muscles
