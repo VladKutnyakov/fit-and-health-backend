@@ -4,6 +4,7 @@ import { Muscles } from './Muscles'
 import { ExerciseTypes } from './ExerciseTypes'
 import { ExerciseSorts } from './ExerciseSorts'
 import { ExerciseExertions } from './ExerciseExertions'
+import { Skills } from './Skills'
 import { TrainingProgramDayExercises } from './TrainingProgramDayExercises'
 import { TrainingProcesses } from './TrainingProcesses'
 import { TrainingProgramDayExerciseApproaches } from './TrainingProgramDayExerciseApproaches'
@@ -40,13 +41,13 @@ export class Exercises {
   // })
   // exertion: string
 
-  @Column({
-    type: 'integer',
-    nullable: false,
-    unique: false,
-    comment: 'Уровень подготовки'
-  })
-  practiceLevel: number
+  // @Column({
+  //   type: 'integer',
+  //   nullable: false,
+  //   unique: false,
+  //   comment: 'Уровень подготовки'
+  // })
+  // skill: number
 
   @Column({
     type: 'text',
@@ -96,6 +97,9 @@ export class Exercises {
 
   @ManyToOne(() => ExerciseExertions, exertion => exertion.exercises)
   exertion: ExerciseExertions
+
+  @ManyToOne(() => Skills, skill => skill.exercises)
+  skill: Skills
 
   @ManyToOne(() => Muscles, muscleGroup => muscleGroup.exercises)
   muscleGroup: Muscles
