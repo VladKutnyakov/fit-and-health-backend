@@ -155,12 +155,114 @@ router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
 router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExerciseInfo)
 
 // http://localhost:3031/api/exercises/muscles
+/**
+* @swagger
+* /api/exercises/muscles:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Список мышечных групп
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Список мышечных групп
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: ID мышечной группы
+*                       title:
+*                         type: string
+*                         description: Название мышечной группы
+*       401:
+*         description: Ошибка авторизации
+*/
 router.get('/muscles', JwtGuard, exercisesControllers.fetchMuscles)
 
 // http://localhost:3031/api/exercises/exercise-types
+/**
+* @swagger
+* /api/exercises/exercise-types:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Список типов для упражнений
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Список типов для упражнений
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: ID мышечной группы
+*                       title:
+*                         type: string
+*                         description: Название мышечной группы
+*       401:
+*         description: Ошибка авторизации
+*/
 router.get('/exercise-types', JwtGuard, exercisesControllers.fetchExerciseTypes)
 
 // http://localhost:3031/api/exercises/exercise-sorts
+/**
+* @swagger
+* /api/exercises/exercise-sorts:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Список видов для упражнений
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Список видов для упражнений
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: ID мышечной группы
+*                       title:
+*                         type: string
+*                         description: Название мышечной группы
+*       401:
+*         description: Ошибка авторизации
+*/
 router.get('/exercise-sorts', JwtGuard, exercisesControllers.fetchExerciseSorts)
 
 export default router
