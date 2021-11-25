@@ -18,6 +18,14 @@ export class Skills {
   title: string
 
   @Column({
+    type: 'text',
+    nullable: false,
+    unique: true,
+    comment: 'Название уровня навыка (сложности)'
+  })
+  complexityTitle: string
+
+  @Column({
     type: 'integer',
     nullable: false,
     unique: true,
