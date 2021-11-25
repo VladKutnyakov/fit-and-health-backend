@@ -4,6 +4,8 @@ import { Muscles } from "../db/entities/Muscles"
 import { Exercises } from "../db/entities/Exercises"
 import { ExerciseTypes } from "../db/entities/ExerciseTypes"
 import { ExerciseSorts } from "../db/entities/ExerciseSorts"
+import { ExerciseExertions } from "../db/entities/ExerciseExertions"
+import { ExerciseEquipments } from "../db/entities/ExerciseEquipments"
 
 const fetchExercisesList = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -147,11 +149,55 @@ const fetchExerciseSorts = async (req: Request, res: Response): Promise<Response
   }
 }
 
+const fetchExerciseExertions = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const ExerciseExertionsList = await getRepository(ExerciseExertions)
+      .createQueryBuilder('exerciseExertions')
+      .getMany()
+    // console.log(ExercisesList)
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: ExerciseExertionsList
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+}
+
+const fetchExerciseEquipments = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const ExerciseEquipmentsList = await getRepository(ExerciseEquipments)
+      .createQueryBuilder('exerciseEquipments')
+      .getMany()
+    // console.log(ExercisesList)
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: ExerciseEquipmentsList
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+}
+
 export default {
   fetchExercisesList,
   fetchExerciseInfo,
   saveNewExercise,
   fetchMuscles,
   fetchExerciseTypes,
-  fetchExerciseSorts
+  fetchExerciseSorts,
+  fetchExerciseExertions,
+  fetchExerciseEquipments
 }

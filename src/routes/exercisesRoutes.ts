@@ -265,4 +265,78 @@ router.get('/exercise-types', JwtGuard, exercisesControllers.fetchExerciseTypes)
 */
 router.get('/exercise-sorts', JwtGuard, exercisesControllers.fetchExerciseSorts)
 
+// http://localhost:3031/api/exercises/exercise-exertions
+/**
+* @swagger
+* /api/exercises/exercise-exertions:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Список усилий для выполнения упражнений
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Список усилий для выполнения упражнений
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: ID мышечной группы
+*                       title:
+*                         type: string
+*                         description: Название мышечной группы
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/exercise-exertions', JwtGuard, exercisesControllers.fetchExerciseExertions)
+
+// http://localhost:3031/api/exercises/exercise-equipments
+/**
+* @swagger
+* /api/exercises/exercise-equipments:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Список необходимого оборудования для выполнения упражнений
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Список необходимого оборудования для выполнения упражнений
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: ID мышечной группы
+*                       title:
+*                         type: string
+*                         description: Название мышечной группы
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/exercise-equipments', JwtGuard, exercisesControllers.fetchExerciseEquipments)
+
 export default router
