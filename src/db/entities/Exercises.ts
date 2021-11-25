@@ -4,6 +4,7 @@ import { Muscles } from './Muscles'
 import { ExerciseTypes } from './ExerciseTypes'
 import { ExerciseSorts } from './ExerciseSorts'
 import { ExerciseExertions } from './ExerciseExertions'
+import { ExerciseEquipments } from './ExerciseEquipments'
 import { Skills } from './Skills'
 import { TrainingProgramDayExercises } from './TrainingProgramDayExercises'
 import { TrainingProcesses } from './TrainingProcesses'
@@ -24,30 +25,6 @@ export class Exercises {
     comment: 'Название упражнения'
   })
   title: string
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: false,
-    comment: 'Необходимое оборудование'
-  })
-  equipment: string
-
-  // @Column({
-  //   type: 'varchar',
-  //   nullable: false,
-  //   unique: false,
-  //   comment: 'Усилие'
-  // })
-  // exertion: string
-
-  // @Column({
-  //   type: 'integer',
-  //   nullable: false,
-  //   unique: false,
-  //   comment: 'Уровень подготовки'
-  // })
-  // skill: number
 
   @Column({
     type: 'text',
@@ -97,6 +74,9 @@ export class Exercises {
 
   @ManyToOne(() => ExerciseExertions, exertion => exertion.exercises)
   exertion: ExerciseExertions
+
+  @ManyToOne(() => ExerciseEquipments, equipment => equipment.exercises)
+  equipment: ExerciseEquipments
 
   @ManyToOne(() => Skills, skill => skill.exercises)
   skill: Skills
