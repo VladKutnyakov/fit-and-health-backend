@@ -1,6 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, ManyToMany, JoinTable } from 'typeorm'
 import { Users } from './Users'
 import { Muscles } from './Muscles'
+import { ExerciseTypes } from './ExerciseTypes'
+import { ExerciseSorts } from './ExerciseSorts'
 import { TrainingProgramDayExercises } from './TrainingProgramDayExercises'
 import { TrainingProcesses } from './TrainingProcesses'
 import { TrainingProgramDayExerciseApproaches } from './TrainingProgramDayExerciseApproaches'
@@ -20,22 +22,6 @@ export class Exercises {
     comment: 'Название упражнения'
   })
   title: string
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: false,
-    comment: 'Тип упражнения'
-  })
-  type: string
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: false,
-    comment: 'Вид упражнения'
-  })
-  sort: string
 
   @Column({
     type: 'varchar',
@@ -101,14 +87,18 @@ export class Exercises {
   })
   cardio: number
 
+  @ManyToOne(() => ExerciseTypes, type => type.exercises)
+  type: ExerciseTypes
+
+  @ManyToOne(() => ExerciseSorts, sort => sort.exercises)
+  sort: ExerciseSorts
+
   @ManyToOne(() => Muscles, muscleGroup => muscleGroup.exercises)
   muscleGroup: Muscles
 
   @ManyToMany(() => Muscles, muscle => muscle.additionalForExercises)
   @JoinTable({ name: 'exercise_additional_muscles' })
   additionalMuscles: Muscles[]
-
-  // analogs: [{id: 1, title: 'test'}],
 
   @ManyToOne(() => Users, user => user.exercises)
   user: Users
