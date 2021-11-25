@@ -154,4 +154,13 @@ router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
 */
 router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExerciseInfo)
 
+// http://localhost:3031/api/exercises/muscles
+router.get('/muscles', JwtGuard, exercisesControllers.fetchMuscles)
+
+// http://localhost:3031/api/exercises/exercise-types
+router.get('/exercise-types', JwtGuard, exercisesControllers.fetchExerciseTypes)
+
+// http://localhost:3031/api/exercises/exercise-sorts
+router.get('/exercise-sorts', JwtGuard, exercisesControllers.fetchExerciseSorts)
+
 export default router
