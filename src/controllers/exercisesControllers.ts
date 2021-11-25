@@ -39,14 +39,18 @@ const fetchExerciseInfo = async (req: Request, res: Response): Promise<Response>
     const ExercisesInfo = await getRepository(Exercises)
       .createQueryBuilder('exercises')
       .where([{id: req.params.exerciseId}])
-      .select(['exercises.id', 'exercises.title', 'exercises.type', 'exercises.sort', 'exercises.equipment', 'exercises.exertion', 'exercises.practiceLevel', 'exercises.techniqueDescription'])
+      .select(['exercises.id', 'exercises.title', 'exercises.techniqueDescription'])
       .leftJoinAndSelect('exercises.muscleGroup', 'muscles')
+      .leftJoinAndSelect('exercises.type', 'type')
+      .leftJoinAndSelect('exercises.sort', 'sort')
+      .leftJoinAndSelect('exercises.exertion', 'exertion')
+      .leftJoinAndSelect('exercises.equipment', 'equipment')
+      .leftJoinAndSelect('exercises.skill', 'skill')
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoin("exercises.user", "user")
       .addSelect(['user.id'])
       .getOne()
       // .getSql()
-
     // console.log(ExercisesInfo)
 
     const response = {
