@@ -90,6 +90,7 @@ const fetchMuscles = async (req: Request, res: Response): Promise<Response> => {
   try {
     const MusclesList = await getRepository(Muscles)
       .createQueryBuilder('muscles')
+      .orderBy('id')
       .getMany()
     // console.log(ExercisesList)
 
@@ -111,6 +112,7 @@ const fetchExerciseTypes = async (req: Request, res: Response): Promise<Response
   try {
     const ExerciseTypesList = await getRepository(ExerciseTypes)
       .createQueryBuilder('exerciseTypes')
+      .orderBy('id')
       .getMany()
     // console.log(ExercisesList)
 
@@ -132,6 +134,7 @@ const fetchExerciseSorts = async (req: Request, res: Response): Promise<Response
   try {
     const ExerciseSortsList = await getRepository(ExerciseSorts)
       .createQueryBuilder('exerciseSorts')
+      .orderBy('id')
       .getMany()
     // console.log(ExercisesList)
 
@@ -153,6 +156,7 @@ const fetchExerciseExertions = async (req: Request, res: Response): Promise<Resp
   try {
     const ExerciseExertionsList = await getRepository(ExerciseExertions)
       .createQueryBuilder('exerciseExertions')
+      .orderBy('id')
       .getMany()
     // console.log(ExercisesList)
 
@@ -174,6 +178,7 @@ const fetchExerciseEquipments = async (req: Request, res: Response): Promise<Res
   try {
     const ExerciseEquipmentsList = await getRepository(ExerciseEquipments)
       .createQueryBuilder('exerciseEquipments')
+      .orderBy('id')
       .getMany()
     // console.log(ExercisesList)
 
