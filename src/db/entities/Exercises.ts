@@ -91,10 +91,10 @@ export class Exercises {
   @ManyToOne(() => Users, user => user.exercises)
   user: Users
 
-  @ManyToMany(() => Users, user => user.favoriteProducts)
+  @ManyToMany(() => Users, user => user.favoriteExercises)
   favoriteForUsers: Users[]
 
-  @ManyToMany(() => Users, user => user.pinnedProducts)
+  @ManyToMany(() => Users, user => user.pinnedExercises)
   pinnedForUsers: Users[]
 
   @OneToMany(() => TrainingProgramDayExercises, trainingProgramDayExercises => trainingProgramDayExercises.exercise)
