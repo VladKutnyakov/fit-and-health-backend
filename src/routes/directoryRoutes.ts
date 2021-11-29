@@ -32,9 +32,15 @@ const router: Router = express.Router()
 *                       id:
 *                         type: integer
 *                         description: ID мышечной группы
-*                       title:
+*                       excellenceTitle:
 *                         type: string
-*                         description: Название мышечной группы
+*                         description: Название уровня навыка (мастерства)
+*                       complexityTitle:
+*                         type: string
+*                         description: Название уровня навыка (сложности)
+*                       value:
+*                         type: string
+*                         description: Числовое обозначение уровня сложности
 *       401:
 *         description: Ошибка авторизации
 */
