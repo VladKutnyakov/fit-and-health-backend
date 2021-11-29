@@ -15,17 +15,47 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
       .leftJoin('muscles.exercises', 'exercises', `exercises.user = ${req.body.userId} OR exercises.user IS NULL`)
       .addSelect(['exercises.id', 'exercises.title'])
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
+      .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['favoriteForUsers.id'])
+      .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['pinnedForUsers.id'])
       .leftJoin("exercises.user", "user")
       .addSelect(['user.id'])
       .orderBy({'muscles.id': 'ASC'})
       .getMany()
       // .getSql()
-
     // console.log(ExercisesList)
+
+    const AllExersicesByMuscles: any = []
+
+    for (let i = 0; i < ExercisesList.length; i++) {
+      const list: any = []
+
+      ExercisesList[i].exercises.forEach((element: any) => {
+        const item = {
+          id: element.id,
+          title: element.title,
+          additionalMuscles: [],
+          favorite: element.favoriteForUsers.length > 0 ? true : false,
+          pinned: element.favoriteForUsers.length > 0 ? true : false,
+          user: element.user
+        }
+
+        list.push(item)
+      })
+
+      const ExercisesByMuscle = {
+        id: ExercisesList[i].id,
+        title: ExercisesList[i].title,
+        exercises: list
+      }
+      AllExersicesByMuscles.push(ExercisesByMuscle)
+    }
+    // console.log(AllExersicesByMuscles)
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: ExercisesList
+      data: AllExersicesByMuscles
     }
 
     return res.status(200).json(response)
