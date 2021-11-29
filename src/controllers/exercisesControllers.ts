@@ -37,7 +37,7 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
           title: element.title,
           additionalMuscles: [],
           favorite: element.favoriteForUsers.length > 0 ? true : false,
-          pinned: element.favoriteForUsers.length > 0 ? true : false,
+          pinned: element.pinnedForUsers.length > 0 ? true : false,
           user: element.user
         }
 
@@ -51,7 +51,7 @@ const fetchExercisesList = async (req: Request, res: Response): Promise<Response
       }
       AllExersicesByMuscles.push(ExercisesByMuscle)
     }
-    // console.log(AllExersicesByMuscles)
+    // console.log(AllExersicesByMuscles[0])
 
     const response = {
       updatedToken: req.body.updatedToken,
