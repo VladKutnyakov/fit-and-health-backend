@@ -15,7 +15,7 @@ export class Skills {
     unique: true,
     comment: 'Название уровня навыка (мастерства)'
   })
-  title: string
+  excellenceTitle: string
 
   @Column({
     type: 'text',
