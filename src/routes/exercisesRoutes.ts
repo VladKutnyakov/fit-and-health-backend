@@ -154,6 +154,90 @@ router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
 */
 router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExerciseInfo)
 
+// http://localhost:3031/api/exercises/change-pinned-param/:exerciseId
+/**
+* @swagger
+* /api/exercises/change-pinned-param/{exerciseId}:
+*   put:
+*     tags:
+*       - Справочник упражнений
+*     summary: Изменить признак "закрепленного" для упражнения у пользователя
+*     security:
+*       - jwt: []
+*     parameters:
+*       - in: path
+*         name: exerciseId
+*         required: true
+*         schema:
+*           type: integer
+*         description: ID упражнения
+*     responses:
+*       200:
+*         description: Признак "закрепленного" для упражнения изменен
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: object
+*                   properties:
+*                     pinned:
+*                       type: boolean
+*                       description: Признак "закрепленного" для упражнения у пользователя
+*                     exerciseId:
+*                       type: integer
+*                       description: Id упражнения
+*       401:
+*         description: Ошибка авторизации
+*/
+router.put('/change-pinned-param/:exerciseId', JwtGuard, exercisesControllers.changePinnedParam)
+
+// http://localhost:3031/api/exercises/change-favorite-param/:exerciseId
+/**
+* @swagger
+* /api/exercises/change-favorite-param/{exerciseId}:
+*   put:
+*     tags:
+*       - Справочник упражнений
+*     summary: Изменить признак "избранного" для упражнения у пользователя
+*     security:
+*       - jwt: []
+*     parameters:
+*       - in: path
+*         name: exerciseId
+*         required: true
+*         schema:
+*           type: integer
+*         description: ID упражнения
+*     responses:
+*       200:
+*         description: Признак "избранного" для упражнения изменен
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: object
+*                   properties:
+*                     favorite:
+*                       type: boolean
+*                       description: Признак "избранного" для упражнения у пользователя
+*                     exerciseId:
+*                       type: integer
+*                       description: Id упражнения
+*       401:
+*         description: Ошибка авторизации
+*/
+router.put('/change-favorite-param/:exerciseId', JwtGuard, exercisesControllers.changeFavoriteParam)
+
 // http://localhost:3031/api/exercises/muscles
 /**
 * @swagger
