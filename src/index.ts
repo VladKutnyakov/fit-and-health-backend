@@ -13,6 +13,7 @@ import "reflect-metadata"
 import { createConnection } from 'typeorm'
 
 // Импорт роутов
+import directoryRoutes from './routes/directoryRoutes'
 import authRoutes from './routes/authRoutes'
 import profilesRoutes from './routes/profilesRoutes'
 import foodCalorieTableRoutes from './routes/foodCalorieTableRoutes'
@@ -80,6 +81,7 @@ app.use(helmet())
 app.use('/public', express.static('public'))
 
 // Routes
+app.use('/api/directory', directoryRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/profiles', profilesRoutes)
 app.use('/api/food-calorie-table', foodCalorieTableRoutes)
