@@ -28,7 +28,7 @@ export class Exercises {
 
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Описание упражнения'
   })
