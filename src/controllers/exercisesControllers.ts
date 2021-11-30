@@ -152,7 +152,7 @@ const saveNewExercise = async (req: Request, res: Response): Promise<Response> =
       })
     }])
     .execute()
-    console.log(CreatedExercise)
+    // console.log(CreatedExercise)
 
     if (req.body.exercise.favorite) {
       await getConnection()
