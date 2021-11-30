@@ -238,6 +238,7 @@ const fetchMuscles = async (req: Request, res: Response): Promise<Response> => {
   try {
     const MusclesList = await getRepository(Muscles)
       .createQueryBuilder('muscles')
+      .select(['muscles.id', 'muscles.title'])
       .orderBy('id')
       .getMany()
     // console.log(ExercisesList)
