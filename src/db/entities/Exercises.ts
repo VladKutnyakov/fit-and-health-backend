@@ -36,7 +36,7 @@ export class Exercises {
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Акцент упражнения для развития силы'
   })
@@ -44,7 +44,7 @@ export class Exercises {
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Акцент упражнения для развития выносливости'
   })
@@ -52,7 +52,7 @@ export class Exercises {
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Акцент упражнения для развития гибкости'
   })
@@ -60,7 +60,7 @@ export class Exercises {
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Акцент упражнения для развития кардио'
   })
