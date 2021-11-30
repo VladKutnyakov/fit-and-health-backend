@@ -117,42 +117,42 @@ const saveNewExercise = async (req: Request, res: Response): Promise<Response> =
     .insert()
     .into(Exercises)
     .values([{
-        title: req.body.exercise.title,
-        techniqueDescription: req.body.exercise.techniqueDescription,
-        type: getRepository(ExerciseTypes).create({
-          id: req.body.exercise.type.id,
-        }),
-        sort: getRepository(ExerciseSorts).create({
-          id: req.body.exercise.sort.id,
-        }),
-        equipment: getRepository(ExerciseEquipments).create({
-          id: req.body.exercise.equipment.id,
-        }),
-        exertion: getRepository(ExerciseExertions).create({
-          id: req.body.exercise.exertion.id,
-        }),
-        skill: getRepository(Skills).create({
-          id: req.body.exercise.skill.id,
-        }),
-        muscleGroup: getRepository(Muscles).create({
-          id: req.body.exercise.muscleGroup.id,
-        }),
-        // additionalMuscles: [
-        //   {
-        //     "id": 0,
-        //     "title": "string"
-        //   }
-        // ],
-        power: req.body.exercise.power,
-        endurance: req.body.exercise.endurance,
-        flexibility: req.body.exercise.flexibility,
-        cardio: req.body.exercise.cardio,
-        user: getRepository(Users).create({
-          id: req.body.userId,
-        })
-      }])
+      title: req.body.exercise.title,
+      techniqueDescription: req.body.exercise.techniqueDescription,
+      type: getRepository(ExerciseTypes).create({
+        id: req.body.exercise.type?.id,
+      }),
+      sort: getRepository(ExerciseSorts).create({
+        id: req.body.exercise.sort?.id,
+      }),
+      equipment: getRepository(ExerciseEquipments).create({
+        id: req.body.exercise.equipment?.id,
+      }),
+      exertion: getRepository(ExerciseExertions).create({
+        id: req.body.exercise.exertion?.id,
+      }),
+      skill: getRepository(Skills).create({
+        id: req.body.exercise.skill?.id,
+      }),
+      muscleGroup: getRepository(Muscles).create({
+        id: req.body.exercise.muscleGroup?.id,
+      }),
+      // additionalMuscles: [
+      //   {
+      //     "id": 0,
+      //     "title": "string"
+      //   }
+      // ],
+      power: req.body.exercise.power,
+      endurance: req.body.exercise.endurance,
+      flexibility: req.body.exercise.flexibility,
+      cardio: req.body.exercise.cardio,
+      user: getRepository(Users).create({
+        id: req.body.userId,
+      })
+    }])
     .execute()
-    // console.log(CreatedExercise)
+    console.log(CreatedExercise)
 
     if (req.body.exercise.favorite) {
       await getConnection()
