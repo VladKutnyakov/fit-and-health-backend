@@ -17,6 +17,14 @@ export class Muscles {
   })
   title: string
 
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Изображение мышечной группы'
+  })
+  previewImage: string
+
   @OneToMany(() => Exercises, exercises => exercises.muscleGroup)
   exercises: Exercises[]
 
