@@ -230,8 +230,6 @@ const saveNewExercise = async (req: Request, res: Response): Promise<Response> =
 }
 
 const updateExercise = async (req: Request, res: Response): Promise<Response> => {
-  console.log(req.body.exercise)
-
   try {
     const UpdatedExercise = await getRepository(Exercises)
     .createQueryBuilder('exercises')
