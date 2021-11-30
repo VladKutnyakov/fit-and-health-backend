@@ -161,7 +161,7 @@ router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExe
 *   post:
 *     tags:
 *       - Справочник упражнений
-*     summary: Создать новое упражнение
+*     summary: Создание упражнения
 *     security:
 *       - jwt: []
 *     requestBody:
@@ -274,7 +274,7 @@ router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExe
 *                         description: ID пользователя
 *     responses:
 *       200:
-*         description: Информация об упражнении
+*         description: Созданное упражнении
 *         content:
 *           application/json:
 *             schema:
@@ -388,6 +388,241 @@ router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExe
 *         description: Ошибка авторизации
 */
 router.post('/save-new-exercise', JwtGuard, exercisesControllers.saveNewExercise)
+
+// http://localhost:3031/api/exercises/update-exercise
+/**
+* @swagger
+* /api/exercises/update-exercise:
+*   put:
+*     tags:
+*       - Справочник упражнений
+*     summary: Редактированние упражнения
+*     security:
+*       - jwt: []
+*     requestBody:
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             required: true
+*             properties:
+*               exercise:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID упражнения
+*                   title:
+*                     type: string
+*                     description: Название упражнения
+*                   techniqueDescription:
+*                     type: string
+*                     description: Описание упражнения
+*                   type:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID типа упражнения
+*                       title:
+*                         type: string
+*                         description: Тип упражнения
+*                   sort:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID вида упражнения
+*                       title:
+*                         type: string
+*                         description: Вид упражнения
+*                   equipment:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID оборудование для упражнения
+*                       title:
+*                         type: string
+*                         description: Необходимое оборудование для упражнения
+*                   exertion:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID вариантнов училия
+*                       title:
+*                         type: string
+*                         description: Прилагаемое усилие
+*                   skill:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID уровня навыка
+*                       excellenceTitle:
+*                         type: string
+*                         description: Название уровня навыка (мастерства)
+*                       complexityTitle:
+*                         type: string
+*                         description: Название уровня навыка (сложности)
+*                       value:
+*                         type: number
+*                         description: Числовое обозначение уровня навыка (мастерства)
+*                   muscleGroup:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID мышечной группы
+*                       title:
+*                         type: string
+*                         description: Название мышечной группы
+*                   additionalMuscles:
+*                     type: array
+*                     items:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID мышечной группы
+*                         title:
+*                           type: string
+*                           description: Название мышечной группы
+*                   power:
+*                     type: number
+*                     description: Акцент упражнения для развитии силы
+*                   endurance:
+*                     type: number
+*                     description: Акцент упражнения для развитии выносливости
+*                   flexibility:
+*                     type: number
+*                     description: Акцент упражнения для развитии гибкости
+*                   cardio:
+*                     type: number
+*                     description: Акцент упражнения для развитии кардио
+*                   user:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID пользователя
+*     responses:
+*       200:
+*         description: Отредактированное упражнение
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: integer
+*                       description: ID упражнения
+*                     title:
+*                       type: string
+*                       description: Название упражнения
+*                     techniqueDescription:
+*                       type: string
+*                       description: Описание упражнения
+*                     type:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID типа упражнения
+*                         title:
+*                           type: string
+*                           description: Тип упражнения
+*                     sort:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID вида упражнения
+*                         title:
+*                           type: string
+*                           description: Вид упражнения
+*                     equipment:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID оборудование для упражнения
+*                         title:
+*                           type: string
+*                           description: Необходимое оборудование для упражнения
+*                     exertion:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID вариантнов училия
+*                         title:
+*                           type: string
+*                           description: Прилагаемое усилие
+*                     skill:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID уровня навыка
+*                         excellenceTitle:
+*                           type: string
+*                           description: Название уровня навыка (мастерства)
+*                         complexityTitle:
+*                           type: string
+*                           description: Название уровня навыка (сложности)
+*                         value:
+*                           type: number
+*                           description: Числовое обозначение уровня навыка (мастерства)
+*                     muscleGroup:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID мышечной группы
+*                         title:
+*                           type: string
+*                           description: Название мышечной группы
+*                     additionalMuscles:
+*                       type: array
+*                       items:
+*                         type: object
+*                         properties:
+*                           id:
+*                             type: number
+*                             description: ID мышечной группы
+*                           title:
+*                             type: string
+*                             description: Название мышечной группы
+*                     power:
+*                       type: number
+*                       description: Акцент упражнения для развитии силы
+*                     endurance:
+*                       type: number
+*                       description: Акцент упражнения для развитии выносливости
+*                     flexibility:
+*                       type: number
+*                       description: Акцент упражнения для развитии гибкости
+*                     cardio:
+*                       type: number
+*                       description: Акцент упражнения для развитии кардио
+*                     user:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID пользователя
+*       401:
+*         description: Ошибка авторизации
+*/
+router.put('/update-exercise', JwtGuard, exercisesControllers.updateExercise)
 
 // http://localhost:3031/api/exercises/change-pinned-param/:exerciseId
 /**

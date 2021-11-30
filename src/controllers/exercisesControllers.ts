@@ -90,15 +90,43 @@ const fetchExerciseInfo = async (req: Request, res: Response): Promise<Response>
       .leftJoinAndSelect('exercises.equipment', 'equipment')
       .leftJoinAndSelect('exercises.skill', 'skill')
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
+      .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['favoriteForUsers.id'])
+      .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['pinnedForUsers.id'])
       .leftJoin("exercises.user", "user")
       .addSelect(['user.id'])
       .getOne()
       // .getSql()
     // console.log(ExercisesInfo)
 
+    let exercise: any = null
+    
+    if (ExercisesInfo) {
+      exercise = {
+        id: ExercisesInfo?.id,
+        title: ExercisesInfo?.title,
+        techniqueDescription: ExercisesInfo?.techniqueDescription,
+        type: ExercisesInfo?.type,
+        sort: ExercisesInfo?.sort,
+        exertion: ExercisesInfo?.exertion,
+        equipment: ExercisesInfo?.equipment,
+        skill: ExercisesInfo?.skill,
+        muscleGroup: ExercisesInfo?.muscleGroup,
+        additionalMuscles: ExercisesInfo?.additionalMuscles,
+        power: ExercisesInfo?.power,
+        endurance: ExercisesInfo?.endurance,
+        flexibility: ExercisesInfo?.flexibility,
+        cardio: ExercisesInfo?.cardio,
+        favorite: ExercisesInfo.favoriteForUsers.length > 0 ? true : false,
+        pinned: ExercisesInfo.pinnedForUsers.length > 0 ? true : false,
+        user: ExercisesInfo?.user
+      }
+    }
+
     const response = {
       updatedToken: req.body.updatedToken,
-      data: ExercisesInfo
+      data: exercise
     }
 
     return res.status(200).json(response)
@@ -191,6 +219,107 @@ const saveNewExercise = async (req: Request, res: Response): Promise<Response> =
       }
     }
     // console.log(response)
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+}
+
+const updateExercise = async (req: Request, res: Response): Promise<Response> => {
+  console.log(req.body.exercise)
+
+  try {
+    const UpdatedExercise = await getRepository(Exercises)
+    .createQueryBuilder('exercises')
+    .update(Exercises)
+    .set({
+      title: req.body.exercise.title,
+      techniqueDescription: req.body.exercise.techniqueDescription,
+      type: getRepository(ExerciseTypes).create({
+        id: req.body.exercise.type?.id,
+      }),
+      sort: getRepository(ExerciseSorts).create({
+        id: req.body.exercise.sort?.id,
+      }),
+      equipment: getRepository(ExerciseEquipments).create({
+        id: req.body.exercise.equipment?.id,
+      }),
+      exertion: getRepository(ExerciseExertions).create({
+        id: req.body.exercise.exertion?.id,
+      }),
+      skill: getRepository(Skills).create({
+        id: req.body.exercise.skill?.id,
+      }),
+      muscleGroup: getRepository(Muscles).create({
+        id: req.body.exercise.muscleGroup?.id,
+      }),
+      // additionalMuscles: [
+      //   {
+      //     "id": 0,
+      //     "title": "string"
+      //   }
+      // ],
+      power: req.body.exercise.power,
+      endurance: req.body.exercise.endurance,
+      flexibility: req.body.exercise.flexibility,
+      cardio: req.body.exercise.cardio,
+    })
+    .where(`id = ${req.body.exercise.id}`)
+    .execute()
+    // console.log(UpdatedExercise)
+
+    // Узнать есть ли упражнение в избранном и закрепленном у пользователя
+    const Exercise = await getRepository(Exercises)
+      .createQueryBuilder('exercises')
+      .select('exercises.id')
+      .where([{id: req.body.exercise.id}])
+      .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['favoriteForUsers.id'])
+      .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['pinnedForUsers.id'])
+      .getOne()
+
+    // console.log(Exercise?.favoriteForUsers.length)
+    // console.log(Exercise?.pinnedForUsers.length)
+
+    if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length === 0 && req.body.exercise.favorite) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "favoriteExercises")
+      .of(req.body.userId)
+      .add(req.body.exercise.id)
+    } else if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length > 0 && !req.body.exercise.favorite) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "favoriteExercises")
+      .of(req.body.userId)
+      .remove(req.body.exercise.id)
+    }
+
+    if (Exercise?.pinnedForUsers && Exercise?.pinnedForUsers.length === 0 && req.body.exercise.pinned) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "pinnedExercises")
+      .of(req.body.userId)
+      .add(req.body.exercise.id)
+    } else if (Exercise?.pinnedForUsers && Exercise?.pinnedForUsers.length > 0 && !req.body.exercise.pinned) {
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Users, "pinnedExercises")
+      .of(req.body.userId)
+      .remove(req.body.exercise.id)
+    }
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: {
+        exercise: req.body.exercise
+      }
+    }
 
     return res.status(200).json(response)
   } catch (error: any) {
@@ -424,6 +553,7 @@ export default {
   fetchExercisesList,
   fetchExerciseInfo,
   saveNewExercise,
+  updateExercise,
   changePinnedParam,
   changeFavoriteParam,
   fetchMuscles,
