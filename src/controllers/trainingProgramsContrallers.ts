@@ -4,24 +4,20 @@ import { TrainingPrograms } from "../db/entities/TrainingPrograms"
 
 const getTrainingPrograms = async (req: Request, res: Response): Promise<Response> => {
   try {
-    // const RecipesList = await getRepository(Recipes)
-    //   .createQueryBuilder('recipes')
-    //   .where([{user: req.body.userId}, {user: null}])
-    //   .leftJoin("recipes.recipeProducts", "recipeProducts")
-    //   .addSelect(['recipeProducts.weightInRecipe', 'recipeProducts.product'])
-    //   .leftJoin('recipeProducts.product', 'product')
-    //   .addSelect(['product.id', 'product.title', 'product.weight', 'product.protein', 'product.fats', 'product.carb', 'product.kkal'])
-    //   .leftJoin("recipes.user", "user")
-    //   .addSelect(['user.id'])
-    //   .offset(0)
-    //   .limit(10)
-    //   .orderBy({'recipes.id': 'ASC'})
-    //   .getMany()
-    // console.log(RecipesList)
+    const TrainingProgramsList = await getRepository(TrainingPrograms)
+      .createQueryBuilder('trainingPrograms')
+      .where([{user: req.body.userId}, {user: null}])
+      .leftJoin("trainingPrograms.user", "user")
+      .addSelect(['user.id'])
+      .offset(0)
+      .limit(10)
+      .orderBy({'trainingPrograms.id': 'ASC'})
+      .getMany()
+    // console.log(TrainingProgramsList)
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: null
+      data: TrainingProgramsList
     }
 
     return res.status(200).json(response)
