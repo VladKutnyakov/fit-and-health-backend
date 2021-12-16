@@ -74,6 +74,73 @@ router.get('/', JwtGuard, trainingProgramsContrallers.getTrainingPrograms)
 *                     id:
 *                       type: integer
 *                       description: Id тренировочной программы
+*                     title:
+*                       type: string
+*                       description: Название тренировочной программы
+*                     description:
+*                       type: string
+*                       description: Описание тренировочной программы
+*                     skill:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: string
+*                           description: ID уровня навыка (мастерства)
+*                         excellenceTitle:
+*                           type: string
+*                           description: Название уровня навыка (мастерства)
+*                         complexityTitle:
+*                           type: string
+*                           description: Название уровня навыка (сложности)
+*                         value:
+*                           type: string
+*                           description: Числовое обозначение уровня навыка (мастерства)
+*                     marks:
+*                       type: array
+*                       items:
+*                         type: object
+*                         properties:
+*                           id:
+*                             type: integer
+*                             description: ID отметки
+*                           title:
+*                             type: string
+*                             description: Название отметки
+*                     trainingProgramDayExercises:
+*                       type: array
+*                       items:
+*                         type: object
+*                         properties:
+*                           approaches:
+*                             type: integer
+*                             description: Кол-во подходов
+*                           repeats:
+*                             type: string
+*                             description: Кол-во повторений
+*                           additionalWeight:
+*                             type: string
+*                             description: Дополнительный вес при выполнении упражнения
+*                           implementationTime:
+*                             type: string
+*                             description: Время выполнения упражнения
+*                           restTime:
+*                             type: string
+*                             description: Время восстановления (пауза) между подходами
+*                           exercise:
+*                             type: object
+*                             properties:
+*                               id:
+*                                 type: integer
+*                                 description: ID упражнения
+*                               title:
+*                                 type: integer
+*                                 description: ID упражнения
+*                     user:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: string
+*                           description: ID пользователя
 *       401:
 *         description: Ошибка авторизации
 */
