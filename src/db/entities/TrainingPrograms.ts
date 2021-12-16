@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany, OneToMany, JoinTable } from 'typeorm'
 import { Users } from './Users'
+import { Skills } from './Skills'
 import { Marks } from './Marks'
 import { TrainingProgramDays } from './TrainingProgramDays'
 import { TrainingProcesses } from './TrainingProcesses'
@@ -29,13 +30,8 @@ export class TrainingPrograms {
   })
   description: string
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: false,
-    comment: 'Сложность тренировочной программы'
-  })
-  trainingSkill: string
+  @ManyToOne(() => Skills, skill => skill.trainingPrograms)
+  skill: Skills
 
   @ManyToMany(() => Marks, marks => marks.trainingProgramsMarks)
   @JoinTable({ name: 'training_programs_marks' })

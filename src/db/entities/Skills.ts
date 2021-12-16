@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { Exercises } from './Exercises'
+import { TrainingPrograms } from './TrainingPrograms'
 
 @Entity()
 export class Skills {
@@ -35,5 +36,8 @@ export class Skills {
 
   @OneToMany(() => Exercises, exercises => exercises.skill)
   exercises: Exercises[]
+
+  @OneToMany(() => Exercises, exercises => exercises.skill)
+  trainingPrograms: Exercises[]
 
 }
