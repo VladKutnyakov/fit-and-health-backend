@@ -40,8 +40,19 @@ const getTrainingProgramInfo = async (req: Request, res: Response): Promise<Resp
       ])
       .where([{id: req.params.trainingProgramId}])
       .leftJoinAndSelect("trainingProgram.trainingProgramDays", "trainingProgramDays")
-      .leftJoinAndSelect('trainingProgramDays.trainingProgramDayExercises', 'trainingProgramDayExercises')
-      .leftJoinAndSelect('trainingProgramDayExercises.exercise', 'exercise')
+      .leftJoin('trainingProgramDays.trainingProgramDayExercises', 'trainingProgramDayExercises')
+      .addSelect([
+        'trainingProgramDayExercises.approaches',
+        'trainingProgramDayExercises.repeats',
+        'trainingProgramDayExercises.additionalWeight',
+        'trainingProgramDayExercises.implementationTime',
+        'trainingProgramDayExercises.restTime'
+      ])
+      .leftJoin('trainingProgramDayExercises.exercise', 'exercise')
+      .addSelect([
+        'exercise.id',
+        'exercise.title',
+      ])
       .leftJoinAndSelect('trainingProgram.skill', 'skill')
       .leftJoinAndSelect('trainingProgram.marks', 'marks')
       .leftJoin("trainingProgram.user", "user")
