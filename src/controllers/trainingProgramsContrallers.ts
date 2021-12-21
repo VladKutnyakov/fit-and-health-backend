@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import { TrainingPrograms } from "../db/entities/TrainingPrograms"
+import { Users } from '../db/entities/Users'
 
 const getTrainingPrograms = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -74,7 +75,96 @@ const getTrainingProgramInfo = async (req: Request, res: Response): Promise<Resp
   }
 }
 
+const saveTrainingProgram = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    // ПРОВЕРКА, передаются ли данные о тренировочной программе в req.body.trainingProgram
+    if (!req.body.trainingProgram) {
+      return res.status(400).json({
+        updatedToken: req.body.updatedToken,
+        errorMessage: 'Данные о тренировочной программе не переданы.'
+      })
+    }
+
+    // ПРОВЕРКА, указано ли название в тренировочной программе
+    if (!req.body.trainingProgram.title) {
+      return res.status(400).json({
+        updatedToken: req.body.updatedToken,
+        errorMessage: 'Не указано название тренировочной программы.'
+      })
+    }
+
+    // Создание в БД тренировочной программы
+    const CreatedTrainingProgram = await getRepository(TrainingPrograms)
+      .createQueryBuilder('trainingPrograms')
+      .insert()
+      .into(TrainingPrograms)
+      .values([{
+          title: req.body.trainingProgram.title,
+          description: req.body.trainingProgram.description,
+          // image: req.body.trainingProgram.image,
+          skill: getRepository(Users).create({
+            id: req.body.trainingProgram.skill?.id,
+          }),
+          user: getRepository(Users).create({
+            id: req.body.userId,
+          }),
+        }])
+      .execute()
+
+    // Создание в БД тренировочных дней
+
+    // Создание в БД призанка "избранная" тренировочная программа
+    // if (req.body.product.favorite) {
+    //   await getConnection()
+    //   .createQueryBuilder()
+    //   .relation(Users, "favoriteProducts")
+    //   .of(req.body.userId)
+    //   .add(CreatedProduct.raw[0].id)
+    // }
+
+    // Создание в БД призанка "закрепленная" тренировочная программа
+    // if (req.body.product.pinned) {
+    //   await getConnection()
+    //   .createQueryBuilder()
+    //   .relation(Users, "pinnedProducts")
+    //   .of(req.body.userId)
+    //   .add(CreatedProduct.raw[0].id)
+    // }
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: null
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+}
+
+const updateTrainingProgram = async (req: Request, res: Response): Promise<Response> => {
+  try {
+
+    const response = {
+      updatedToken: req.body.updatedToken,
+      data: null
+    }
+
+    return res.status(200).json(response)
+  } catch (error: any) {
+    return res.status(500).json({
+      updatedToken: req.body.updatedToken,
+      errorMessage: 'Неизвестная ошибка.'
+    })
+  }
+}
+
 export default {
   getTrainingPrograms,
-  getTrainingProgramInfo
+  getTrainingProgramInfo,
+  saveTrainingProgram,
+  updateTrainingProgram,
 }

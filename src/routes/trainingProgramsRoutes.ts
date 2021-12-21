@@ -146,4 +146,10 @@ router.get('/', JwtGuard, trainingProgramsContrallers.getTrainingPrograms)
 */
 router.get('/:trainingProgramId', JwtGuard, trainingProgramsContrallers.getTrainingProgramInfo)
 
+// http://localhost:3031/api/training-programs/save-training-program
+router.post('/save-training-program', trainingProgramsContrallers.saveTrainingProgram)
+
+// http://localhost:3031/api/training-programs/update-training-program
+router.put('/update-training-program', trainingProgramsContrallers.updateTrainingProgram)
+
 export default router

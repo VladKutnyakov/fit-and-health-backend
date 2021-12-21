@@ -24,7 +24,7 @@ export class TrainingPrograms {
 
   @Column({
     type: 'varchar',
-    nullable: false,
+    nullable: true,
     unique: false,
     comment: 'Описание тренировочной программы'
   })
