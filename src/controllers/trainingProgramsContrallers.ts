@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { getConnection, getRepository } from "typeorm"
 import { TrainingPrograms } from "../db/entities/TrainingPrograms"
+import { TrainingProgramDays } from '../db/entities/TrainingProgramDays'
 import { Users } from '../db/entities/Users'
 
 const getTrainingPrograms = async (req: Request, res: Response): Promise<Response> => {
@@ -93,6 +94,20 @@ const saveTrainingProgram = async (req: Request, res: Response): Promise<Respons
       })
     }
 
+    // ТРАНЗАКЦИЯ
+    // const connection = getConnection()
+    // const queryRunner = connection.createQueryRunner()
+    // await queryRunner.startTransaction()
+    // try {
+    //   // await queryRunner.manager.save(user1)
+
+    //   await queryRunner.commitTransaction()
+    // } catch (error) {
+    //   await queryRunner.rollbackTransaction()
+    // } finally {
+    //   await queryRunner.release()
+    // }
+
     // Создание в БД тренировочной программы
     const CreatedTrainingProgram = await getRepository(TrainingPrograms)
       .createQueryBuilder('trainingPrograms')
@@ -110,8 +125,23 @@ const saveTrainingProgram = async (req: Request, res: Response): Promise<Respons
           }),
         }])
       .execute()
+    // console.log(CreatedTrainingProgram.identifiers[0].id)
 
     // Создание в БД тренировочных дней
+    const CreatedTrainingProgramDays = await getRepository(TrainingProgramDays)
+      .createQueryBuilder('trainingProgramDays')
+      .insert()
+      .into(TrainingProgramDays)
+      .values([
+        {
+          title: 't',
+          comment: 'c',
+          trainingProgram: getRepository(TrainingPrograms).create({
+            id: CreatedTrainingProgram.identifiers[0].id,
+          }),
+        }
+      ])
+      .execute()
 
     // Создание в БД призанка "избранная" тренировочная программа
     // if (req.body.product.favorite) {
