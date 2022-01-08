@@ -36,26 +36,26 @@ const getTrainingDiaryInfo = async (req: Request, res: Response): Promise<Respon
       .getOne()
     // console.log(TrainingDiaryInfo)
 
-    const EmptyTrainigDiaryInfo = {
-      id: null,
-      date: null,
-      trainingProgram: {
-        id: null,
-        title: null,
-        description: null,
-        trainingSkill: null,
-        marks: [],
-        trainingProgramDays: [],
-        trainingProcesses: []
-      },
-      user: {
-        id: null
-      }
-    }
+    // const EmptyTrainigDiaryInfo = {
+    //   id: null,
+    //   date: null,
+    //   trainingProgram: {
+    //     id: null,
+    //     title: null,
+    //     description: null,
+    //     trainingSkill: null,
+    //     marks: [],
+    //     trainingProgramDays: [],
+    //     trainingProcesses: []
+    //   },
+    //   user: {
+    //     id: null
+    //   }
+    // }
 
     const response = {
       updatedToken: req.body.updatedToken,
-      data: TrainingDiaryInfo || EmptyTrainigDiaryInfo
+      data: TrainingDiaryInfo || null
     }
 
     return res.status(200).json(response)
