@@ -16,9 +16,9 @@ const getTrainingDiaryInfo = async (req: Request, res: Response): Promise<Respon
         'trainingProgram.id',
         'trainingProgram.title',
         'trainingProgram.description',
-        'trainingProgram.trainingSkill',
       ])
       .leftJoinAndSelect('trainingProgram.marks', 'marks')
+      .leftJoinAndSelect('trainingProgram.skill', 'skill')
       .leftJoinAndSelect('trainingProgram.trainingProgramDays', 'trainingProgramDays')
       .leftJoin('trainingProgram.trainingProcesses', 'trainingProcesses')
       .addSelect([
