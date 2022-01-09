@@ -41,7 +41,9 @@ const getTrainingDayInfo = async (req: Request, res: Response): Promise<Response
       .addSelect([
         'trainingProgramDayExercises.approaches',
         'trainingProgramDayExercises.repeats',
-        'trainingProgramDayExercises.additionalWeight'
+        'trainingProgramDayExercises.additionalWeight',
+        'trainingProgramDayExercises.implementationTime',
+        'trainingProgramDayExercises.restTime'
       ])
       .leftJoin('trainingProgramDayExercises.exercise', 'exercise')
       .addSelect(['exercise.id', 'exercise.title'])
