@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import trainingProgramsContrallers from '../controllers/trainingProgramsContrallers'
+import trainingProgramsContrallers from '../controllers/trainingProgramsControllers'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
