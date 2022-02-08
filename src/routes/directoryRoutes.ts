@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import directoryControllers from '../controllers/directoryControllers'
+import directoryControllers from '../controllers/directoryControllers/index'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 

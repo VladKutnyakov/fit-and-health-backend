@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
-import { Skills } from "../db/entities/Skills"
+import { Skills } from "../../../db/entities/Skills"
 
-const fetchSkillTypes = async (req: Request, res: Response): Promise<Response> => {
+export const fetchSkillTypes = async (req: Request, res: Response): Promise<Response> => {
   try {
     const SkillTypesList = await getRepository(Skills)
       .createQueryBuilder('skills')
@@ -22,8 +22,4 @@ const fetchSkillTypes = async (req: Request, res: Response): Promise<Response> =
       errorMessage: 'Неизвестная ошибка.'
     })
   }
-}
-
-export default {
-  fetchSkillTypes
 }
