@@ -1,7 +1,5 @@
 import { Request, Response } from "express"
 import { getRepository, getConnection } from "typeorm"
-import { Products } from "../../../db/entities/Products"
-import { ProductCategories } from '../../../db/entities/ProductCategories'
 import { Users } from '../../../db/entities/Users'
 
 export const changeFavoriteParam = async (req: Request, res: Response): Promise<Response> => {
@@ -10,42 +8,42 @@ export const changeFavoriteParam = async (req: Request, res: Response): Promise<
     .createQueryBuilder('users')
     .where({id: req.body.userId})
     .select(['users.id'])
-    .leftJoin('users.favoriteProducts', 'favoriteProducts')
-    .addSelect(['favoriteProducts.id'])
+    .leftJoin('users.favoriteExercises', 'favoriteExercises')
+    .addSelect(['favoriteExercises.id'])
     .getOne()
     // console.log(User)
 
     let isFavorite = false
 
     if (User) {
-      for (let i = 0; i < User?.favoriteProducts.length; i++) {
-        if (User?.favoriteProducts[i].id === parseInt(req.params.productId)) {
+      for (let i = 0; i < User?.favoriteExercises.length; i++) {
+        if (User?.favoriteExercises[i].id === parseInt(req.params.exerciseId)) {
           isFavorite = true
         }
       }
     }
 
     if (isFavorite) {
-      // Для user с id=1 удалить занчение favoriteProducts productsId=2
+      // Для user с id=1 удалить занчение favoriteExercises exerciseId=2
       await getConnection()
       .createQueryBuilder()
-      .relation(Users, "favoriteProducts")
+      .relation(Users, "favoriteExercises")
       .of(req.body.userId)
-      .remove(req.params.productId)
+      .remove(req.params.exerciseId)
     } else {
-      // Для user с id=1 установить занчение favoriteProducts productsId=2
+      // Для user с id=1 установить занчение favoriteExercises exerciseId=2
       await getConnection()
       .createQueryBuilder()
-      .relation(Users, "favoriteProducts")
+      .relation(Users, "favoriteExercises")
       .of(req.body.userId)
-      .add(req.params.productId)
+      .add(req.params.exerciseId)
     }
 
     const response = {
       updatedToken: req.body.updatedToken,
       data: {
-        productId: req.params.productId,
-        favorite: !isFavorite
+        favorite: !isFavorite,
+        exerciseId: req.params.exerciseId
       }
     }
 

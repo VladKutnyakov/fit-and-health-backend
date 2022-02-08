@@ -1,8 +1,6 @@
 import { Request, Response } from "express"
-import { getRepository, getConnection } from "typeorm"
+import { getRepository } from "typeorm"
 import { Products } from "../../../db/entities/Products"
-import { ProductCategories } from '../../../db/entities/ProductCategories'
-import { Users } from '../../../db/entities/Users'
 
 export const getAllProducts = async (req: Request, res: Response): Promise<Response> => {
   try {
