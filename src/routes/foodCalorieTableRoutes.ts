@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import foodCalorieTableControllers from '../controllers/foodCalorieTableControllers'
+import foodCalorieTableControllers from '../controllers/foodCalorieTableControllers/index'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
