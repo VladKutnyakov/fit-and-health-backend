@@ -1,10 +1,10 @@
-import { getProductCategories } from './getProductCategories'
-import { getAllProducts } from './getAllProducts'
-import { saveNewProduct } from './saveNewProduct'
-import { updateProduct } from './updateProduct'
-import { removeProduct } from './removeProduct'
-import { changeFavoriteParam } from './changeFavoriteParam'
-import { changePinnedParam } from './changePinnedParam'
+import { getProductCategories } from './controllers/getProductCategories'
+import { getAllProducts } from './controllers/getAllProducts'
+import { saveNewProduct } from './controllers/saveNewProduct'
+import { updateProduct } from './controllers/updateProduct'
+import { removeProduct } from './controllers/removeProduct'
+import { changeFavoriteParam } from './controllers/changeFavoriteParam'
+import { changePinnedParam } from './controllers/changePinnedParam'
 
 export default {
   getProductCategories,
