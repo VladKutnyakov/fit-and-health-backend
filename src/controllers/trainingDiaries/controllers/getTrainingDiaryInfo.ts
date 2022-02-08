@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
-import { TrainingDiaries } from "../db/entities/TrainingDiaries"
+import { TrainingDiaries } from "../../../db/entities/TrainingDiaries"
 
-const getTrainingDiaryInfo = async (req: Request, res: Response): Promise<Response> => {
+export const getTrainingDiaryInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
     const targetDate = req.query.date || new Date().toJSON().split('T')[0]
     // console.log(targetDate)
@@ -65,8 +65,4 @@ const getTrainingDiaryInfo = async (req: Request, res: Response): Promise<Respon
       errorMessage: 'Неизвестная ошибка.'
     })
   }
-}
-
-export default {
-  getTrainingDiaryInfo
 }
