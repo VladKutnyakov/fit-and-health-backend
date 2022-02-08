@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import recipesControllers from '../controllers/recipesControllers'
+import recipesControllers from '../controllers/recipes/index'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
