@@ -4,10 +4,10 @@
 
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
-import { MealPlaners } from "../db/entities/MealPlaners"
-import { UsersParams } from "../db/entities/UsersParams"
+import { MealPlaners } from "../../../db/entities/MealPlaners"
+import { UsersParams } from "../../../db/entities/UsersParams"
 
-const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
+export const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
     const targetDate = req.query.date || new Date().toJSON().split('T')[0]
     // console.log(targetDate)
@@ -108,27 +108,4 @@ const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response>
       errorMessage: 'Неизвестная ошибка.'
     })
   }
-}
-
-const saveMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
-  try {
-    console.log(req.body.mealPlanerInfo)
-
-    const response = {
-      updatedToken: req.body.updatedToken,
-      data: null
-    }
-
-    return res.status(200).json(response)
-  } catch (error: any) {
-    return res.status(500).json({
-      updatedToken: req.body.updatedToken,
-      errorMessage: 'Неизвестная ошибка.'
-    })
-  }
-}
-
-export default {
-  getMealPlanerInfo,
-  saveMealPlanerInfo
 }
