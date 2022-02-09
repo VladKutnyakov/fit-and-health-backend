@@ -1,4 +1,5 @@
 import { fetchExercisesList } from './controllers/fetchExercisesList'
+import { fetchExercisesListByMuscles } from './controllers/fetchExercisesListByMuscles'
 import { fetchExerciseInfo } from './controllers/fetchExerciseInfo'
 import { saveNewExercise } from './controllers/saveNewExercise'
 import { updateExercise } from './controllers/updateExercise'
@@ -12,6 +13,7 @@ import { fetchExerciseEquipments } from './controllers/fetchExerciseEquipments'
 
 export default {
   fetchExercisesList,
+  fetchExercisesListByMuscles,
   fetchExerciseInfo,
   saveNewExercise,
   updateExercise,

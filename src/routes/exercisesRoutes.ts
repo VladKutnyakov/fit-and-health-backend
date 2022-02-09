@@ -3,7 +3,10 @@ import exercisesControllers from '../controllers/exercises/index'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
-// http://localhost:3031/api/exercises
+// http://localhost:3031/api/exercises/exercises-list
+router.get('/exercises-list', JwtGuard, exercisesControllers.fetchExercisesList)
+
+// http://localhost:3031/api/exercises/exercises-by-muscles
 /**
 * @swagger
 * /api/exercises:
@@ -66,7 +69,7 @@ const router: Router = express.Router()
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/', JwtGuard, exercisesControllers.fetchExercisesList)
+router.get('/exercises-by-muscles', JwtGuard, exercisesControllers.fetchExercisesListByMuscles)
 
 // http://localhost:3031/api/exercises/exercise-info/:exerciseId
 /**
