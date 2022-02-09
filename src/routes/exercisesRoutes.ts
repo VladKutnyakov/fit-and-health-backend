@@ -9,7 +9,7 @@ router.get('/exercises-list', JwtGuard, exercisesControllers.fetchExercisesList)
 // http://localhost:3031/api/exercises/exercises-by-muscles
 /**
 * @swagger
-* /api/exercises:
+* /api/exercises/exercises-by-muscles:
 *   get:
 *     tags:
 *       - Справочник упражнений
