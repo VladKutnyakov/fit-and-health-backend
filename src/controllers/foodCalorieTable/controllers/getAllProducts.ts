@@ -41,14 +41,12 @@ export const getAllProducts = async (req: Request, res: Response): Promise<Respo
     // console.log(AllProducts)
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: AllProducts
     }
 
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

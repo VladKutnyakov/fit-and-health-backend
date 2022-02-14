@@ -12,7 +12,6 @@ export const removeProduct = async (req: Request, res: Response): Promise<Respon
     .execute()
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: {
         removed: true,
         productId: req.params.productId
@@ -22,7 +21,6 @@ export const removeProduct = async (req: Request, res: Response): Promise<Respon
     return res.status(200).json(response)
   } catch (error) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

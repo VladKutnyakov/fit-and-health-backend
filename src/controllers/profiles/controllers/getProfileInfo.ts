@@ -24,7 +24,6 @@ export const getProfileInfo = async (req: Request, res: Response): Promise<Respo
       // console.log(Profile)
 
       const response = {
-        updatedToken: req.body.updatedToken,
         data: Profile
       }
   
@@ -49,7 +48,6 @@ export const getProfileInfo = async (req: Request, res: Response): Promise<Respo
       // console.log(Profile)
 
       const response = {
-        updatedToken: req.body.updatedToken,
         data: Profile
       }
   

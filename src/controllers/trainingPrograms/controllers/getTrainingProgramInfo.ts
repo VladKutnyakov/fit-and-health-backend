@@ -34,14 +34,12 @@ export const getTrainingProgramInfo = async (req: Request, res: Response): Promi
     // console.log(TrainingProgramInfo?.trainingProgramDays[0])
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: TrainingProgramInfo
     }
 
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

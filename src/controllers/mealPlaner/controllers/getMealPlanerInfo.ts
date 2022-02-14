@@ -97,14 +97,12 @@ export const getMealPlanerInfo = async (req: Request, res: Response): Promise<Re
     }
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: MealPlanerInfo || EmptyMealPlanerInfo
     }
 
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

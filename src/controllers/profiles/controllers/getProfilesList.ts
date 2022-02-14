@@ -10,17 +10,15 @@ export const getProfilesList = async (req: Request, res: Response): Promise<Resp
       .addSelect(['user.id'])
       .orderBy({'usersProfiles.id': 'ASC'})
       .getMany()
-    console.log(ProfilesList)
+    // console.log(ProfilesList)
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: ProfilesList
     }
 
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

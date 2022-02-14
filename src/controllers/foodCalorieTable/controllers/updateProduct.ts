@@ -70,7 +70,6 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
     }
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: {
         product: req.body.product
       }
@@ -79,7 +78,6 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
     return res.status(200).json(response)
   } catch (error) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

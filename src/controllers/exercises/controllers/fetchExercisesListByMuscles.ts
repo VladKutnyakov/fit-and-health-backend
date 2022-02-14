@@ -49,14 +49,12 @@ export const fetchExercisesListByMuscles = async (req: Request, res: Response): 
     // console.log(AllExersicesByMuscles[0])
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: AllExersicesByMuscles
     }
 
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

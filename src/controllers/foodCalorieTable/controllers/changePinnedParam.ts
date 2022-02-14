@@ -40,7 +40,6 @@ export const changePinnedParam = async (req: Request, res: Response): Promise<Re
     }
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: {
         productId: req.params.productId,
         pinned: !isPinned
@@ -50,7 +49,6 @@ export const changePinnedParam = async (req: Request, res: Response): Promise<Re
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

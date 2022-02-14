@@ -70,7 +70,6 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
     }
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: {
         id: CreatedExercise.raw[0].id,
         title: req.body.exercise.title,
@@ -94,7 +93,6 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

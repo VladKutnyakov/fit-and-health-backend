@@ -12,14 +12,12 @@ export const fetchMuscles = async (req: Request, res: Response): Promise<Respons
     // console.log(ExercisesList)
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: MusclesList
     }
 
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

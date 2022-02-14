@@ -40,7 +40,6 @@ export const changeFavoriteParam = async (req: Request, res: Response): Promise<
     }
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: {
         favorite: !isFavorite,
         exerciseId: req.params.exerciseId
@@ -50,7 +49,6 @@ export const changeFavoriteParam = async (req: Request, res: Response): Promise<
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

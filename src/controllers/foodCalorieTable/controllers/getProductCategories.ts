@@ -10,14 +10,12 @@ export const getProductCategories = async (req: Request, res: Response): Promise
       .getMany()
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: ProductCategoriesList
     }
 
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

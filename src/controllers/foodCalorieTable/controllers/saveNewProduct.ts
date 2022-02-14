@@ -46,7 +46,6 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
     }
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: {
         product: {
           id: CreatedProduct.raw[0].id,
@@ -67,7 +66,6 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
     return res.status(200).json(response)
   } catch (error) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

@@ -14,7 +14,6 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
     // ПРОВЕРКА, передаются ли данные о тренировочной программе в req.body.trainingProgram
     if (!req.body.trainingProgram) {
       return res.status(400).json({
-        updatedToken: req.body.updatedToken,
         errorMessage: 'Данные о тренировочной программе не переданы.'
       })
     }
@@ -22,7 +21,6 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
     // ПРОВЕРКА, указано ли название в тренировочной программе
     if (!req.body.trainingProgram.title) {
       return res.status(400).json({
-        updatedToken: req.body.updatedToken,
         errorMessage: 'Не указано название тренировочной программы.'
       })
     }
@@ -134,14 +132,12 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
     }
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: req.body.trainingProgram
     }
 
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }

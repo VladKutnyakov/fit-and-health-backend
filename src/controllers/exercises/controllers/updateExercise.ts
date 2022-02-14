@@ -93,7 +93,6 @@ export const updateExercise = async (req: Request, res: Response): Promise<Respo
     }
 
     const response = {
-      updatedToken: req.body.updatedToken,
       data: {
         exercise: req.body.exercise
       }
@@ -102,7 +101,6 @@ export const updateExercise = async (req: Request, res: Response): Promise<Respo
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      updatedToken: req.body.updatedToken,
       errorMessage: 'Неизвестная ошибка.'
     })
   }
