@@ -107,7 +107,7 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
                 )
 
                 // Добавить данные с обновленным token и id пользователя в body запроса
-                req.body.updatedToken = accessToken
+                res.setHeader('updated-token', accessToken)
                 req.body.userId = decodedToken.id
 
                 next()
@@ -127,7 +127,7 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
         })
       } else {
         // Если token валиден к request body прикрепляется свойство updatedToken = null и id пользователя. Далее вызывается контроллер вызванного api.
-        req.body.updatedToken = null
+        res.setHeader('updated-token', '')
         req.body.userId = decodedToken.id
         next()
       }
