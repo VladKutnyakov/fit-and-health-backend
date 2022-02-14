@@ -1,6 +1,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm'
 import { TrainingPrograms } from './TrainingPrograms'
+import { TrainingTypes } from './TrainingTypes'
 import { TrainingProgramDayExercises } from './TrainingProgramDayExercises'
 import { TrainingProcesses } from './TrainingProcesses'
 
@@ -33,6 +34,9 @@ export class TrainingProgramDays {
 
   @ManyToOne(() => TrainingPrograms, trainingProgram => trainingProgram.trainingProgramDays)
   trainingProgram: TrainingPrograms
+
+  @ManyToOne(() => TrainingTypes, trainingType => trainingType.trainingProgramDays)
+  trainingType: TrainingTypes
 
   @OneToMany(() => TrainingProcesses, trainingProcesses => trainingProcesses.trainingProgramDay)
   trainingProcesses: TrainingProcesses[]
