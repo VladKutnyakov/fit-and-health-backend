@@ -65,11 +65,12 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Настройки и инициализация CORS
 const corsOptions = {
-  "origin": "*",
-  "methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD",
-  'Access-Control-Allow-Headers': 'Authorization',
-  "preflightContinue": false,
-  "optionsSuccessStatus": 200,
+  origin: "*",
+  methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD",
+  allowedHeaders: ['Authorization'],
+  exposedHeaders: ['updated-token'],
+  preflightContinue: false,
+  optionsSuccessStatus: 200,
 }
 app.use(cors(corsOptions))
 
