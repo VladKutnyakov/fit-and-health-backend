@@ -46,4 +46,41 @@ const router: Router = express.Router()
 */
 router.get('/skill-types', JwtGuard, directoryControllers.fetchSkillTypes)
 
+// http://localhost:3031/api/directory/training-types/
+/**
+* @swagger
+* /api/directory/training-types:
+*   get:
+*     tags:
+*       - Общие справочники
+*     summary: Список типов тренировок
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Список типов тренировок
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 updatedToken:
+*                   type: string
+*                   description: Обновленный токен авторизации
+*                 data:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: ID типа тренировки
+*                       title:
+*                         type: string
+*                         description: Название типа тренировки
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/training-types', JwtGuard, directoryControllers.fetchTrainingTypes)
+
 export default router
