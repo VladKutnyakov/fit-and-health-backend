@@ -6,6 +6,7 @@ import { TrainingProgramDayExercises } from '../../../db/entities/TrainingProgra
 import { Exercises } from '../../../db/entities/Exercises'
 import { Users } from '../../../db/entities/Users'
 import { Skills } from '../../../db/entities/Skills'
+import { TrainingTypes } from '../../../db/entities/TrainingTypes'
 
 export const saveTrainingProgram = async (req: Request, res: Response): Promise<Response> => {
   // console.log(req.body.trainingProgram.trainingProgramDays)
@@ -59,9 +60,11 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
         DaysList.push({
           title: element.title,
           comment: element.comment,
-          video: element.video,
           trainingProgram: getRepository(TrainingPrograms).create({
             id: CreatedTrainingProgram.identifiers[0].id,
+          }),
+          trainingType: getRepository(TrainingTypes).create({
+            id: element.trainingType.id,
           }),
         })
       })
@@ -77,33 +80,33 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
       // console.log(CreatedTrainingProgramDays)
 
       // Формируем массив из массивов с упражнениями для каждого тренировочного дня
-      const ExercisesList: any = []
-      TrainingDays.forEach((element: any) => {
-        for (let i = 0; i < element.trainingProgramDayExercises.length; i++) {
-          ExercisesList.push({
-            approaches: element.trainingProgramDayExercises[i].approaches,
-            repeats: element.trainingProgramDayExercises[i].repeats,
-            additionalWeight: element.trainingProgramDayExercises[i].additionalWeight,
-            implementationTime: element.trainingProgramDayExercises[i].implementationTime,
-            restTime: element.trainingProgramDayExercises[i].restTime,
-            trainingProgramDay: getRepository(TrainingProgramDays).create({
-              id: CreatedTrainingProgramDays.identifiers[i].id,
-            }),
-            exercise: getRepository(Exercises).create({
-              id: element.trainingProgramDayExercises[i].id,
-            })
-          })
-        }
-      })
+      // const ExercisesList: any = []
+      // TrainingDays.forEach((element: any) => {
+      //   for (let i = 0; i < element.trainingProgramDayExercises.length; i++) {
+      //     ExercisesList.push({
+      //       approaches: element.trainingProgramDayExercises[i].approaches,
+      //       repeats: element.trainingProgramDayExercises[i].repeats,
+      //       additionalWeight: element.trainingProgramDayExercises[i].additionalWeight,
+      //       implementationTime: element.trainingProgramDayExercises[i].implementationTime,
+      //       restTime: element.trainingProgramDayExercises[i].restTime,
+      //       trainingProgramDay: getRepository(TrainingProgramDays).create({
+      //         id: CreatedTrainingProgramDays.identifiers[i].id,
+      //       }),
+      //       exercise: getRepository(Exercises).create({
+      //         id: element.trainingProgramDayExercises[i].id,
+      //       })
+      //     })
+      //   }
+      // })
       // console.log(ExercisesList)
 
       // Создание в БД упражнения для тренировочных дней
-      const CreatedTrainingProgramDayExercises = await getRepository(TrainingProgramDayExercises)
-        .createQueryBuilder('trainingProgramDayExercises')
-        .insert()
-        .into(TrainingProgramDayExercises)
-        .values(ExercisesList)
-        .execute()
+      // const CreatedTrainingProgramDayExercises = await getRepository(TrainingProgramDayExercises)
+      //   .createQueryBuilder('trainingProgramDayExercises')
+      //   .insert()
+      //   .into(TrainingProgramDayExercises)
+      //   .values(ExercisesList)
+      //   .execute()
       // console.log(CreatedTrainingProgramDayExercises)
 
       // Создание в БД призанка "избранная" тренировочная программа
