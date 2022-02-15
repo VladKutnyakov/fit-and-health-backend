@@ -41,7 +41,6 @@ export const fetchExercisesListByMuscles = async (req: Request, res: Response): 
       const ExercisesByMuscle = {
         id: ExercisesList[i].id,
         title: ExercisesList[i].title,
-        previewImage: ExercisesList[i].previewImage,
         exercises: list
       }
       AllExersicesByMuscles.push(ExercisesByMuscle)
