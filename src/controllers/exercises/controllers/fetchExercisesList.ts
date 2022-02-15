@@ -32,8 +32,32 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
       .getMany()
     // console.log(ExercisesList)
 
+    const exercises = []
+    for (let i = 0; i < ExercisesList.length; i++) {
+      exercises.push({
+        id: ExercisesList[i].id,
+        title: ExercisesList[i].title,
+        techniqueDescription: ExercisesList[i].techniqueDescription,
+        power: ExercisesList[i].power,
+        endurance: ExercisesList[i].endurance,
+        flexibility: ExercisesList[i].flexibility,
+        cardio: ExercisesList[i].cardio,
+        type: ExercisesList[i].type,
+        sort: ExercisesList[i].sort,
+        exertion: ExercisesList[i].exertion,
+        equipment: ExercisesList[i].equipment,
+        skill: ExercisesList[i].skill,
+        muscleGroup: ExercisesList[i].muscleGroup,
+        additionalMuscles: ExercisesList[i].additionalMuscles,
+        user: ExercisesList[i].user,
+        favorite: ExercisesList[i].favoriteForUsers.length > 0 ? true : false,
+        pinned: ExercisesList[i].pinnedForUsers.length > 0 ? true : false,
+      })
+    }
+    // console.log(exercises)
+
     const response = {
-      data: ExercisesList
+      data: exercises
     }
 
     return res.status(200).json(response)
