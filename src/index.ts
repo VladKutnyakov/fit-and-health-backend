@@ -65,9 +65,9 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Настройки и инициализация CORS
 const corsOptions = {
-  origin: "*",
-  methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD",
-  allowedHeaders: ['Authorization'],
+  origin: '*',
+  methods: 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD',
+  allowedHeaders: '*',
   exposedHeaders: ['updated-token'],
   preflightContinue: false,
   optionsSuccessStatus: 200,
