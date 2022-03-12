@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateCol
 import { Tokens } from './Tokens'
 import { UsersProfiles } from './UsersProfiles'
 import { UsersParams } from './UsersParams'
+import { UsersSettings } from './UsersSettings'
 import { Products } from './Products'
 import { Recipes } from './Recipes'
 import { Exercises } from './Exercises'
@@ -50,6 +51,9 @@ export class Users {
 
   @OneToMany(() => UsersParams, param => param.user)
   params: UsersParams[]
+
+  @OneToOne(() => UsersSettings, param => param.user)
+  settings: UsersSettings
 
   @OneToMany(() => Products, product => product.user)
   products: Products[]
