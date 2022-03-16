@@ -79,34 +79,34 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
         .execute()
       // console.log(CreatedTrainingProgramDays)
 
-      // Формируем массив из массивов с упражнениями для каждого тренировочного дня
-      // const ExercisesList: any = []
-      // TrainingDays.forEach((element: any) => {
-      //   for (let i = 0; i < element.trainingProgramDayExercises.length; i++) {
-      //     ExercisesList.push({
-      //       approaches: element.trainingProgramDayExercises[i].approaches,
-      //       repeats: element.trainingProgramDayExercises[i].repeats,
-      //       additionalWeight: element.trainingProgramDayExercises[i].additionalWeight,
-      //       implementationTime: element.trainingProgramDayExercises[i].implementationTime,
-      //       restTime: element.trainingProgramDayExercises[i].restTime,
-      //       trainingProgramDay: getRepository(TrainingProgramDays).create({
-      //         id: CreatedTrainingProgramDays.identifiers[i].id,
-      //       }),
-      //       exercise: getRepository(Exercises).create({
-      //         id: element.trainingProgramDayExercises[i].id,
-      //       })
-      //     })
-      //   }
-      // })
+      // Формируем массив с упражнениями для каждого тренировочного дня
+      const ExercisesList: any = []
+      TrainingDays.forEach((element: any, index: number) => {
+        for (let i = 0; i < element.trainingProgramDayExercises.length; i++) {
+          ExercisesList.push({
+            approaches: element.trainingProgramDayExercises[i].approaches,
+            repeats: element.trainingProgramDayExercises[i].repeats,
+            additionalWeight: element.trainingProgramDayExercises[i].additionalWeight,
+            implementationTime: element.trainingProgramDayExercises[i].implementationTime,
+            restTime: element.trainingProgramDayExercises[i].restTime,
+            trainingProgramDay: getRepository(TrainingProgramDays).create({
+              id: CreatedTrainingProgramDays.identifiers[index].id,
+            }),
+            exercise: getRepository(Exercises).create({
+              id: element.trainingProgramDayExercises[i].id,
+            })
+          })
+        }
+      })
       // console.log(ExercisesList)
 
-      // Создание в БД упражнения для тренировочных дней
-      // const CreatedTrainingProgramDayExercises = await getRepository(TrainingProgramDayExercises)
-      //   .createQueryBuilder('trainingProgramDayExercises')
-      //   .insert()
-      //   .into(TrainingProgramDayExercises)
-      //   .values(ExercisesList)
-      //   .execute()
+      // Создание в БД упражнений для тренировочных дней
+      const CreatedTrainingProgramDayExercises = await getRepository(TrainingProgramDayExercises)
+        .createQueryBuilder('trainingProgramDayExercises')
+        .insert()
+        .into(TrainingProgramDayExercises)
+        .values(ExercisesList)
+        .execute()
       // console.log(CreatedTrainingProgramDayExercises)
 
       // Создание в БД призанка "избранная" тренировочная программа
