@@ -16,7 +16,15 @@ export const getTrainingProgramInfo = async (req: Request, res: Response): Promi
     // console.log(TrainingProgramInfo)
 
     if (TrainingProgramInfo) {
-      return res.status(200).json(TrainingProgramInfo)
+      const response = {
+        program: {
+          id: TrainingProgramInfo?.id,
+          title: TrainingProgramInfo?.title
+        },
+        trainingProgramDays: TrainingProgramInfo?.trainingProgramDays
+      }
+
+      return res.status(200).json(response)
     } else {
       return res.status(400).json({
         errorMessage: 'Тренировочная программа не найдена.'
