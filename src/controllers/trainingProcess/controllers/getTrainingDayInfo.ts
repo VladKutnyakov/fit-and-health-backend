@@ -9,6 +9,7 @@ export const getTrainingDayInfo = async (req: Request, res: Response): Promise<R
     const TrainingDayInfo = await getRepository(TrainingProgramDays)
       .createQueryBuilder('trainingProgramDays')
       .where([{id: req.query.trainingDay}])
+      .leftJoinAndSelect('trainingProgramDays.trainingType', 'trainingType')
       .leftJoin("trainingProgramDays.trainingProgramDayExercises", "trainingProgramDayExercises")
       .addSelect([
         'trainingProgramDayExercises.approaches',
@@ -19,7 +20,7 @@ export const getTrainingDayInfo = async (req: Request, res: Response): Promise<R
       ])
       .leftJoin('trainingProgramDayExercises.exercise', 'exercise')
       .addSelect(['exercise.id', 'exercise.title'])
-      .leftJoinAndSelect('exercise.exerciseApproaches', 'exerciseApproaches', "exerciseApproaches.date = '2021-11-24'")
+      // .leftJoinAndSelect('exercise.exerciseApproaches', 'exerciseApproaches', "exerciseApproaches.date = '2021-11-24'") // получить данные с последней тренировки
       .getOne()
     // console.log(TrainingDayInfo?.trainingProgramDayExercises[0].exercise.exerciseApproaches)
 
