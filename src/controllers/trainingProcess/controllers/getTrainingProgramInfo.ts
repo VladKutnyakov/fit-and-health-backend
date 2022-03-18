@@ -21,6 +21,7 @@ export const getTrainingProgramInfo = async (req: Request, res: Response): Promi
           id: TrainingProgramInfo?.id,
           title: TrainingProgramInfo?.title
         },
+        day: req.query.trainingProgram ? TrainingProgramInfo?.trainingProgramDays.filter((item: any) => item.id == req.query.trainingDay)[0] : null,
         trainingProgramDays: TrainingProgramInfo?.trainingProgramDays
       }
 
@@ -30,7 +31,6 @@ export const getTrainingProgramInfo = async (req: Request, res: Response): Promi
         errorMessage: 'Тренировочная программа не найдена.'
       })
     }
-
   } catch (error: any) {
     return res.status(500).json({
       errorMessage: 'Неизвестная ошибка.'
