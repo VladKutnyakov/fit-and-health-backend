@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getManager } from "typeorm"
+// import { getManager } from "typeorm"
 import { UsersProfiles } from "../../../db/entities/UsersProfiles"
 
 export const getProfileInfo = async (req: Request, res: Response): Promise<Response> => {
@@ -8,50 +8,52 @@ export const getProfileInfo = async (req: Request, res: Response): Promise<Respo
       // console.log('НЕавторизованный пользователь', req.params.profileId)
 
       // Данные о НЕ авторизованном пользователе
-      const entityManager = getManager()
+      // const entityManager = getManager()
 
-      const Profile = await entityManager.findOne(
-        UsersProfiles,
-        {
-          where: {
-            user: {
-              id: req.params.profileId
-            }
-          }
-        }
-      )
+      // const Profile = await entityManager.findOne(
+      //   UsersProfiles,
+      //   {
+      //     where: {
+      //       user: {
+      //         id: req.params.profileId
+      //       }
+      //     }
+      //   }
+      // )
 
-      // console.log(Profile)
+      // // console.log(Profile)
 
-      const response = {
-        data: Profile
-      }
+      // const response = {
+      //   data: Profile
+      // }
   
-      return res.status(200).json(response)
+      // return res.status(200).json(response)
+      return res.status(200)
     } else {
       // console.log('авторизованный пользователь', req.body.userId)
 
       // Данные об авторизованном пользователе
-      const entityManager = getManager()
+      // const entityManager = getManager()
 
-      const Profile = await entityManager.findOne(
-        UsersProfiles,
-        {
-          where: {
-            user: {
-              id: req.body.userId
-            }
-          }
-        }
-      )
+      // const Profile = await entityManager.findOne(
+      //   UsersProfiles,
+      //   {
+      //     where: {
+      //       user: {
+      //         id: req.body.userId
+      //       }
+      //     }
+      //   }
+      // )
 
-      // console.log(Profile)
+      // // console.log(Profile)
 
-      const response = {
-        data: Profile
-      }
+      // const response = {
+      //   data: Profile
+      // }
   
-      return res.status(200).json(response)
+      // return res.status(200).json(response)
+      return res.status(200)
     }
   } catch (error: any) {
     return res.status(500).json({
