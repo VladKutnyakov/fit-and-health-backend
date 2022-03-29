@@ -23,7 +23,7 @@ export const getTrainingDayInfo = async (req: Request, res: Response): Promise<R
       .addSelect(['exercise.id', 'exercise.title'])
       // .leftJoinAndSelect('exercise.exerciseApproaches', 'exerciseApproaches', "exerciseApproaches.date = '2021-11-24'") // получить данные с последней тренировки
       .getOne()
-    console.log(TrainingDayInfo)
+    // console.log(TrainingDayInfo)
     // console.log(TrainingDayInfo?.trainingProgramDayExercises[0].exercise.exerciseApproaches)
 
     if (TrainingDayInfo) {
