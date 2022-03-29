@@ -42,10 +42,22 @@ export const getTrainingDayInfo = async (req: Request, res: Response): Promise<R
             isActive: false,
             isStarted: false,
             title: `Подход ${j + 1}`,
-            repeats: TrainingDayInfo?.trainingProgramDayExercises[i]?.repeats,
-            additionalWeight: TrainingDayInfo?.trainingProgramDayExercises[i]?.additionalWeight,
-            implementationTime: TrainingDayInfo?.trainingProgramDayExercises[i]?.implementationTime,
-            restTime: TrainingDayInfo?.trainingProgramDayExercises[i]?.restTime,
+            repeats: {
+              target: TrainingDayInfo?.trainingProgramDayExercises[i]?.repeats,
+              value: null,
+            },
+            additionalWeight: {
+              target: TrainingDayInfo?.trainingProgramDayExercises[i]?.additionalWeight,
+              value: null,
+            },
+            implementationTime: {
+              teraget: TrainingDayInfo?.trainingProgramDayExercises[i]?.implementationTime,
+              value: null,
+            },
+            restTime: {
+              target: TrainingDayInfo?.trainingProgramDayExercises[i]?.restTime,
+              value: null,
+            },
           })
         }
 
