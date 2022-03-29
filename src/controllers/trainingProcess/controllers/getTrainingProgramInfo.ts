@@ -6,7 +6,8 @@ export const getTrainingProgramInfo = async (req: Request, res: Response): Promi
   try {
     const TrainingProgramInfo = await dataSource.getRepository(TrainingPrograms)
       .createQueryBuilder('trainingProgram')
-      .where([{id: req.query.trainingProgram}])
+      .where('trainingProgram.id = :id', { id: req.query.trainingProgram })
+      // .where([{id: req.query.trainingProgram}])
       .select(['trainingProgram.id', 'trainingProgram.title'])
       .leftJoin("trainingProgram.trainingProgramDays", "trainingProgramDays")
       .addSelect(['trainingProgramDays.id', 'trainingProgramDays.title'])
@@ -17,12 +18,19 @@ export const getTrainingProgramInfo = async (req: Request, res: Response): Promi
 
     if (TrainingProgramInfo) {
       const response = {
-        program: {
+        trainingProgram: {
           id: TrainingProgramInfo?.id,
           title: TrainingProgramInfo?.title
         },
-        day: req.query.trainingProgram ? TrainingProgramInfo?.trainingProgramDays.filter((item: any) => item.id == req.query.trainingDay)[0] : null,
-        trainingProgramDays: TrainingProgramInfo?.trainingProgramDays
+        previewImage: null,
+        trainingProgramAccent: {
+          power: null,
+          endurance: null,
+          flexibility: null,
+          cardio: null,
+        },
+        trainingDay: req.query.trainingDay ? TrainingProgramInfo?.trainingProgramDays.filter((item: any) => item.id == req.query.trainingDay)[0] : null,
+        trainingProgramDaysList: TrainingProgramInfo?.trainingProgramDays
       }
 
       return res.status(200).json(response)
