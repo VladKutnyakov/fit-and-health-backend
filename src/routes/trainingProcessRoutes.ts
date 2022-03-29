@@ -80,10 +80,10 @@ const router: Router = express.Router()
 */
 router.get('/training-program-info', JwtGuard, trainingProcessContrallers.getTrainingProgramInfo)
 
-// http://localhost:3031/api/training-process/training-day-info/:trainingDayId
+// http://localhost:3031/api/training-process/training-day-info?trainingDay
 /**
 * @swagger
-* /api/training-process/training-day-info/{trainingDayId}:
+* /api/training-process/training-day-info:
 *   get:
 *     tags:
 *       - Тренировочный процесс
@@ -91,8 +91,8 @@ router.get('/training-program-info', JwtGuard, trainingProcessContrallers.getTra
 *     security:
 *       - jwt: []
 *     parameters:
-*     - in: path
-*       name: trainingDayId
+*     - in: query
+*       name: trainingDay
 *       schema:
 *         type: number
 *       required: true
