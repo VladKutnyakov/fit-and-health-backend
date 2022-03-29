@@ -6,7 +6,8 @@ export const getAllProducts = async (req: Request, res: Response): Promise<Respo
   try {
     const ProductsList = await dataSource.getRepository(Products)
       .createQueryBuilder('products')
-      .where([{user: req.body.userId}, {user: null}])
+      // .where([{user: req.body.userId}, {user: null}])
+      .where("products.user = :id OR products.user IS NULL", { id: req.body.userId })
       .leftJoin("products.user", "user")
       .addSelect(['user.id'])
       .leftJoinAndSelect('products.category', 'category')

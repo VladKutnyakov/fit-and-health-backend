@@ -6,7 +6,7 @@ export const getTrainingPrograms = async (req: Request, res: Response): Promise<
   try {
     const TrainingProgramsList = await dataSource.getRepository(TrainingPrograms)
       .createQueryBuilder('trainingPrograms')
-      .where([{user: req.body.userId}, {user: null}])
+      .where("trainingPrograms.user = :id OR trainingPrograms.user IS NULL", { id: req.body.userId })
       .leftJoin("trainingPrograms.user", "user")
       .addSelect(['user.id'])
       .offset(0)
