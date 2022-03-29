@@ -31,11 +31,9 @@ export const getTrainingDayInfo = async (req: Request, res: Response): Promise<R
 
       for (let i = 0; i < TrainingDayInfo?.trainingProgramDayExercises.length; i++) {
         const item = {
+          id: TrainingDayInfo?.trainingProgramDayExercises[i]?.exercise?.id,
+          title: TrainingDayInfo?.trainingProgramDayExercises[i]?.exercise?.title,
           isStarted: false,
-          exercise: {
-            id: TrainingDayInfo?.trainingProgramDayExercises[i]?.exercise?.id,
-            title: TrainingDayInfo?.trainingProgramDayExercises[i]?.exercise?.title,
-          },
           approaches: [] as Array<any>
         }
 
