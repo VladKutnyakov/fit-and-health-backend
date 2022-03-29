@@ -99,7 +99,7 @@ router.get('/training-program-info', JwtGuard, trainingProcessContrallers.getTra
 *       description: ID тренировочного дня
 *     responses:
 *       200:
-*         description: Данные о тренировочной программе
+*         description: Данные о дне тренировочной программы
 *         content:
 *           application/json:
 *             schema:
@@ -131,24 +131,38 @@ router.get('/training-program-info', JwtGuard, trainingProcessContrallers.getTra
 *                   items:
 *                     type: object
 *                     properties:
-*                       isActive:
-*                         type: boolean
-*                         description: Признак активно выполнение упражнения или нет
+*                       id:
+*                         type: integer
+*                         description: ID упражнения
 *                       title:
 *                         type: string
-*                         description: Название подхода
-*                       repeats:
-*                         type: integer
-*                         description: Кол-во повторений в подходе
-*                       additionalWeight:
-*                         type: integer
-*                         description: Дополнительный вес при выполнении подхода
-*                       implementationTime:
-*                         type: integer
-*                         description: Время выполнения
-*                       restTime:
-*                         type: integer
-*                         description: Время восстановления
+*                         description: Название упражнения
+*                       isStarted:
+*                         type: boolean
+*                         description: Признак активно выполнение упражнения или нет
+*                       approaches:
+*                         type: array
+*                         items:
+*                           type: object
+*                           properties:
+*                             isActive:
+*                               type: boolean
+*                               description: Признак активно выполнение подхода или нет
+*                             title:
+*                               type: string
+*                               description: Название подхода
+*                             repeats:
+*                               type: integer
+*                               description: Кол-во повторений в подходе
+*                             additionalWeight:
+*                               type: integer
+*                               description: Дополнительный вес при выполнении подхода
+*                             implementationTime:
+*                               type: integer
+*                               description: Время выполнения
+*                             restTime:
+*                               type: integer
+*                               description: Время восстановления
 *       401:
 *         description: Ошибка авторизации
 */
