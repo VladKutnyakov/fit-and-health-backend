@@ -148,6 +148,9 @@ router.get('/training-program-info', JwtGuard, trainingProcessContrallers.getTra
 *                             isActive:
 *                               type: boolean
 *                               description: Признак активно выполнение подхода или нет
+*                             isStarted:
+*                               type: boolean
+*                               description: Признак выполненяется подход или нет
 *                             title:
 *                               type: string
 *                               description: Название подхода
