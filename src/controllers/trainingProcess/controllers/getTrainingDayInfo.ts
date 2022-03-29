@@ -40,6 +40,7 @@ export const getTrainingDayInfo = async (req: Request, res: Response): Promise<R
         for (let j = 0; j < TrainingDayInfo?.trainingProgramDayExercises[i].approaches; j++) {
           item.approaches.push({
             isActive: false,
+            isStarted: false,
             title: `Подход ${j + 1}`,
             repeats: TrainingDayInfo?.trainingProgramDayExercises[i]?.repeats,
             additionalWeight: TrainingDayInfo?.trainingProgramDayExercises[i]?.additionalWeight,
