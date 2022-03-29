@@ -21,12 +21,12 @@ export class TrainingProgramDayExercises {
   exerciseId: number
 
   @Column({
-    type: 'varchar',
+    type: 'integer',
     nullable: true,
     unique: false,
     comment: 'Кол-во подходов'
   })
-  approaches!: string
+  approaches!: number
 
   @Column({
     type: 'varchar',
