@@ -155,17 +155,41 @@ router.get('/training-program-info', JwtGuard, trainingProcessContrallers.getTra
 *                               type: string
 *                               description: Название подхода
 *                             repeats:
-*                               type: integer
-*                               description: Кол-во повторений в подходе
+*                               type: object
+*                               properties:
+*                                 target:
+*                                   type: integer
+*                                   description: Кол-во повторений в подходе (целевое)
+*                                 value:
+*                                   type: integer
+*                                   description: Кол-во повторений в подходе (выполненное)
 *                             additionalWeight:
-*                               type: integer
-*                               description: Дополнительный вес при выполнении подхода
+*                               type: object
+*                               properties:
+*                                 target:
+*                                   type: integer
+*                                   description: Дополнительный вес при выполнении подхода (целевое)
+*                                 value:
+*                                   type: integer
+*                                   description: Дополнительный вес при выполнении подхода (выполненное)
 *                             implementationTime:
-*                               type: integer
-*                               description: Время выполнения
+*                               type: object
+*                               properties:
+*                                 target:
+*                                   type: integer
+*                                   description: Время выполнения (целевое)
+*                                 value:
+*                                   type: integer
+*                                   description: Время выполнения (выполненное)
 *                             restTime:
-*                               type: integer
-*                               description: Время восстановления
+*                               type: object
+*                               properties:
+*                                 target:
+*                                   type: integer
+*                                   description: Время восстановления (целевое)
+*                                 value:
+*                                   type: integer
+*                                   description: Время восстановления (выполненное)
 *       401:
 *         description: Ошибка авторизации
 */
