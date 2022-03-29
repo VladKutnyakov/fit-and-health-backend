@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { getRepository, getConnection } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { Users } from '../../../db/entities/Users'
 
 export const changeFavoriteParam = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const User = await getRepository(Users)
+    const User = await dataSource.getRepository(Users)
     .createQueryBuilder('users')
     .where({id: req.body.userId})
     .select(['users.id'])
@@ -25,14 +25,14 @@ export const changeFavoriteParam = async (req: Request, res: Response): Promise<
 
     if (isFavorite) {
       // Для user с id=1 удалить занчение favoriteExercises exerciseId=2
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "favoriteExercises")
       .of(req.body.userId)
       .remove(req.params.exerciseId)
     } else {
       // Для user с id=1 установить занчение favoriteExercises exerciseId=2
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "favoriteExercises")
       .of(req.body.userId)

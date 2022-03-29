@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getRepository, getConnection } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { Users } from '../../../db/entities/Users'
 import { Skills } from '../../../db/entities/Skills'
 import { Muscles } from "../../../db/entities/Muscles"
@@ -11,29 +11,29 @@ import { ExerciseEquipments } from "../../../db/entities/ExerciseEquipments"
 
 export const saveNewExercise = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const CreatedExercise = await getRepository(Exercises)
+    const CreatedExercise = await dataSource.getRepository(Exercises)
     .createQueryBuilder('exercises')
     .insert()
     .into(Exercises)
     .values([{
       title: req.body.exercise.title,
       techniqueDescription: req.body.exercise.techniqueDescription,
-      type: getRepository(ExerciseTypes).create({
+      type: dataSource.getRepository(ExerciseTypes).create({
         id: req.body.exercise.type?.id,
       }),
-      sort: getRepository(ExerciseSorts).create({
+      sort: dataSource.getRepository(ExerciseSorts).create({
         id: req.body.exercise.sort?.id,
       }),
-      equipment: getRepository(ExerciseEquipments).create({
+      equipment: dataSource.getRepository(ExerciseEquipments).create({
         id: req.body.exercise.equipment?.id,
       }),
-      exertion: getRepository(ExerciseExertions).create({
+      exertion: dataSource.getRepository(ExerciseExertions).create({
         id: req.body.exercise.exertion?.id,
       }),
-      skill: getRepository(Skills).create({
+      skill: dataSource.getRepository(Skills).create({
         id: req.body.exercise.skill?.id,
       }),
-      muscleGroup: getRepository(Muscles).create({
+      muscleGroup: dataSource.getRepository(Muscles).create({
         id: req.body.exercise.muscleGroup?.id,
       }),
       // additionalMuscles: [
@@ -46,7 +46,7 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
       endurance: req.body.exercise.endurance,
       flexibility: req.body.exercise.flexibility,
       cardio: req.body.exercise.cardio,
-      user: getRepository(Users).create({
+      user: dataSource.getRepository(Users).create({
         id: req.body.userId,
       })
     }])
@@ -54,7 +54,7 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
     // console.log(CreatedExercise)
 
     if (req.body.exercise.favorite) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "favoriteExercises")
       .of(req.body.userId)
@@ -62,7 +62,7 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
     }
 
     if (req.body.exercise.pinned) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "pinnedExercises")
       .of(req.body.userId)

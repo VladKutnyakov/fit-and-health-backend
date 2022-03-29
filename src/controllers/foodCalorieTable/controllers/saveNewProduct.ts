@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
-import { getRepository, getConnection } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { Products } from "../../../db/entities/Products"
 import { ProductCategories } from '../../../db/entities/ProductCategories'
 import { Users } from '../../../db/entities/Users'
 
 export const saveNewProduct = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const CreatedProduct = await getRepository(Products)
+    const CreatedProduct = await dataSource.getRepository(Products)
     .createQueryBuilder('products')
     .insert()
     .into(Products)
@@ -17,10 +17,10 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
         fats: req.body.product.fats,
         carb: req.body.product.carb,
         kkal: req.body.product.kkal,
-        user: getRepository(Users).create({
+        user: dataSource.getRepository(Users).create({
           id: req.body.userId,
         }),
-        category: getRepository(ProductCategories).create({
+        category: dataSource.getRepository(ProductCategories).create({
           id: req.body.product.category.id,
         })
       }])
@@ -30,7 +30,7 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
     // console.log(CreatedProduct.raw[0].id)
 
     if (req.body.product.favorite) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "favoriteProducts")
       .of(req.body.userId)
@@ -38,7 +38,7 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
     }
 
     if (req.body.product.pinned) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "pinnedProducts")
       .of(req.body.userId)

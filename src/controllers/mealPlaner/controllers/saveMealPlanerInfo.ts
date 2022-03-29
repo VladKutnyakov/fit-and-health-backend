@@ -3,7 +3,7 @@
 // Текущая дата --- new Date().toJSON().split('T')[0]
 
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { MealPlaners } from "../../../db/entities/MealPlaners"
 import { UsersParams } from "../../../db/entities/UsersParams"
 

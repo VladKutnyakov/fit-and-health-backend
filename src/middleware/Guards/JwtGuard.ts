@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import jwt from 'jsonwebtoken'
-import { getManager } from "typeorm"
+import { dataSource } from '../../dataSource'
 import { Tokens } from "../../db/entities/Tokens"
 
 // Возможно доработать систему авторизации в будущем
@@ -36,9 +36,7 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
         jwt.verify(decodedToken.refreshToken, keys.jwtRefresh, async (error: any) => {
           if (error) {
             // Если рефреш НЕ валиден - проверить все токены пользователя и удалить записи с не валидными рефреш токенами. Отправить ошибку авторизации.
-            const entityManager = getManager()
-
-            const UserTokens = await entityManager.find(Tokens, {
+            const UserTokens = await dataSource.manager.find(Tokens, {
               where: {
                 user: {
                   id: decodedToken.id
@@ -50,7 +48,7 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
             UserTokens.forEach(async element => {
               jwt.verify(element.refreshToken, keys.jwtRefresh, async (error: any) => {
                 if (error) {
-                  await entityManager.delete(Tokens, { id: element.id })
+                  await dataSource.manager.delete(Tokens, { id: element.id })
                 }
               })
             })
@@ -62,9 +60,7 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
             // Если рефреш валиден - обновить accessToken и refreshToken ЕСЛИ они совпадают с теми что есть в БД
             try {
               // Получить все токены пользователя.
-              const entityManager = getManager()
-
-              const UserTokens = await entityManager.find(Tokens, {
+              const UserTokens = await dataSource.manager.find(Tokens, {
                 where: {
                   user: {
                     id: decodedToken.id
@@ -95,7 +91,7 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
                 }, keys.jwt, { expiresIn: '15m' })
 
                 // Обновление токена в БД
-                await entityManager.update(
+                await dataSource.manager.update(
                   Tokens,
                   {
                     id: targetToken.id

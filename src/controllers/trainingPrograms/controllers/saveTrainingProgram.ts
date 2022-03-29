@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getConnection, getRepository } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { TrainingPrograms } from "../../../db/entities/TrainingPrograms"
 import { TrainingProgramDays } from '../../../db/entities/TrainingProgramDays'
 import { TrainingProgramDayExercises } from '../../../db/entities/TrainingProgramDayExercises'
@@ -27,14 +27,14 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
     }
 
     // ТРАНЗАКЦИЯ
-    const connection = getConnection()
+    const connection = dataSource
     const queryRunner = connection.createQueryRunner()
 
     await queryRunner.startTransaction()
 
     try {
       // Создание в БД тренировочной программы
-      const CreatedTrainingProgram = await getRepository(TrainingPrograms)
+      const CreatedTrainingProgram = await dataSource.getRepository(TrainingPrograms)
         .createQueryBuilder('trainingPrograms')
         .insert()
         .into(TrainingPrograms)
@@ -42,10 +42,10 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
             title: req.body.trainingProgram.title,
             description: req.body.trainingProgram.description,
             // image: req.body.trainingProgram.image,
-            skill: getRepository(Skills).create({
+            skill: dataSource.getRepository(Skills).create({
               id: req.body.trainingProgram.skill?.id,
             }),
-            user: getRepository(Users).create({
+            user: dataSource.getRepository(Users).create({
               id: req.body.userId
             }),
           }])
@@ -60,10 +60,10 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
         DaysList.push({
           title: element.title,
           comment: element.comment,
-          trainingProgram: getRepository(TrainingPrograms).create({
+          trainingProgram: dataSource.getRepository(TrainingPrograms).create({
             id: CreatedTrainingProgram.identifiers[0].id,
           }),
-          trainingType: getRepository(TrainingTypes).create({
+          trainingType: dataSource.getRepository(TrainingTypes).create({
             id: element.trainingType.id,
           }),
         })
@@ -71,7 +71,7 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
       // console.log(DaysList)
 
       // Создание в БД тренировочных дней
-      const CreatedTrainingProgramDays = await getRepository(TrainingProgramDays)
+      const CreatedTrainingProgramDays = await dataSource.getRepository(TrainingProgramDays)
         .createQueryBuilder('trainingProgramDays')
         .insert()
         .into(TrainingProgramDays)
@@ -89,10 +89,10 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
             additionalWeight: element.trainingProgramDayExercises[i].additionalWeight,
             implementationTime: element.trainingProgramDayExercises[i].implementationTime,
             restTime: element.trainingProgramDayExercises[i].restTime,
-            trainingProgramDay: getRepository(TrainingProgramDays).create({
+            trainingProgramDay: dataSource.getRepository(TrainingProgramDays).create({
               id: CreatedTrainingProgramDays.identifiers[index].id,
             }),
-            exercise: getRepository(Exercises).create({
+            exercise: dataSource.getRepository(Exercises).create({
               id: element.trainingProgramDayExercises[i].id,
             })
           })
@@ -101,7 +101,7 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
       // console.log(ExercisesList)
 
       // Создание в БД упражнений для тренировочных дней
-      const CreatedTrainingProgramDayExercises = await getRepository(TrainingProgramDayExercises)
+      const CreatedTrainingProgramDayExercises = await dataSource.getRepository(TrainingProgramDayExercises)
         .createQueryBuilder('trainingProgramDayExercises')
         .insert()
         .into(TrainingProgramDayExercises)

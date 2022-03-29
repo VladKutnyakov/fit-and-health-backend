@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { getConnection } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { Products } from "../../../db/entities/Products"
 
 export const removeProduct = async (req: Request, res: Response): Promise<Response> => {
   try {
-    await getConnection()
+    await dataSource
     .createQueryBuilder()
     .softDelete()
     .from(Products)

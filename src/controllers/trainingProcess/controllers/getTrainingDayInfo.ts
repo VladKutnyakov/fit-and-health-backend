@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { TrainingProgramDays } from '../../../db/entities/TrainingProgramDays'
 
 export const getTrainingDayInfo = async (req: Request, res: Response): Promise<Response> => {
   // console.log(req.query.trainingDay)
 
   try {
-    const TrainingDayInfo = await getRepository(TrainingProgramDays)
+    const TrainingDayInfo = await dataSource.getRepository(TrainingProgramDays)
       .createQueryBuilder('trainingProgramDays')
       .where([{id: req.query.trainingDay}])
       .leftJoinAndSelect('trainingProgramDays.trainingType', 'trainingType')

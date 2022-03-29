@@ -10,7 +10,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import consola from 'consola'
 import "reflect-metadata"
-import { createConnection } from 'typeorm'
+import { dataSource } from './dataSource'
 
 // Импорт роутов
 import directoryRoutes from './routes/directoryRoutes'
@@ -94,12 +94,16 @@ app.use('/api/training-programs', trainingProgramsRoutes)
 app.use('/api/training-process', trainingProcessRoutes)
 
 // Подключение к базе данных
-createConnection().then(connection => {
-  consola.ready({
-    message: `DB connected success`,
-    badge: true
+dataSource.initialize()
+  .then(() => {
+    consola.ready({
+      message: `Database connected success`,
+      badge: true
+    })
   })
-}).catch(error => console.log(error))
+  .catch((err) => {
+      console.error("Error during Data Source initialization", err)
+  })
 
 // Запуск сервера
 const HOST: string = process.env.HOST || 'localhost'

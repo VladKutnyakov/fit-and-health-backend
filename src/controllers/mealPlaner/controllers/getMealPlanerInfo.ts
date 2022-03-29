@@ -3,7 +3,7 @@
 // Текущая дата --- new Date().toJSON().split('T')[0]
 
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { MealPlaners } from "../../../db/entities/MealPlaners"
 import { UsersParams } from "../../../db/entities/UsersParams"
 
@@ -13,7 +13,7 @@ export const getMealPlanerInfo = async (req: Request, res: Response): Promise<Re
     // console.log(targetDate)
 
     // Найти план питания для укзанной даты или для текущего дня если дата не передана в запросе
-    const MealPlanerInfo = await getRepository(MealPlaners)
+    const MealPlanerInfo = await dataSource.getRepository(MealPlaners)
       .createQueryBuilder('mealPlaners')
       .where([{user: req.body.userId, date: targetDate}])
       .select([
@@ -85,7 +85,7 @@ export const getMealPlanerInfo = async (req: Request, res: Response): Promise<Re
 
     // Если план питания для нужной даты не найден, получить послдение данные о "Текущем весе" и "Желаемом весе" пользователя
     if (!MealPlanerInfo) {
-      const UserParams = await getRepository(UsersParams)
+      const UserParams = await dataSource.getRepository(UsersParams)
         .createQueryBuilder('userParams')
         .where([{user: req.body.userId}])
         .orderBy('id', 'DESC')

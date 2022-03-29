@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { TrainingPrograms } from "../../../db/entities/TrainingPrograms"
 
 export const getTrainingProgramInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const TrainingProgramInfo = await getRepository(TrainingPrograms)
+    const TrainingProgramInfo = await dataSource.getRepository(TrainingPrograms)
       .createQueryBuilder('trainingProgram')
       .select([
         'trainingProgram.id',

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getRepository, getConnection } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { Products } from "../../../db/entities/Products"
 import { ProductCategories } from '../../../db/entities/ProductCategories'
 import { Users } from '../../../db/entities/Users'
@@ -7,7 +7,7 @@ import { Users } from '../../../db/entities/Users'
 export const updateProduct = async (req: Request, res: Response): Promise<Response> => {
   try {
     // Обновить основные данные о продукте
-    const UpdatedProduct = await getRepository(Products)
+    const UpdatedProduct = await dataSource.getRepository(Products)
     .createQueryBuilder('products')
     .update(Products)
     .set({
@@ -17,10 +17,10 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
         fats: req.body.product.fats,
         carb: req.body.product.carb,
         kkal: req.body.product.kkal,
-        user: getRepository(Users).create({
+        user: dataSource.getRepository(Users).create({
           id: req.body.userId,
         }),
-        category: getRepository(ProductCategories).create({
+        category: dataSource.getRepository(ProductCategories).create({
           id: req.body.product.category.id,
         })
       })
@@ -28,7 +28,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
     .execute()
 
     // Узнать есть ли продукт в избранном и закрепленном у пользователя
-    const Product = await getRepository(Products)
+    const Product = await dataSource.getRepository(Products)
       .createQueryBuilder('products')
       .select('products.id')
       .where([{id: req.body.product.id}])
@@ -42,13 +42,13 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
     // console.log(Product?.pinnedForUsers.length)
 
     if (Product?.favoriteForUsers && Product?.favoriteForUsers.length === 0 && req.body.product.favorite) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "favoriteProducts")
       .of(req.body.userId)
       .add(req.body.product.id)
     } else if (Product?.favoriteForUsers && Product?.favoriteForUsers.length > 0 && !req.body.product.favorite) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "favoriteProducts")
       .of(req.body.userId)
@@ -56,13 +56,13 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
     }
 
     if (Product?.pinnedForUsers && Product?.pinnedForUsers.length === 0 && req.body.product.pinned) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "pinnedProducts")
       .of(req.body.userId)
       .add(req.body.product.id)
     } else if (Product?.pinnedForUsers && Product?.pinnedForUsers.length > 0 && !req.body.product.pinned) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "pinnedProducts")
       .of(req.body.userId)

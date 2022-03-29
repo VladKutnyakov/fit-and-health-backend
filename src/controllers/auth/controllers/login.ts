@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getManager } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
 import { Users } from "../../../db/entities/Users"
@@ -8,9 +8,9 @@ import { Tokens } from "../../../db/entities/Tokens"
 // http://localhost:3031/api/auth/login/
 export const login = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const entityManager = getManager()
+    // const entityManager = dataSource.getManager()
 
-    const candidate = await entityManager.findOne(Users, {where: {email: req.body.email}})
+    const candidate = await dataSource.manager.findOne(Users, {where: {email: req.body.email}})
 
     if (candidate) {
       // Проверяем пароль
@@ -18,7 +18,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
       if (passwordResult) {
         // Авторизуем пользователя
-        const authUserAccessToken = await getManager().transaction(async transactionalEntityManager => {
+        const authUserAccessToken = await dataSource.transaction(async transactionalEntityManager => {
           // Генерируем рефреш токен для найденного пользователя
           const JwtRefreshKey: Secret = process.env.JWT_REFRESH || ''
           const RefreshToken = jwt.sign({

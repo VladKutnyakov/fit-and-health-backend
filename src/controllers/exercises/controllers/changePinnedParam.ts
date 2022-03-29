@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { getRepository, getConnection } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { Users } from '../../../db/entities/Users'
 
 export const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const User = await getRepository(Users)
+    const User = await dataSource.getRepository(Users)
     .createQueryBuilder('users')
     .where({id: req.body.userId})
     .select(['users.id'])
@@ -25,14 +25,14 @@ export const changePinnedParam = async (req: Request, res: Response): Promise<Re
 
     if (isPinned) {
       // Для user с id=1 удалить занчение pinnedExercises exerciseId=2
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "pinnedExercises")
       .of(req.body.userId)
       .remove(req.params.exerciseId)
     } else {
       // Для user с id=1 установить занчение pinnedExercises exerciseId=2
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "pinnedExercises")
       .of(req.body.userId)

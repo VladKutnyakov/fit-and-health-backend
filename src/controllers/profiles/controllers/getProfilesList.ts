@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { UsersProfiles } from "../../../db/entities/UsersProfiles"
 
 export const getProfilesList = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const ProfilesList = await getRepository(UsersProfiles)
+    const ProfilesList = await dataSource.getRepository(UsersProfiles)
       .createQueryBuilder('usersProfiles')
       .leftJoin("usersProfiles.user", "user")
       .addSelect(['user.id'])

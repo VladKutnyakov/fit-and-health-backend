@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getManager } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
 import { Users } from "../../../db/entities/Users"
@@ -8,9 +8,7 @@ import { Tokens } from "../../../db/entities/Tokens"
 // http://localhost:3031/api/auth/register/
 export const register = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const entityManager = getManager()
-
-    const candidate = await entityManager.findOne(Users, {where: {email: req.body.email}})
+    const candidate = await dataSource.manager.findOne(Users, {where: {email: req.body.email}})
 
     if (candidate) {
       // console.log('Пользователь найден')
@@ -22,7 +20,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
       // console.log('Пользователь не найден')
 
       // Создаем нового пользователя в БД
-      const CreatedUserAccessToken = await getManager().transaction(async transactionalEntityManager => {
+      const CreatedUserAccessToken = await dataSource.transaction(async transactionalEntityManager => {
 
         // Создать пользователя
         const NewUser = new Users()

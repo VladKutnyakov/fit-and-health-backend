@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getRepository, getConnection } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { Users } from '../../../db/entities/Users'
 import { Skills } from '../../../db/entities/Skills'
 import { Muscles } from "../../../db/entities/Muscles"
@@ -11,28 +11,28 @@ import { ExerciseEquipments } from "../../../db/entities/ExerciseEquipments"
 
 export const updateExercise = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const UpdatedExercise = await getRepository(Exercises)
+    const UpdatedExercise = await dataSource.getRepository(Exercises)
     .createQueryBuilder('exercises')
     .update(Exercises)
     .set({
       title: req.body.exercise.title,
       techniqueDescription: req.body.exercise.techniqueDescription,
-      type: getRepository(ExerciseTypes).create({
+      type: dataSource.getRepository(ExerciseTypes).create({
         id: req.body.exercise.type?.id,
       }),
-      sort: getRepository(ExerciseSorts).create({
+      sort: dataSource.getRepository(ExerciseSorts).create({
         id: req.body.exercise.sort?.id,
       }),
-      equipment: getRepository(ExerciseEquipments).create({
+      equipment: dataSource.getRepository(ExerciseEquipments).create({
         id: req.body.exercise.equipment?.id,
       }),
-      exertion: getRepository(ExerciseExertions).create({
+      exertion: dataSource.getRepository(ExerciseExertions).create({
         id: req.body.exercise.exertion?.id,
       }),
-      skill: getRepository(Skills).create({
+      skill: dataSource.getRepository(Skills).create({
         id: req.body.exercise.skill?.id,
       }),
-      muscleGroup: getRepository(Muscles).create({
+      muscleGroup: dataSource.getRepository(Muscles).create({
         id: req.body.exercise.muscleGroup?.id,
       }),
       // additionalMuscles: [
@@ -51,7 +51,7 @@ export const updateExercise = async (req: Request, res: Response): Promise<Respo
     // console.log(UpdatedExercise)
 
     // Узнать есть ли упражнение в избранном и закрепленном у пользователя
-    const Exercise = await getRepository(Exercises)
+    const Exercise = await dataSource.getRepository(Exercises)
       .createQueryBuilder('exercises')
       .select('exercises.id')
       .where([{id: req.body.exercise.id}])
@@ -65,13 +65,13 @@ export const updateExercise = async (req: Request, res: Response): Promise<Respo
     // console.log(Exercise?.pinnedForUsers.length)
 
     if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length === 0 && req.body.exercise.favorite) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "favoriteExercises")
       .of(req.body.userId)
       .add(req.body.exercise.id)
     } else if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length > 0 && !req.body.exercise.favorite) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "favoriteExercises")
       .of(req.body.userId)
@@ -79,13 +79,13 @@ export const updateExercise = async (req: Request, res: Response): Promise<Respo
     }
 
     if (Exercise?.pinnedForUsers && Exercise?.pinnedForUsers.length === 0 && req.body.exercise.pinned) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "pinnedExercises")
       .of(req.body.userId)
       .add(req.body.exercise.id)
     } else if (Exercise?.pinnedForUsers && Exercise?.pinnedForUsers.length > 0 && !req.body.exercise.pinned) {
-      await getConnection()
+      await dataSource
       .createQueryBuilder()
       .relation(Users, "pinnedExercises")
       .of(req.body.userId)

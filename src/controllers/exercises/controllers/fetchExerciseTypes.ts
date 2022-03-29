@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { ExerciseTypes } from "../../../db/entities/ExerciseTypes"
 
 export const fetchExerciseTypes = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const ExerciseTypesList = await getRepository(ExerciseTypes)
+    const ExerciseTypesList = await dataSource.getRepository(ExerciseTypes)
       .createQueryBuilder('exerciseTypes')
       .orderBy('id')
       .getMany()

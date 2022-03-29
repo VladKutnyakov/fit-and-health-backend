@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { dataSource } from '../../../dataSource'
 import { TrainingDiaries } from "../../../db/entities/TrainingDiaries"
 
 export const getTrainingDiaryInfo = async (req: Request, res: Response): Promise<Response> => {
@@ -7,7 +7,7 @@ export const getTrainingDiaryInfo = async (req: Request, res: Response): Promise
     const targetDate = req.query.date || new Date().toJSON().split('T')[0]
     // console.log(targetDate)
 
-    const TrainingDiaryInfo = await getRepository(TrainingDiaries)
+    const TrainingDiaryInfo = await dataSource.getRepository(TrainingDiaries)
       .createQueryBuilder('trainingDiaries')
       .where([{user: req.body.userId, date: targetDate}])
       .select(['trainingDiaries.id', 'trainingDiaries.date'])
