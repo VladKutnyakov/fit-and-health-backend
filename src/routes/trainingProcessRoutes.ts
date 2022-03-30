@@ -28,6 +28,9 @@ const router: Router = express.Router()
 *             schema:
 *               type: object
 *               properties:
+*                 isStarted:
+*                   type: boolean
+*                   description: Признак начато выполнение программы или нет
 *                 trainingProgram:
 *                   type: object
 *                   properties:

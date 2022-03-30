@@ -17,6 +17,7 @@ export const getTrainingProgramInfo = async (req: Request, res: Response): Promi
 
     if (TrainingProgramInfo) {
       const response = {
+        isStarted: false,
         trainingProgram: {
           id: TrainingProgramInfo?.id,
           title: TrainingProgramInfo?.title
