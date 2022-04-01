@@ -33,7 +33,6 @@ export const getTrainingDayInfo = async (req: Request, res: Response): Promise<R
         const item = {
           id: TrainingDayInfo?.trainingProgramDayExercises[i]?.exercise?.id,
           title: TrainingDayInfo?.trainingProgramDayExercises[i]?.exercise?.title,
-          isActive: false,
           isStarted: false,
           approaches: [] as Array<any>
         }

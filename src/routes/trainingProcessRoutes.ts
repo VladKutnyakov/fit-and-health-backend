@@ -140,12 +140,9 @@ router.get('/training-program-info', JwtGuard, trainingProcessContrallers.getTra
 *                       title:
 *                         type: string
 *                         description: Название упражнения
-*                       isActive:
-*                         type: boolean
-*                         description: Признак активно выполнение упражнения или нет
 *                       isStarted:
 *                         type: boolean
-*                         description: Признак начато выполнение упражнения или нет
+*                         description: Признак активно выполнение упражнения или нет
 *                       approaches:
 *                         type: array
 *                         items:
