@@ -51,7 +51,7 @@ export const getTrainingDayInfo = async (req: Request, res: Response): Promise<R
               value: null,
             },
             implementationTime: {
-              teraget: TrainingDayInfo?.trainingProgramDayExercises[i]?.implementationTime,
+              target: TrainingDayInfo?.trainingProgramDayExercises[i]?.implementationTime,
               value: null,
             },
             restTime: {
