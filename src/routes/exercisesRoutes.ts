@@ -19,50 +19,114 @@ const router: Router = express.Router()
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID упражнения
+*                   title:
+*                     type: string
+*                     description: Название упражнения
+*                   techniqueDescription:
+*                     type: string
+*                     description: Описание упражнения
+*                   power:
+*                     type: number
+*                     description: Акцент упражнения на силу (в процентах)
+*                   endurance:
+*                     type: number
+*                     description: Акцент упражнения на выносливость (в процентах)
+*                   flexibility:
+*                     type: number
+*                     description: Акцент упражнения на гибкость (в процентах)
+*                   cardio:
+*                     type: number
+*                     description: Акцент упражнения на кардио (в процентах)
+*                   type:
 *                     type: object
 *                     properties:
 *                       id:
-*                         type: integer
+*                         type: number
+*                         description: ID типа упражнения
+*                       title:
+*                         type: string
+*                         description: Название типа упражнения
+*                   sort:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID 
+*                       title:
+*                         type: string
+*                         description: Название 
+*                   exertion:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID 
+*                       title:
+*                         type: string
+*                         description: Название 
+*                   equipment:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID 
+*                       title:
+*                         type: string
+*                         description: Название 
+*                   skill:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID уровня навыка (мастерства)
+*                       excellenceTitle:
+*                         type: string
+*                         description: Название навыка (мастерства)
+*                       complexityTitle:
+*                         type: string
+*                         description: Название навыка (мастерства)
+*                       value:
+*                         type: number
+*                         description: Цифровое обозначение уровня навыка (мастерства)
+*                   muscleGroup:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
 *                         description: ID мышечной группы
 *                       title:
 *                         type: string
 *                         description: Название мышечной группы
-*                       exercises:
-*                         type: array
-*                         items:
-*                           type: object
-*                           properties:
-*                             id:
-*                               type: integer
-*                               description: ID упражнения
-*                             title:
-*                               type: string
-*                               description: Название упражнения
-*                             additionalMuscles:
-*                               type: array
-*                               items:
-*                                 type: object
-*                                 properties:
-*                                   id:
-*                                     type: number
-*                                     description: ID мышечной группы
-*                                   title:
-*                                     type: string
-*                                     description: Название мышечной группы
-*                             user:
-*                               type: object
-*                               properties:
-*                                 id:
-*                                   type: integer
-*                                   description: ID пользователя
+*                   additionalMuscles:
+*                     type: array
+*                     items:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID мышечной группы
+*                         title:
+*                           type: string
+*                           description: Название мышечной группы
+*                   favorite:
+*                     type: boolean
+*                     description: Добавлено в избранное (признак)
+*                   pinned:
+*                     type: boolean
+*                     description: Добавлено в закрепленное (признак)
+*                   user:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: integer
+*                         description: ID пользователя
 *       401:
 *         description: Ошибка авторизации
 */
