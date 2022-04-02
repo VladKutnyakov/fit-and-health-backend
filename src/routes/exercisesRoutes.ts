@@ -88,13 +88,13 @@ const router: Router = express.Router()
 *                         description: ID уровня навыка (мастерства)
 *                       excellenceTitle:
 *                         type: string
-*                         description: Название навыка (мастерства)
+*                         description: Название уровня навыка (мастерства)
 *                       complexityTitle:
 *                         type: string
-*                         description: Название навыка (мастерства)
+*                         description: Название уровня навыка (сложности)
 *                       value:
 *                         type: number
-*                         description: Цифровое обозначение уровня навыка (мастерства)
+*                         description: Числовое обозначение уровня навыка (мастерства)
 *                   muscleGroup:
 *                     type: object
 *                     properties:
