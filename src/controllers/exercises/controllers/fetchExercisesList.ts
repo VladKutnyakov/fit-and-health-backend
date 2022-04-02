@@ -28,11 +28,14 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
       .addSelect(['pinnedForUsers.id'])
       .leftJoin('exercises.user', 'user')
       .addSelect(['user.id'])
-      .orderBy({'exercises.id': 'ASC'})
+      .orderBy({
+        'pinnedForUsers.id': 'ASC',
+        'exercises.id': 'ASC',
+      })
       .getMany()
     // console.log(ExercisesList)
 
-    const exercises = []
+    const exercises: Array<any> = []
     for (let i = 0; i < ExercisesList.length; i++) {
       exercises.push({
         id: ExercisesList[i].id,
