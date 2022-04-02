@@ -59,11 +59,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
     }
     // console.log(exercises)
 
-    const response = {
-      data: exercises
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(exercises)
   } catch (error: any) {
     return res.status(500).json({
       errorMessage: 'Неизвестная ошибка.'
