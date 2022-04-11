@@ -15,6 +15,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
         'exercises.flexibility',
         'exercises.cardio',
       ])
+      .where(req.query.userType === 'MY' ? `exercises.user = ${req.body.userId}` : `exercises.user = ${req.body.userId} OR exercises.user IS NULL`)
       .leftJoinAndSelect('exercises.muscleGroup', 'muscleGroup')
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoinAndSelect('exercises.type', 'type')
