@@ -32,6 +32,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
       ])
       .where(req.query.userType === 'MY' ? `exercises.user = ${req.body.userId}` : `(exercises.user = ${req.body.userId} OR exercises.user IS NULL)`)
       .andWhere(`exercises.muscleGroup IN (${req.query.muscleGroup})`)
+      .andWhere(`exercises.title LIKE '%${req.query.searchString || ''}%'`)
       .leftJoinAndSelect('exercises.muscleGroup', 'muscleGroup')
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoinAndSelect('exercises.type', 'type')
