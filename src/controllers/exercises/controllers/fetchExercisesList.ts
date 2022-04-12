@@ -30,7 +30,8 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
         'exercises.flexibility',
         'exercises.cardio',
       ])
-      .where(req.query.userType === 'MY' ? `exercises.user = ${req.body.userId}` : `exercises.user = ${req.body.userId} OR exercises.user IS NULL`)
+      .where(req.query.userType === 'MY' ? `exercises.user = ${req.body.userId}` : `(exercises.user = ${req.body.userId} OR exercises.user IS NULL)`)
+      .andWhere(`exercises.muscleGroup IN (${req.query.muscleGroup})`)
       .leftJoinAndSelect('exercises.muscleGroup', 'muscleGroup')
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoinAndSelect('exercises.type', 'type')
@@ -46,6 +47,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
       .addSelect(['user.id'])
       .orderBy(orderByParams)
       .getMany()
+      // .getSql()
     // console.log(ExercisesList)
 
     const exercises: Array<any> = []
