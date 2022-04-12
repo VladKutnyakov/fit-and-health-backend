@@ -4,6 +4,21 @@ import { Exercises } from "../../../db/entities/Exercises"
 
 export const fetchExercisesList = async (req: Request, res: Response): Promise<Response> => {
   try {
+    // console.log(req.query.orderBy ? `exercises.${req.query.orderBy}` : 'exercises.title')
+
+    const orderByParams: any = {
+      'pinnedForUsers.id': 'ASC',
+      // 'exercises.title': 'ASC',
+      // 'exercises.muscleGroup': 'ASC',
+      // 'exercises.cardio': 'ASC',
+      // 'exercises.power': 'ASC',
+      // 'exercises.endurance': 'ASC',
+      // 'exercises.flexibility': 'ASC',
+      // 'exercises.skill': 'ASC',
+    }
+    orderByParams[req.query.orderBy ? `exercises.${req.query.orderBy}` : 'exercises.title'] = req.query.sortDirection ? req.query.sortDirection : 'ASC'
+    // console.log(orderByParams)
+
     const ExercisesList = await dataSource.getRepository(Exercises)
       .createQueryBuilder('exercises')
       .select([
@@ -29,10 +44,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
       .addSelect(['pinnedForUsers.id'])
       .leftJoin('exercises.user', 'user')
       .addSelect(['user.id'])
-      .orderBy({
-        'pinnedForUsers.id': 'ASC',
-        'exercises.id': 'ASC',
-      })
+      .orderBy(orderByParams)
       .getMany()
     // console.log(ExercisesList)
 
