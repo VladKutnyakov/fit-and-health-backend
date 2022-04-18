@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateCol
 import { Users } from './Users'
 import { Muscles } from './Muscles'
 import { ExerciseTypes } from './ExerciseTypes'
-import { ExerciseTrainingTypes } from './ExerciseTrainingTypes'
+import { TrainingPlaces } from './TrainingPlaces'
 import { ExerciseSorts } from './ExerciseSorts'
 import { ExerciseExertions } from './ExerciseExertions'
 import { ExerciseEquipments } from './ExerciseEquipments'
@@ -78,8 +78,8 @@ export class Exercises {
   @ManyToOne(() => ExerciseTypes, type => type.exercises)
   type: ExerciseTypes
 
-  @ManyToOne(() => ExerciseTrainingTypes, trainingType => trainingType.exercises)
-  trainingType: ExerciseTrainingTypes
+  @ManyToOne(() => TrainingPlaces, trainingPlace => trainingPlace.exercises)
+  trainingPlace: TrainingPlaces
 
   @ManyToOne(() => ExerciseSorts, sort => sort.exercises)
   sort: ExerciseSorts
