@@ -21,11 +21,45 @@ export const fetchExercisePageInfo = async (req: Request, res: Response): Promis
       .where(`exercises.user = ${req.body.userId}`)
       .getCount()
 
+    const PinnedExercisesCount = await dataSource.getRepository(Exercises)
+      .createQueryBuilder('exercises')
+      .select([
+        'exercises.id',
+        'exercises.title',
+        'exercises.techniqueDescription',
+        'exercises.previewImage',
+        'exercises.power',
+        'exercises.endurance',
+        'exercises.flexibility',
+        'exercises.cardio',
+      ])
+      .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['pinnedForUsers.id'])
+      .where(`pinnedForUsers.id = ${req.body.userId}`)
+      .getCount()
+
+    const FavoriteExercises = await dataSource.getRepository(Exercises)
+      .createQueryBuilder('exercises')
+      .select([
+        'exercises.id',
+        'exercises.title',
+        'exercises.techniqueDescription',
+        'exercises.previewImage',
+        'exercises.power',
+        'exercises.endurance',
+        'exercises.flexibility',
+        'exercises.cardio',
+      ])
+      .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['favoriteForUsers.id'])
+      .where(`favoriteForUsers.id = ${req.body.userId}`)
+      .getCount()
+
     const response = {
       exercises: ExercisesCount,
       userExercises: UserExercisesCount,
-      pinnedExercises: null,
-      favoriteExercises: null,
+      pinnedExercises: PinnedExercisesCount,
+      favoriteExercises: FavoriteExercises,
     }
 
     return res.status(200).json(response)
