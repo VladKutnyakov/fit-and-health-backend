@@ -1,3 +1,4 @@
+import { fetchExercisePageInfo } from './controllers/fetchExercisePageInfo'
 import { fetchExercisesList } from './controllers/fetchExercisesList'
 import { fetchExercisesListByMuscles } from './controllers/fetchExercisesListByMuscles'
 import { fetchExerciseInfo } from './controllers/fetchExerciseInfo'
@@ -12,6 +13,7 @@ import { fetchExerciseExertions } from './controllers/fetchExerciseExertions'
 import { fetchExerciseEquipments } from './controllers/fetchExerciseEquipments'
 
 export default {
+  fetchExercisePageInfo,
   fetchExercisesList,
   fetchExercisesListByMuscles,
   fetchExerciseInfo,

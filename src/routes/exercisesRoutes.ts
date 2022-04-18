@@ -1022,4 +1022,36 @@ router.get('/exercise-exertions', JwtGuard, exercisesControllers.fetchExerciseEx
 */
 router.get('/exercise-equipments', JwtGuard, exercisesControllers.fetchExerciseEquipments)
 
+// http://localhost:3031/api/exercises/exercises-page-info
+/**
+* @swagger
+* /api/exercises/exercises-page-info:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Общая информация по разделу "Справочник упражнений"
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Общая информация по разделу "Справочник упражнений"
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 exercises:
+*                   type: number
+*                   description: Кол-во упражнений в БД
+*                 userExercises:
+*                   type: number
+*                   description: Кол-во упражнений пользователя в БД
+*                 muscleGroups:
+*                   type: number
+*                   description: Кол-во категорий мышечных групп в БД
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/exercises-page-info', JwtGuard, exercisesControllers.fetchExercisePageInfo)
+
 export default router
