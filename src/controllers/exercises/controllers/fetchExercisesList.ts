@@ -25,6 +25,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
         'exercises.id',
         'exercises.title',
         'exercises.techniqueDescription',
+        'exercises.previewImage',
         'exercises.power',
         'exercises.endurance',
         'exercises.flexibility',
@@ -33,7 +34,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
       .where(`exercises.title LIKE '%${req.query?.searchString || ''}%'`)
       .andWhere(req.query.muscleGroup ? `exercises.muscleGroup IN (${req.query.muscleGroup})` : `exercises.muscleGroup IS NOT NULL`)
       .andWhere(req.query.userType === 'MY' ? `exercises.user = ${req.body.userId}` : `(exercises.user = ${req.body.userId} OR exercises.user IS NULL)`)
-      // .andWhere(req.query.mediaType ? '' : '') // ALL, FOTO, VIDEO
+      .andWhere(!req.query.mediaType || req.query.mediaType === 'ALL' ? `exercises.previewImage IS NOT NULL OR exercises.previewImage IS NULL` : `exercises.previewImage IS NOT NULL`)
       .andWhere(!req.query.trainingPlace || req.query.trainingPlace === 'ALL' ? `(exercises.trainingPlace IS NOT NULL OR exercises.trainingPlace IS NULL)` : `exercises.trainingPlace = '${req.query.trainingPlace}'`)
       .leftJoinAndSelect('exercises.muscleGroup', 'muscleGroup')
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
