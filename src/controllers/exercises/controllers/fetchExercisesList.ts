@@ -26,6 +26,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
         'exercises.title',
         'exercises.techniqueDescription',
         'exercises.previewImage',
+        'exercises.trainingPlace',
         'exercises.power',
         'exercises.endurance',
         'exercises.flexibility',
@@ -39,7 +40,6 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
       .leftJoinAndSelect('exercises.muscleGroup', 'muscleGroup')
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoinAndSelect('exercises.type', 'type')
-      .leftJoinAndSelect('exercises.trainingPlace', 'trainingPlace')
       .leftJoinAndSelect('exercises.sort', 'sort')
       .leftJoinAndSelect('exercises.exertion', 'exertion')
       .leftJoinAndSelect('exercises.equipment', 'equipment')
