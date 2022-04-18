@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import { dataSource } from '../../../dataSource'
 import { Exercises } from "../../../db/entities/Exercises"
-import { Muscles } from "../../../db/entities/Muscles"
 
 export const fetchExercisePageInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -22,12 +21,11 @@ export const fetchExercisePageInfo = async (req: Request, res: Response): Promis
       .where(`exercises.user = ${req.body.userId}`)
       .getCount()
 
-    const MuscleGroupsCount = await dataSource.getRepository(Muscles).count()
-
     const response = {
       exercises: ExercisesCount,
       userExercises: UserExercisesCount,
-      muscleGroups: MuscleGroupsCount,
+      pinnedExercises: null,
+      favoriteExercises: null,
     }
 
     return res.status(200).json(response)
