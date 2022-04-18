@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateCol
 import { Users } from './Users'
 import { Muscles } from './Muscles'
 import { ExerciseTypes } from './ExerciseTypes'
+import { ExerciseTrainingTypes } from './ExerciseTrainingTypes'
 import { ExerciseSorts } from './ExerciseSorts'
 import { ExerciseExertions } from './ExerciseExertions'
 import { ExerciseEquipments } from './ExerciseEquipments'
@@ -33,6 +34,14 @@ export class Exercises {
     comment: 'Описание упражнения'
   })
   techniqueDescription: string
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Ссылка на preview изображение'
+  })
+  previewImage: string
 
   @Column({
     type: 'float',
@@ -68,6 +77,9 @@ export class Exercises {
 
   @ManyToOne(() => ExerciseTypes, type => type.exercises)
   type: ExerciseTypes
+
+  @ManyToOne(() => ExerciseTrainingTypes, trainingType => trainingType.exercises)
+  trainingType: ExerciseTrainingTypes
 
   @ManyToOne(() => ExerciseSorts, sort => sort.exercises)
   sort: ExerciseSorts

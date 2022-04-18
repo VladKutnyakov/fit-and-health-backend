@@ -30,12 +30,15 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
         'exercises.flexibility',
         'exercises.cardio',
       ])
-      .where(req.query.userType === 'MY' ? `exercises.user = ${req.body.userId}` : `(exercises.user = ${req.body.userId} OR exercises.user IS NULL)`)
+      .where(`exercises.title LIKE '%${req.query?.searchString || ''}%'`)
       .andWhere(req.query.muscleGroup ? `exercises.muscleGroup IN (${req.query.muscleGroup})` : `exercises.muscleGroup IS NOT NULL`)
-      .andWhere(`exercises.title LIKE '%${req.query?.searchString || ''}%'`)
+      .andWhere(req.query.userType === 'MY' ? `exercises.user = ${req.body.userId}` : `(exercises.user = ${req.body.userId} OR exercises.user IS NULL)`)
+      // .andWhere(req.query.mediaType ? '' : '') // ALL, FOTO, VIDEO
+      .andWhere(!req.query.trainingType || req.query.trainingType === 'ALL' ? `(exercises.trainingType IS NOT NULL OR exercises.trainingType IS NULL)` : `exercises.trainingType = '${req.query.trainingType}'`)
       .leftJoinAndSelect('exercises.muscleGroup', 'muscleGroup')
       .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
       .leftJoinAndSelect('exercises.type', 'type')
+      .leftJoinAndSelect('exercises.trainingType', 'trainingType')
       .leftJoinAndSelect('exercises.sort', 'sort')
       .leftJoinAndSelect('exercises.exertion', 'exertion')
       .leftJoinAndSelect('exercises.equipment', 'equipment')
@@ -62,6 +65,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
         flexibility: ExercisesList[i].flexibility,
         cardio: ExercisesList[i].cardio,
         type: ExercisesList[i].type,
+        trainingType: ExercisesList[i].trainingType,
         sort: ExercisesList[i].sort,
         exertion: ExercisesList[i].exertion,
         equipment: ExercisesList[i].equipment,
