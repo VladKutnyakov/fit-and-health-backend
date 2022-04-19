@@ -363,6 +363,15 @@ router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExe
 *                       value:
 *                         type: number
 *                         description: Числовое обозначение уровня навыка (мастерства)
+*                   trainingPlace:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID предпочтительного места тренировки
+*                       title:
+*                         type: string
+*                         description: Название предпочтительного места тренировки
 *                   muscleGroup:
 *                     type: object
 *                     properties:
@@ -475,6 +484,15 @@ router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExe
 *                         value:
 *                           type: number
 *                           description: Числовое обозначение уровня навыка (мастерства)
+*                     trainingPlace:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: number
+*                           description: ID предпочтительного места тренировки
+*                         title:
+*                           type: string
+*                           description: Название предпочтительного места тренировки
 *                     muscleGroup:
 *                       type: object
 *                       properties:

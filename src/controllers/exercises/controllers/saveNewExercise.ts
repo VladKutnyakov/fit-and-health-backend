@@ -1,16 +1,42 @@
 import { Request, Response } from "express"
 import { dataSource } from '../../../dataSource'
-import { Users } from '../../../db/entities/Users'
-import { Skills } from '../../../db/entities/Skills'
-import { Muscles } from "../../../db/entities/Muscles"
 import { Exercises } from "../../../db/entities/Exercises"
 import { ExerciseTypes } from "../../../db/entities/ExerciseTypes"
 import { ExerciseSorts } from "../../../db/entities/ExerciseSorts"
 import { ExerciseExertions } from "../../../db/entities/ExerciseExertions"
 import { ExerciseEquipments } from "../../../db/entities/ExerciseEquipments"
+import { Users } from '../../../db/entities/Users'
+import { Skills } from '../../../db/entities/Skills'
+import { TrainingPlaces } from "../../../db/entities/TrainingPlaces"
+import { Muscles } from "../../../db/entities/Muscles"
 
 export const saveNewExercise = async (req: Request, res: Response): Promise<Response> => {
   try {
+    // Обработка ошибки - не передан объект с данными об упражнении
+    if (!req.body.exercise) {
+      return res.status(400).json({
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Не переданные данные об упражнении.'
+          }
+        ]
+      })
+    }
+
+    // Обработка ошибки - не указано обязательное поле в передаваемых данных
+    if (!req.body.exercise.title) {
+      return res.status(400).json({
+        errors: [
+          {
+            field: 'title',
+            errorMessage: 'Не указано название.'
+          }
+        ]
+      })
+    }
+
+    // Создание упражнения в БД
     const CreatedExercise = await dataSource.getRepository(Exercises)
     .createQueryBuilder('exercises')
     .insert()
@@ -24,14 +50,17 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
       sort: dataSource.getRepository(ExerciseSorts).create({
         id: req.body.exercise.sort?.id,
       }),
-      equipment: dataSource.getRepository(ExerciseEquipments).create({
-        id: req.body.exercise.equipment?.id,
-      }),
       exertion: dataSource.getRepository(ExerciseExertions).create({
         id: req.body.exercise.exertion?.id,
       }),
+      equipment: dataSource.getRepository(ExerciseEquipments).create({
+        id: req.body.exercise.equipment?.id,
+      }),
       skill: dataSource.getRepository(Skills).create({
         id: req.body.exercise.skill?.id,
+      }),
+      trainingPlace: dataSource.getRepository(TrainingPlaces).create({
+        id: req.body.exercise.trainingPlace?.id,
       }),
       muscleGroup: dataSource.getRepository(Muscles).create({
         id: req.body.exercise.muscleGroup?.id,
@@ -53,6 +82,7 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
     .execute()
     // console.log(CreatedExercise)
 
+    // Добавление в избранное
     if (req.body.exercise.favorite) {
       await dataSource
       .createQueryBuilder()
@@ -61,6 +91,7 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
       .add(CreatedExercise.raw[0].id)
     }
 
+    // Добавление в закрепленное
     if (req.body.exercise.pinned) {
       await dataSource
       .createQueryBuilder()
@@ -69,6 +100,7 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
       .add(CreatedExercise.raw[0].id)
     }
 
+    // Формирование ответа от сервера
     const response = {
       data: {
         id: CreatedExercise.raw[0].id,
@@ -79,6 +111,7 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
         equipment: req.body.exercise.equipment,
         exertion: req.body.exercise.exertion,
         skill: req.body.exercise.skill,
+        trainingPlace: req.body.exercise.trainingPlace,
         muscleGroup: req.body.exercise.muscleGroup,
         additionalMuscles: [],
         power: req.body.exercise.power,
@@ -93,7 +126,12 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }
