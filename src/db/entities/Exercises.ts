@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateCol
 import { Users } from './Users'
 import { Muscles } from './Muscles'
 import { ExerciseTypes } from './ExerciseTypes'
+import { TrainingPlaces } from './TrainingPlaces'
 import { ExerciseSorts } from './ExerciseSorts'
 import { ExerciseExertions } from './ExerciseExertions'
 import { ExerciseEquipments } from './ExerciseEquipments'
@@ -9,11 +10,6 @@ import { Skills } from './Skills'
 import { TrainingProgramDayExercises } from './TrainingProgramDayExercises'
 import { TrainingProcesses } from './TrainingProcesses'
 import { TrainingProgramDayExerciseApproaches } from './TrainingProgramDayExerciseApproaches'
-
-export enum TrainingPlace {
-  HOME = "HOME",
-  GYM = "GYM",
-}
 
 @Entity()
 export class Exercises {
@@ -79,15 +75,8 @@ export class Exercises {
   })
   cardio: number
 
-  @Column({
-    type: "enum",
-    nullable: true,
-    unique: false,
-    enum: TrainingPlace,
-    default: null,
-    comment: 'Место, где можно выполнять упражнение'
-  })
-  trainingPlace: TrainingPlace
+  @ManyToOne(() => TrainingPlaces, trainingPlace => trainingPlace.exercises)
+  trainingPlace: TrainingPlaces
 
   @ManyToOne(() => ExerciseTypes, type => type.exercises)
   type: ExerciseTypes
