@@ -46,7 +46,7 @@ const router: Router = express.Router()
 */
 router.get('/skill-types', JwtGuard, directoryControllers.fetchSkillTypes)
 
-// http://localhost:3031/api/directory/training-types/
+// http://localhost:3031/api/directory/training-types
 /**
 * @swagger
 * /api/directory/training-types:
@@ -82,5 +82,36 @@ router.get('/skill-types', JwtGuard, directoryControllers.fetchSkillTypes)
 *         description: Ошибка авторизации
 */
 router.get('/training-types', JwtGuard, directoryControllers.fetchTrainingTypes)
+
+// http://localhost:3031/api/directory/training-places
+/**
+* @swagger
+* /api/directory/training-places:
+*   get:
+*     tags:
+*       - Общие справочники
+*     summary: Список мест для тренировок
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Список мест для тренировок
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID места для тренировок
+*                   title:
+*                     type: string
+*                     description: Название места для тренировок
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/training-places', JwtGuard, directoryControllers.fetchTrainingPlaces)
 
 export default router
