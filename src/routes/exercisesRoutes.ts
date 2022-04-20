@@ -829,18 +829,12 @@ router.delete('/remove-exercise/:exerciseId', JwtGuard, exercisesControllers.rem
 *             schema:
 *               type: object
 *               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: object
-*                   properties:
-*                     pinned:
-*                       type: boolean
-*                       description: Признак "закрепленного" для упражнения у пользователя
-*                     exerciseId:
-*                       type: integer
-*                       description: Id упражнения
+*                 pinned:
+*                   type: boolean
+*                   description: Признак, является ли упражнение закрепленным для пользователя
+*                 exerciseId:
+*                   type: number
+*                   description: ID упражнения
 *       401:
 *         description: Ошибка авторизации
 */
@@ -871,18 +865,12 @@ router.put('/change-pinned-param/:exerciseId', JwtGuard, exercisesControllers.ch
 *             schema:
 *               type: object
 *               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: object
-*                   properties:
-*                     favorite:
-*                       type: boolean
-*                       description: Признак "избранного" для упражнения у пользователя
-*                     exerciseId:
-*                       type: integer
-*                       description: Id упражнения
+*                 favorite:
+*                   type: boolean
+*                   description: Признак, является ли упражнение избранным для пользователя
+*                 exerciseId:
+*                   type: number
+*                   description: ID упражнения
 *       401:
 *         description: Ошибка авторизации
 */
