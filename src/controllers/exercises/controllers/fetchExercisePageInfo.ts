@@ -65,7 +65,12 @@ export const fetchExercisePageInfo = async (req: Request, res: Response): Promis
     return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }

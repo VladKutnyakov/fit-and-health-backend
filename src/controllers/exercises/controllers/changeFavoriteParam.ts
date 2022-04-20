@@ -5,12 +5,12 @@ import { Users } from '../../../db/entities/Users'
 export const changeFavoriteParam = async (req: Request, res: Response): Promise<Response> => {
   try {
     const User = await dataSource.getRepository(Users)
-    .createQueryBuilder('users')
-    .where({id: req.body.userId})
-    .select(['users.id'])
-    .leftJoin('users.favoriteExercises', 'favoriteExercises')
-    .addSelect(['favoriteExercises.id'])
-    .getOne()
+      .createQueryBuilder('users')
+      .where({id: req.body.userId})
+      .select(['users.id'])
+      .leftJoin('users.favoriteExercises', 'favoriteExercises')
+      .addSelect(['favoriteExercises.id'])
+      .getOne()
     // console.log(User)
 
     let isFavorite = false
@@ -26,30 +26,31 @@ export const changeFavoriteParam = async (req: Request, res: Response): Promise<
     if (isFavorite) {
       // Для user с id=1 удалить занчение favoriteExercises exerciseId=2
       await dataSource
-      .createQueryBuilder()
-      .relation(Users, "favoriteExercises")
-      .of(req.body.userId)
-      .remove(req.params.exerciseId)
+        .createQueryBuilder()
+        .relation(Users, "favoriteExercises")
+        .of(req.body.userId)
+        .remove(req.params.exerciseId)
     } else {
       // Для user с id=1 установить занчение favoriteExercises exerciseId=2
       await dataSource
-      .createQueryBuilder()
-      .relation(Users, "favoriteExercises")
-      .of(req.body.userId)
-      .add(req.params.exerciseId)
+        .createQueryBuilder()
+        .relation(Users, "favoriteExercises")
+        .of(req.body.userId)
+        .add(req.params.exerciseId)
     }
 
-    const response = {
-      data: {
-        favorite: !isFavorite,
-        exerciseId: req.params.exerciseId
-      }
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json({
+      favorite: !isFavorite,
+      exerciseId: req.params.exerciseId
+    })
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }

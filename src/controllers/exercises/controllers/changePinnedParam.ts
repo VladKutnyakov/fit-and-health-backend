@@ -39,17 +39,18 @@ export const changePinnedParam = async (req: Request, res: Response): Promise<Re
       .add(req.params.exerciseId)
     }
 
-    const response = {
-      data: {
-        pinned: !isPinned,
-        exerciseId: req.params.exerciseId
-      }
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json({
+      pinned: !isPinned,
+      exerciseId: req.params.exerciseId
+    })
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }
