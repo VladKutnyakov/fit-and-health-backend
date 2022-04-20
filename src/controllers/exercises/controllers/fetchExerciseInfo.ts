@@ -57,14 +57,15 @@ export const fetchExerciseInfo = async (req: Request, res: Response): Promise<Re
       }
     }
 
-    const response = {
-      data: exercise
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(exercise)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }

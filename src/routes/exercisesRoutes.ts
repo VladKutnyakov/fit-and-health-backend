@@ -216,62 +216,56 @@ router.get('/exercises-by-muscles', JwtGuard, exercisesControllers.fetchExercise
 *             schema:
 *               type: object
 *               properties:
-*                 updatedToken:
+*                 id:
+*                   type: integer
+*                   description: ID упражнения
+*                 title:
 *                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
+*                   description: Название упражнения
+*                 type:
+*                   type: string
+*                   description: Тип упражнения
+*                 sort:
+*                   type: string
+*                   description: Вид упражнения
+*                 equipment:
+*                   type: string
+*                   description: Необходимое оборудование для упражнения
+*                 exertion:
+*                   type: string
+*                   description: Прилагаемое усилие
+*                 practiceLevel:
+*                   type: string
+*                   description: Уровень подготовки (необходимый для выполнения)
+*                 techniqueDescription:
+*                   type: string
+*                   description: Описание упражнения
+*                 muscleGroup:
 *                   type: object
 *                   properties:
 *                     id:
-*                       type: integer
-*                       description: ID упражнения
+*                       type: number
+*                       description: ID мышечной группы
 *                     title:
 *                       type: string
-*                       description: Название упражнения
-*                     type:
-*                       type: string
-*                       description: Тип упражнения
-*                     sort:
-*                       type: string
-*                       description: Вид упражнения
-*                     equipment:
-*                       type: string
-*                       description: Необходимое оборудование для упражнения
-*                     exertion:
-*                       type: string
-*                       description: Прилагаемое усилие
-*                     practiceLevel:
-*                       type: string
-*                       description: Уровень подготовки (необходимый для выполнения)
-*                     techniqueDescription:
-*                       type: string
-*                       description: Описание упражнения
-*                     muscleGroup:
-*                       type: object
-*                       properties:
-*                         id:
-*                           type: number
-*                           description: ID мышечной группы
-*                         title:
-*                           type: string
-*                           description: Название мышечной группы
-*                     additionalMuscles:
-*                       type: array
-*                       items:
-*                         type: object
-*                         properties:
-*                           id:
-*                             type: number
-*                             description: ID мышечной группы
-*                           title:
-*                             type: string
-*                             description: Название мышечной группы
-*                     user:
-*                       type: object
-*                       properties:
-*                         id:
-*                           type: number
-*                           description: ID пользователя
+*                       description: Название мышечной группы
+*                 additionalMuscles:
+*                   type: array
+*                   items:
+*                     type: object
+*                     properties:
+*                       id:
+*                         type: number
+*                         description: ID мышечной группы
+*                       title:
+*                         type: string
+*                         description: Название мышечной группы
+*                 user:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: number
+*                       description: ID пользователя
 *       401:
 *         description: Ошибка авторизации
 */
