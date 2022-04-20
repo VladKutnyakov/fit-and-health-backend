@@ -1097,9 +1097,12 @@ router.get('/exercise-equipments', JwtGuard, exercisesControllers.fetchExerciseE
 *                 userExercises:
 *                   type: number
 *                   description: Кол-во упражнений пользователя в БД
-*                 muscleGroups:
+*                 pinnedExercises:
 *                   type: number
-*                   description: Кол-во категорий мышечных групп в БД
+*                   description: Кол-во закрепленных упражнений у пользователя
+*                 favoriteExercises:
+*                   type: number
+*                   description: Кол-во избранных упражнений у пользователя
 *       401:
 *         description: Ошибка авторизации
 */
