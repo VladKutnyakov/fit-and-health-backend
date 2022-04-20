@@ -4,6 +4,7 @@ import { fetchExercisesListByMuscles } from './controllers/fetchExercisesListByM
 import { fetchExerciseInfo } from './controllers/fetchExerciseInfo'
 import { saveNewExercise } from './controllers/saveNewExercise'
 import { updateExercise } from './controllers/updateExercise'
+import { removeExercise } from './controllers/removeExercise'
 import { changePinnedParam } from './controllers/changePinnedParam'
 import { changeFavoriteParam } from './controllers/changeFavoriteParam'
 import { fetchMuscles } from './controllers/fetchMuscles'
@@ -19,6 +20,7 @@ export default {
   fetchExerciseInfo,
   saveNewExercise,
   updateExercise,
+  removeExercise,
   changePinnedParam,
   changeFavoriteParam,
   fetchMuscles,

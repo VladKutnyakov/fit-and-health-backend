@@ -771,6 +771,39 @@ router.post('/save-new-exercise', JwtGuard, exercisesControllers.saveNewExercise
 */
 router.put('/update-exercise', JwtGuard, exercisesControllers.updateExercise)
 
+// http://localhost:3031/api/exercises/remove-exercise/:exerciseId
+/**
+* @swagger
+* /api/exercises/remove-exercise/{exerciseId}:
+*   delete:
+*     tags:
+*       - Справочник упражнений
+*     summary: Удаление упражнения
+*     security:
+*       - jwt: []
+*     parameters:
+*       - in: path
+*         name: exerciseId
+*         required: true
+*         schema:
+*           type: integer
+*         description: ID упражнения
+*     responses:
+*       200:
+*         description: Упражнение удалено
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 exerciseId:
+*                   type: number
+*                   description: id удаленного упражнеия
+*       401:
+*         description: Ошибка авторизации
+*/
+router.delete('/remove-exercise/:exerciseId', JwtGuard, exercisesControllers.removeExercise)
+
 // http://localhost:3031/api/exercises/change-pinned-param/:exerciseId
 /**
 * @swagger
