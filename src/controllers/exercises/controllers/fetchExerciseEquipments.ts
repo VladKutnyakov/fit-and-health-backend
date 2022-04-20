@@ -10,14 +10,15 @@ export const fetchExerciseEquipments = async (req: Request, res: Response): Prom
       .getMany()
     // console.log(ExercisesList)
 
-    const response = {
-      data: ExerciseEquipmentsList
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(ExerciseEquipmentsList)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }

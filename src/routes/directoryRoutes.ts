@@ -19,28 +19,22 @@ const router: Router = express.Router()
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: ID мышечной группы
-*                       excellenceTitle:
-*                         type: string
-*                         description: Название уровня навыка (мастерства)
-*                       complexityTitle:
-*                         type: string
-*                         description: Название уровня навыка (сложности)
-*                       value:
-*                         type: string
-*                         description: Числовое обозначение уровня сложности
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID мышечной группы
+*                   excellenceTitle:
+*                     type: string
+*                     description: Название уровня навыка (мастерства)
+*                   complexityTitle:
+*                     type: string
+*                     description: Название уровня навыка (сложности)
+*                   value:
+*                     type: string
+*                     description: Числовое обозначение уровня сложности
 *       401:
 *         description: Ошибка авторизации
 */
@@ -62,22 +56,16 @@ router.get('/skill-types', JwtGuard, directoryControllers.fetchSkillTypes)
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: ID типа тренировки
-*                       title:
-*                         type: string
-*                         description: Название типа тренировки
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID типа тренировки
+*                   title:
+*                     type: string
+*                     description: Название типа тренировки
 *       401:
 *         description: Ошибка авторизации
 */

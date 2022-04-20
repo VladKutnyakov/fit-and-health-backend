@@ -148,50 +148,44 @@ router.get('/exercises-list', JwtGuard, exercisesControllers.fetchExercisesList)
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: ID мышечной группы
-*                       title:
-*                         type: string
-*                         description: Название мышечной группы
-*                       exercises:
-*                         type: array
-*                         items:
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID мышечной группы
+*                   title:
+*                     type: string
+*                     description: Название мышечной группы
+*                   exercises:
+*                     type: array
+*                     items:
+*                       type: object
+*                       properties:
+*                         id:
+*                           type: integer
+*                           description: ID упражнения
+*                         title:
+*                           type: string
+*                           description: Название упражнения
+*                         additionalMuscles:
+*                           type: array
+*                           items:
+*                             type: object
+*                             properties:
+*                               id:
+*                                 type: number
+*                                 description: ID мышечной группы
+*                               title:
+*                                 type: string
+*                                 description: Название мышечной группы
+*                         user:
 *                           type: object
 *                           properties:
 *                             id:
 *                               type: integer
-*                               description: ID упражнения
-*                             title:
-*                               type: string
-*                               description: Название упражнения
-*                             additionalMuscles:
-*                               type: array
-*                               items:
-*                                 type: object
-*                                 properties:
-*                                   id:
-*                                     type: number
-*                                     description: ID мышечной группы
-*                                   title:
-*                                     type: string
-*                                     description: Название мышечной группы
-*                             user:
-*                               type: object
-*                               properties:
-*                                 id:
-*                                   type: integer
-*                                   description: ID пользователя
+*                               description: ID пользователя
 *       401:
 *         description: Ошибка авторизации
 */
@@ -892,22 +886,16 @@ router.put('/change-favorite-param/:exerciseId', JwtGuard, exercisesControllers.
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: ID мышечной группы
-*                       title:
-*                         type: string
-*                         description: Название мышечной группы
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID мышечной группы
+*                   title:
+*                     type: string
+*                     description: Название мышечной группы
 *       401:
 *         description: Ошибка авторизации
 */
@@ -929,22 +917,16 @@ router.get('/muscles', JwtGuard, exercisesControllers.fetchMuscles)
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: ID мышечной группы
-*                       title:
-*                         type: string
-*                         description: Название мышечной группы
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID мышечной группы
+*                   title:
+*                     type: string
+*                     description: Название мышечной группы
 *       401:
 *         description: Ошибка авторизации
 */
@@ -966,22 +948,16 @@ router.get('/exercise-types', JwtGuard, exercisesControllers.fetchExerciseTypes)
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: ID мышечной группы
-*                       title:
-*                         type: string
-*                         description: Название мышечной группы
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID мышечной группы
+*                   title:
+*                     type: string
+*                     description: Название мышечной группы
 *       401:
 *         description: Ошибка авторизации
 */
@@ -1003,22 +979,16 @@ router.get('/exercise-sorts', JwtGuard, exercisesControllers.fetchExerciseSorts)
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: ID мышечной группы
-*                       title:
-*                         type: string
-*                         description: Название мышечной группы
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID мышечной группы
+*                   title:
+*                     type: string
+*                     description: Название мышечной группы
 *       401:
 *         description: Ошибка авторизации
 */
@@ -1040,22 +1010,16 @@ router.get('/exercise-exertions', JwtGuard, exercisesControllers.fetchExerciseEx
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: ID мышечной группы
-*                       title:
-*                         type: string
-*                         description: Название мышечной группы
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: ID мышечной группы
+*                   title:
+*                     type: string
+*                     description: Название мышечной группы
 *       401:
 *         description: Ошибка авторизации
 */

@@ -10,14 +10,15 @@ export const fetchExerciseExertions = async (req: Request, res: Response): Promi
       .getMany()
     // console.log(ExercisesList)
 
-    const response = {
-      data: ExerciseExertionsList
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(ExerciseExertionsList)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }

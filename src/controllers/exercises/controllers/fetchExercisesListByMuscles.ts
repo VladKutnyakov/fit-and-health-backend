@@ -47,14 +47,15 @@ export const fetchExercisesListByMuscles = async (req: Request, res: Response): 
     }
     // console.log(AllExersicesByMuscles[0])
 
-    const response = {
-      data: AllExersicesByMuscles
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(AllExersicesByMuscles)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }

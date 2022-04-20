@@ -10,14 +10,15 @@ export const fetchTrainingTypes = async (req: Request, res: Response): Promise<R
       .getMany()
     // console.log(TrainingTypesList)
 
-    const response = {
-      data: TrainingTypesList
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(TrainingTypesList)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }
