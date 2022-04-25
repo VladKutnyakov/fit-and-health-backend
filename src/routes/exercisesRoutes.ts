@@ -270,7 +270,7 @@ router.get('/exercises-by-muscles', JwtGuard, exercisesControllers.fetchExercise
 *                     title:
 *                       type: string
 *                       description: Название прилагаемого усилия
-*                 practiceLevel:
+*                 skill:
 *                   type: object
 *                   properties:
 *                     id:

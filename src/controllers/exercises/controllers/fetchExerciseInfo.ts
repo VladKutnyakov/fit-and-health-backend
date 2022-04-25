@@ -46,7 +46,7 @@ export const fetchExerciseInfo = async (req: Request, res: Response): Promise<Re
         sort: ExercisesInfo?.sort,
         exertion: ExercisesInfo?.exertion,
         equipment: ExercisesInfo?.equipment,
-        skill: ExercisesInfo?.skill,
+        skill: ExercisesInfo?.skill ? {id: ExercisesInfo.skill.id, title: ExercisesInfo.skill.complexityTitle} : null,
         muscleGroup: ExercisesInfo?.muscleGroup,
         additionalMuscles: ExercisesInfo?.additionalMuscles,
         power: ExercisesInfo?.power,
