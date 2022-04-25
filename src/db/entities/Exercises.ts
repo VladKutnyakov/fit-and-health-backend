@@ -76,25 +76,25 @@ export class Exercises {
   cardio: number
 
   @ManyToOne(() => TrainingPlaces, trainingPlace => trainingPlace.exercises)
-  trainingPlace: TrainingPlaces
+  trainingPlace: TrainingPlaces | null
 
   @ManyToOne(() => ExerciseTypes, type => type.exercises)
-  type: ExerciseTypes
+  type: ExerciseTypes | null
 
   @ManyToOne(() => ExerciseSorts, sort => sort.exercises)
-  sort: ExerciseSorts
+  sort: ExerciseSorts | null
 
   @ManyToOne(() => ExerciseExertions, exertion => exertion.exercises)
-  exertion: ExerciseExertions
+  exertion: ExerciseExertions | null
 
   @ManyToOne(() => ExerciseEquipments, equipment => equipment.exercises)
-  equipment: ExerciseEquipments
+  equipment: ExerciseEquipments | null
 
   @ManyToOne(() => Skills, skill => skill.exercises)
-  skill: Skills
+  skill: Skills | null
 
   @ManyToOne(() => Muscles, muscleGroup => muscleGroup.exercises)
-  muscleGroup: Muscles
+  muscleGroup: Muscles | null
 
   @ManyToMany(() => Muscles, muscle => muscle.additionalForExercises)
   @JoinTable({ name: 'exercise_additional_muscles' })
