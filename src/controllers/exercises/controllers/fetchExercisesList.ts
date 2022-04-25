@@ -26,7 +26,6 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
         'exercises.title',
         'exercises.techniqueDescription',
         'exercises.previewImage',
-        'exercises.trainingPlace',
         'exercises.power',
         'exercises.endurance',
         'exercises.flexibility',
@@ -44,6 +43,7 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
       .leftJoinAndSelect('exercises.exertion', 'exertion')
       .leftJoinAndSelect('exercises.equipment', 'equipment')
       .leftJoinAndSelect('exercises.skill', 'skill')
+      .leftJoinAndSelect('exercises.trainingPlace', 'trainingPlace')
       .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
       .addSelect(['favoriteForUsers.id'])
       .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
@@ -61,12 +61,12 @@ export const fetchExercisesList = async (req: Request, res: Response): Promise<R
         id: ExercisesList[i].id,
         title: ExercisesList[i].title,
         techniqueDescription: ExercisesList[i].techniqueDescription,
+        trainingPlace: ExercisesList[i].trainingPlace,
         power: ExercisesList[i].power,
         endurance: ExercisesList[i].endurance,
         flexibility: ExercisesList[i].flexibility,
         cardio: ExercisesList[i].cardio,
         type: ExercisesList[i].type,
-        trainingPlace: ExercisesList[i].trainingPlace,
         sort: ExercisesList[i].sort,
         exertion: ExercisesList[i].exertion,
         equipment: ExercisesList[i].equipment,
