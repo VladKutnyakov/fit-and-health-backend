@@ -6,7 +6,6 @@ export const fetchExerciseInfo = async (req: Request, res: Response): Promise<Re
   try {
     const ExercisesInfo = await dataSource.getRepository(Exercises)
       .createQueryBuilder('exercises')
-      .where([{id: req.params.exerciseId}])
       .select([
         'exercises.id',
         'exercises.title',
@@ -16,6 +15,8 @@ export const fetchExerciseInfo = async (req: Request, res: Response): Promise<Re
         'exercises.flexibility',
         'exercises.cardio',
       ])
+      .where([{id: req.params.exerciseId}])
+      .leftJoinAndSelect('exercises.trainingPlace', 'trainingPlace')
       .leftJoinAndSelect('exercises.muscleGroup', 'muscles')
       .leftJoinAndSelect('exercises.type', 'type')
       .leftJoinAndSelect('exercises.sort', 'sort')
@@ -40,6 +41,7 @@ export const fetchExerciseInfo = async (req: Request, res: Response): Promise<Re
         id: ExercisesInfo?.id,
         title: ExercisesInfo?.title,
         techniqueDescription: ExercisesInfo?.techniqueDescription,
+        trainingPlace: ExercisesInfo?.trainingPlace,
         type: ExercisesInfo?.type,
         sort: ExercisesInfo?.sort,
         exertion: ExercisesInfo?.exertion,

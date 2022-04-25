@@ -222,24 +222,63 @@ router.get('/exercises-by-muscles', JwtGuard, exercisesControllers.fetchExercise
 *                 title:
 *                   type: string
 *                   description: Название упражнения
-*                 type:
-*                   type: string
-*                   description: Тип упражнения
-*                 sort:
-*                   type: string
-*                   description: Вид упражнения
-*                 equipment:
-*                   type: string
-*                   description: Необходимое оборудование для упражнения
-*                 exertion:
-*                   type: string
-*                   description: Прилагаемое усилие
-*                 practiceLevel:
-*                   type: string
-*                   description: Уровень подготовки (необходимый для выполнения)
 *                 techniqueDescription:
 *                   type: string
 *                   description: Описание упражнения
+*                 trainingPlace:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: number
+*                       description: ID предпочтительного места выполнения упражнения
+*                     title:
+*                       type: string
+*                       description: Название предпочтительного места выполнения упражнения
+*                 type:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: number
+*                       description: ID типа упражнения
+*                     title:
+*                       type: string
+*                       description: Название типа упражнения
+*                 sort:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: number
+*                       description: ID вида упражнения
+*                     title:
+*                       type: string
+*                       description: Название вида упражнения
+*                 equipment:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: number
+*                       description: ID необходимого оборудование для упражнения
+*                     title:
+*                       type: string
+*                       description: Название необходимого оборудование для упражнения
+*                 exertion:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: number
+*                       description: ID прилагаемого усилия
+*                     title:
+*                       type: string
+*                       description: Название прилагаемого усилия
+*                 practiceLevel:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: number
+*                       description: ID уровеня подготовки (необходимый для выполнения)
+*                     title:
+*                       type: string
+*                       description: Название уровеня подготовки (необходимый для выполнения)
 *                 muscleGroup:
 *                   type: object
 *                   properties:
