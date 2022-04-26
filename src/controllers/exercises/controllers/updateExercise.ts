@@ -36,98 +36,115 @@ export const updateExercise = async (req: Request, res: Response): Promise<Respo
       })
     }
 
-    // Обновление упражнения в БД
-    const UpdatedExercise = await dataSource.getRepository(Exercises)
-      .createQueryBuilder('exercises')
-      .update(Exercises)
-      .set({
-        title: req.body.exercise.title,
-        techniqueDescription: req.body.exercise.techniqueDescription,
-        trainingPlace: req.body.exercise.trainingPlace ? dataSource.getRepository(TrainingPlaces).create({
-          id: req.body.exercise.trainingPlace?.id,
-        }) : null,
-        type: req.body.exercise.type ? dataSource.getRepository(ExerciseTypes).create({
-          id: req.body.exercise.type?.id,
-        }) : null,
-        sort: req.body.exercise.sort ? dataSource.getRepository(ExerciseSorts).create({
-          id: req.body.exercise.sort?.id,
-        }) : null,
-        equipment: req.body.exercise.equipment ? dataSource.getRepository(ExerciseEquipments).create({
-          id: req.body.exercise.equipment?.id,
-        }) : null,
-        exertion: req.body.exercise.exertion ? dataSource.getRepository(ExerciseExertions).create({
-          id: req.body.exercise.exertion?.id,
-        }) : null,
-        skill: req.body.exercise.skill ? dataSource.getRepository(Skills).create({
-          id: req.body.exercise.skill?.id,
-        }) : null,
-        muscleGroup: req.body.exercise.muscleGroup ? dataSource.getRepository(Muscles).create({
-          id: req.body.exercise.muscleGroup?.id,
-        }) : null,
-        // additionalMuscles: [
-        //   {
-        //     "id": 0,
-        //     "title": "string"
-        //   }
-        // ],
-        power: req.body.exercise.power || null,
-        endurance: req.body.exercise.endurance || null,
-        flexibility: req.body.exercise.flexibility || null,
-        cardio: req.body.exercise.cardio || null,
-      })
-      .where(`id = ${req.body.exercise.id}`)
-      .execute()
-    // console.log(UpdatedExercise)
+    // ТРАНЗАКЦИЯ
+    const queryRunner = dataSource.createQueryRunner()
+    await queryRunner.connect()
 
-    // Узнать есть ли упражнение в избранном и закрепленном у пользователя
-    const Exercise = await dataSource.getRepository(Exercises)
-      .createQueryBuilder('exercises')
-      .select('exercises.id')
-      .where([{id: req.body.exercise.id}])
-      .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
-      .addSelect(['favoriteForUsers.id'])
-      .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
-      .addSelect(['pinnedForUsers.id'])
-      .getOne()
+    await queryRunner.startTransaction()
 
-    // console.log(Exercise?.favoriteForUsers.length)
-    // console.log(Exercise?.pinnedForUsers.length)
+    try {
+      // Обновление упражнения в БД
+      const UpdatedExercise = await queryRunner.manager.getRepository(Exercises)
+        .createQueryBuilder('exercises')
+        .update(Exercises)
+        .set({
+          title: req.body.exercise.title,
+          techniqueDescription: req.body.exercise.techniqueDescription,
+          trainingPlace: req.body.exercise.trainingPlace ? dataSource.getRepository(TrainingPlaces).create({
+            id: req.body.exercise.trainingPlace?.id,
+          }) : null,
+          type: req.body.exercise.type ? dataSource.getRepository(ExerciseTypes).create({
+            id: req.body.exercise.type?.id,
+          }) : null,
+          sort: req.body.exercise.sort ? dataSource.getRepository(ExerciseSorts).create({
+            id: req.body.exercise.sort?.id,
+          }) : null,
+          equipment: req.body.exercise.equipment ? dataSource.getRepository(ExerciseEquipments).create({
+            id: req.body.exercise.equipment?.id,
+          }) : null,
+          exertion: req.body.exercise.exertion ? dataSource.getRepository(ExerciseExertions).create({
+            id: req.body.exercise.exertion?.id,
+          }) : null,
+          skill: req.body.exercise.skill ? dataSource.getRepository(Skills).create({
+            id: req.body.exercise.skill?.id,
+          }) : null,
+          muscleGroup: req.body.exercise.muscleGroup ? dataSource.getRepository(Muscles).create({
+            id: req.body.exercise.muscleGroup?.id,
+          }) : null,
+          power: req.body.exercise.power || null,
+          endurance: req.body.exercise.endurance || null,
+          flexibility: req.body.exercise.flexibility || null,
+          cardio: req.body.exercise.cardio || null,
+        })
+        .where(`id = ${req.body.exercise.id}`)
+        .execute()
+      // console.log(UpdatedExercise)
 
-    if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length === 0 && req.body.exercise.favorite) {
-      await dataSource
-      .createQueryBuilder()
-      .relation(Users, "favoriteExercises")
-      .of(req.body.userId)
-      .add(req.body.exercise.id)
-    } else if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length > 0 && !req.body.exercise.favorite) {
-      await dataSource
-      .createQueryBuilder()
-      .relation(Users, "favoriteExercises")
-      .of(req.body.userId)
-      .remove(req.body.exercise.id)
-    }
+      // Узнать есть ли упражнение в избранном и закрепленном у пользователя
+      const Exercise = await queryRunner.manager.getRepository(Exercises)
+        .createQueryBuilder('exercises')
+        .select('exercises.id')
+        .where([{id: req.body.exercise.id}])
+        .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+        .addSelect(['favoriteForUsers.id'])
+        .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
+        .addSelect(['pinnedForUsers.id'])
+        .getOne()
 
-    if (Exercise?.pinnedForUsers && Exercise?.pinnedForUsers.length === 0 && req.body.exercise.pinned) {
-      await dataSource
-      .createQueryBuilder()
-      .relation(Users, "pinnedExercises")
-      .of(req.body.userId)
-      .add(req.body.exercise.id)
-    } else if (Exercise?.pinnedForUsers && Exercise?.pinnedForUsers.length > 0 && !req.body.exercise.pinned) {
-      await dataSource
-      .createQueryBuilder()
-      .relation(Users, "pinnedExercises")
-      .of(req.body.userId)
-      .remove(req.body.exercise.id)
-    }
+      // console.log(Exercise?.favoriteForUsers.length)
+      // console.log(Exercise?.pinnedForUsers.length)
 
-    const response = {
-      data: {
-        exercise: req.body.exercise
+      if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length === 0 && req.body.exercise.favorite) {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Users, "favoriteExercises")
+          .of(req.body.userId)
+          .add(req.body.exercise.id)
+      } else if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length > 0 && !req.body.exercise.favorite) {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Users, "favoriteExercises")
+          .of(req.body.userId)
+          .remove(req.body.exercise.id)
       }
+
+      if (Exercise?.pinnedForUsers && Exercise?.pinnedForUsers.length === 0 && req.body.exercise.pinned) {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Users, "pinnedExercises")
+          .of(req.body.userId)
+          .add(req.body.exercise.id)
+      } else if (Exercise?.pinnedForUsers && Exercise?.pinnedForUsers.length > 0 && !req.body.exercise.pinned) {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Users, "pinnedExercises")
+          .of(req.body.userId)
+          .remove(req.body.exercise.id)
+      }
+
+      const response = {
+        data: {
+          exercise: req.body.exercise
+        }
+      }
+
+      await queryRunner.commitTransaction()
+
+      return res.status(200).json(response)
+    } catch (error) {
+      await queryRunner.rollbackTransaction()
+    } finally {
+      await queryRunner.release()
     }
 
-    return res.status(200).json(response)
+    return res.status(500).json({
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Ошибка.'
+        }
+      ]
+    })
   } catch (error: any) {
     return res.status(500).json({
       errorMessage: 'Неизвестная ошибка.'
