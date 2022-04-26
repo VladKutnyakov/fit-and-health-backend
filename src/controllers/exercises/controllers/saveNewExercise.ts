@@ -140,18 +140,18 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
       return res.status(200).json(response)
     } catch (error) {
       await queryRunner.rollbackTransaction()
+
+      return res.status(400).json({
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Ошибка при сохранении.'
+          }
+        ]
+      })
     } finally {
       await queryRunner.release()
     }
-
-    return res.status(400).json({
-      errors: [
-        {
-          field: null,
-          errorMessage: 'Bad Request'
-        }
-      ]
-    })
   } catch (error: any) {
     return res.status(500).json({
       errors: [
