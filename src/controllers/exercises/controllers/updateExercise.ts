@@ -157,11 +157,11 @@ export const updateExercise = async (req: Request, res: Response): Promise<Respo
       await queryRunner.release()
     }
 
-    return res.status(500).json({
+    return res.status(400).json({
       errors: [
         {
           field: null,
-          errorMessage: 'Ошибка.'
+          errorMessage: 'Bad Request'
         }
       ]
     })
