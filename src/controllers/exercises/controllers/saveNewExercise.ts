@@ -36,94 +36,120 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
       })
     }
 
-    // Создание упражнения в БД
-    const CreatedExercise = await dataSource.getRepository(Exercises)
-    .createQueryBuilder('exercises')
-    .insert()
-    .into(Exercises)
-    .values([{
-      title: req.body.exercise.title,
-      techniqueDescription: req.body.exercise.techniqueDescription,
-      type: dataSource.getRepository(ExerciseTypes).create({
-        id: req.body.exercise.type?.id,
-      }),
-      sort: dataSource.getRepository(ExerciseSorts).create({
-        id: req.body.exercise.sort?.id,
-      }),
-      exertion: dataSource.getRepository(ExerciseExertions).create({
-        id: req.body.exercise.exertion?.id,
-      }),
-      equipment: dataSource.getRepository(ExerciseEquipments).create({
-        id: req.body.exercise.equipment?.id,
-      }),
-      skill: dataSource.getRepository(Skills).create({
-        id: req.body.exercise.skill?.id,
-      }),
-      trainingPlace: dataSource.getRepository(TrainingPlaces).create({
-        id: req.body.exercise.trainingPlace?.id,
-      }),
-      muscleGroup: dataSource.getRepository(Muscles).create({
-        id: req.body.exercise.muscleGroup?.id,
-      }),
-      // additionalMuscles: [
-      //   {
-      //     "id": 0,
-      //     "title": "string"
-      //   }
-      // ],
-      power: req.body.exercise.power,
-      endurance: req.body.exercise.endurance,
-      flexibility: req.body.exercise.flexibility,
-      cardio: req.body.exercise.cardio,
-      user: dataSource.getRepository(Users).create({
-        id: req.body.userId,
-      })
-    }])
-    .execute()
-    // console.log(CreatedExercise)
+    // ТРАНЗАКЦИЯ
+    const queryRunner = dataSource.createQueryRunner()
+    await queryRunner.connect()
 
-    // Добавление в избранное
-    if (req.body.exercise.favorite) {
-      await dataSource
-      .createQueryBuilder()
-      .relation(Users, "favoriteExercises")
-      .of(req.body.userId)
-      .add(CreatedExercise.raw[0].id)
-    }
+    await queryRunner.startTransaction()
 
-    // Добавление в закрепленное
-    if (req.body.exercise.pinned) {
-      await dataSource
-      .createQueryBuilder()
-      .relation(Users, "pinnedExercises")
-      .of(req.body.userId)
-      .add(CreatedExercise.raw[0].id)
-    }
-
-    // Формирование ответа от сервера
-    const response = {
-      data: {
-        id: CreatedExercise.raw[0].id,
+    try {
+      // Создание упражнения в БД
+      const CreatedExercise = await queryRunner.manager.getRepository(Exercises)
+      .createQueryBuilder('exercises')
+      .insert()
+      .into(Exercises)
+      .values([{
         title: req.body.exercise.title,
         techniqueDescription: req.body.exercise.techniqueDescription,
-        type: req.body.exercise.type,
-        sort: req.body.exercise.sort,
-        equipment: req.body.exercise.equipment,
-        exertion: req.body.exercise.exertion,
-        skill: req.body.exercise.skill,
-        trainingPlace: req.body.exercise.trainingPlace,
-        muscleGroup: req.body.exercise.muscleGroup,
-        additionalMuscles: [],
+        type: dataSource.getRepository(ExerciseTypes).create({
+          id: req.body.exercise.type?.id,
+        }),
+        sort: dataSource.getRepository(ExerciseSorts).create({
+          id: req.body.exercise.sort?.id,
+        }),
+        exertion: dataSource.getRepository(ExerciseExertions).create({
+          id: req.body.exercise.exertion?.id,
+        }),
+        equipment: dataSource.getRepository(ExerciseEquipments).create({
+          id: req.body.exercise.equipment?.id,
+        }),
+        skill: dataSource.getRepository(Skills).create({
+          id: req.body.exercise.skill?.id,
+        }),
+        trainingPlace: dataSource.getRepository(TrainingPlaces).create({
+          id: req.body.exercise.trainingPlace?.id,
+        }),
+        muscleGroup: dataSource.getRepository(Muscles).create({
+          id: req.body.exercise.muscleGroup?.id,
+        }),
         power: req.body.exercise.power,
         endurance: req.body.exercise.endurance,
         flexibility: req.body.exercise.flexibility,
         cardio: req.body.exercise.cardio,
-        user: { id: req.body.userId }
-      }
-    }
-    // console.log(response)
+        user: dataSource.getRepository(Users).create({
+          id: req.body.userId,
+        })
+      }])
+      .execute()
+      // console.log(CreatedExercise)
 
-    return res.status(200).json(response)
+      // Добавление дополнительных мышечных групп для упражнения
+      const targetAdditionalMusclesIds: Array<number> = req.body.exercise.additionalMuscles.map((item: any) => item.id)
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .relation(Exercises, "additionalMuscles")
+        .of(CreatedExercise.raw[0].id)
+        .add(targetAdditionalMusclesIds)
+
+      // Добавление в избранное
+      if (req.body.exercise.favorite) {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Users, "favoriteExercises")
+          .of(req.body.userId)
+          .add(CreatedExercise.raw[0].id)
+      }
+
+      // Добавление в закрепленное
+      if (req.body.exercise.pinned) {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Users, "pinnedExercises")
+          .of(req.body.userId)
+          .add(CreatedExercise.raw[0].id)
+      }
+
+      // Формирование ответа от сервера
+      const response = {
+        data: {
+          id: CreatedExercise.raw[0].id,
+          title: req.body.exercise.title,
+          techniqueDescription: req.body.exercise.techniqueDescription,
+          type: req.body.exercise.type,
+          sort: req.body.exercise.sort,
+          equipment: req.body.exercise.equipment,
+          exertion: req.body.exercise.exertion,
+          skill: req.body.exercise.skill,
+          trainingPlace: req.body.exercise.trainingPlace,
+          muscleGroup: req.body.exercise.muscleGroup,
+          additionalMuscles: [],
+          power: req.body.exercise.power,
+          endurance: req.body.exercise.endurance,
+          flexibility: req.body.exercise.flexibility,
+          cardio: req.body.exercise.cardio,
+          user: { id: req.body.userId }
+        }
+      }
+      // console.log(response)
+
+      await queryRunner.commitTransaction()
+
+      return res.status(200).json(response)
+    } catch (error) {
+      await queryRunner.rollbackTransaction()
+    } finally {
+      await queryRunner.release()
+    }
+
+    return res.status(500).json({
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Ошибка.'
+        }
+      ]
+    })
   } catch (error: any) {
     return res.status(500).json({
       errors: [
