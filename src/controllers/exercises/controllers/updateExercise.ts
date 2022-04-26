@@ -85,14 +85,34 @@ export const updateExercise = async (req: Request, res: Response): Promise<Respo
         .createQueryBuilder('exercises')
         .select('exercises.id')
         .where([{id: req.body.exercise.id}])
+        .leftJoinAndSelect('exercises.additionalMuscles', 'additionalMuscles')
         .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
         .addSelect(['favoriteForUsers.id'])
         .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
         .addSelect(['pinnedForUsers.id'])
         .getOne()
 
+      // console.log(Exercise?.additionalMuscles.length)
       // console.log(Exercise?.favoriteForUsers.length)
       // console.log(Exercise?.pinnedForUsers.length)
+
+      if (Exercise && req.body.exercise.additionalMuscles) {
+        const oldAdditionalMusclesIds: Array<number> = Exercise?.additionalMuscles.map((item: any) => item.id)
+
+        const newAdditionalMusclesIds: Array<number> = req.body.exercise.additionalMuscles.map((item: any) => item.id)
+
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Exercises, "additionalMuscles")
+          .of(Exercise.id)
+          .remove(oldAdditionalMusclesIds)
+
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Exercises, "additionalMuscles")
+          .of(Exercise.id)
+          .add(newAdditionalMusclesIds)
+      }
 
       if (Exercise?.favoriteForUsers && Exercise?.favoriteForUsers.length === 0 && req.body.exercise.favorite) {
         await queryRunner.manager
