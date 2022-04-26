@@ -84,13 +84,15 @@ export const saveNewExercise = async (req: Request, res: Response): Promise<Resp
       // console.log(CreatedExercise)
 
       // Добавление дополнительных мышечных групп для упражнения
-      const targetAdditionalMusclesIds: Array<number> = req.body.exercise.additionalMuscles.map((item: any) => item.id)
+      if (req.body.exercise.additionalMuscles && req.body.exercise.additionalMuscles.length > 0) {
+        const targetAdditionalMusclesIds: Array<number> = req.body.exercise.additionalMuscles.map((item: any) => item.id)
 
-      await queryRunner.manager
-        .createQueryBuilder()
-        .relation(Exercises, "additionalMuscles")
-        .of(CreatedExercise.raw[0].id)
-        .add(targetAdditionalMusclesIds)
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(Exercises, "additionalMuscles")
+          .of(CreatedExercise.raw[0].id)
+          .add(targetAdditionalMusclesIds)
+      }
 
       // Добавление в избранное
       if (req.body.exercise.favorite) {
