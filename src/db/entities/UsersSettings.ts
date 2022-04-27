@@ -14,9 +14,17 @@ export class UsersSettings {
     type: 'varchar',
     nullable: true,
     unique: false,
-    comment: 'Визуальная тема приложения'
+    comment: 'Визуальная тема для сайта'
   })
-  appTheme: string | null
+  browserTheme: string | null
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    unique: false,
+    comment: 'Визуальная тема для мобильного приложения'
+  })
+  mobileAppTheme: string | null
 
   @OneToOne(() => Users, user => user.settings)
   @JoinColumn()
