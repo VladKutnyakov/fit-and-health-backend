@@ -23,6 +23,7 @@ import exercisesRoutes from './routes/exercisesRoutes'
 import trainingDiariesRoutes from './routes/trainingDiariesRoutes'
 import trainingProgramsRoutes from './routes/trainingProgramsRoutes'
 import trainingProcessRoutes from './routes/trainingProcessRoutes'
+import settingsRoutes from './routes/settingsRoutes'
 
 // Инициализация приложения
 const app: Application = express()
@@ -92,6 +93,7 @@ app.use('/api/exercises', exercisesRoutes)
 app.use('/api/training-diary', trainingDiariesRoutes)
 app.use('/api/training-programs', trainingProgramsRoutes)
 app.use('/api/training-process', trainingProcessRoutes)
+app.use('/api/settings', settingsRoutes)
 
 // Подключение к базе данных
 dataSource.initialize()
