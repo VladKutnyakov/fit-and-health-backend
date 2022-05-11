@@ -6,60 +6,39 @@ export const fetchTrainingProgramsPageInfo = async (req: Request, res: Response)
   try {
     const TrainingProgramsCount = await dataSource.getRepository(TrainingPrograms).count()
 
-    // const UserExercisesCount = await dataSource.getRepository(Exercises)
-    //   .createQueryBuilder('exercises')
-    //   .select([
-    //     'exercises.id',
-    //     'exercises.title',
-    //     'exercises.techniqueDescription',
-    //     'exercises.previewImage',
-    //     'exercises.power',
-    //     'exercises.endurance',
-    //     'exercises.flexibility',
-    //     'exercises.cardio',
-    //   ])
-    //   .where(`exercises.user = ${req.body.userId}`)
-    //   .getCount()
+    const UserTrainingProgramsCount = await dataSource.getRepository(TrainingPrograms)
+      .createQueryBuilder('trainingPrograms')
+      .select([
+        'trainingPrograms.id',
+      ])
+      .where(`trainingPrograms.user = ${req.body.userId}`)
+      .getCount()
 
-    // const PinnedExercisesCount = await dataSource.getRepository(Exercises)
-    //   .createQueryBuilder('exercises')
-    //   .select([
-    //     'exercises.id',
-    //     'exercises.title',
-    //     'exercises.techniqueDescription',
-    //     'exercises.previewImage',
-    //     'exercises.power',
-    //     'exercises.endurance',
-    //     'exercises.flexibility',
-    //     'exercises.cardio',
-    //   ])
-    //   .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
-    //   .addSelect(['pinnedForUsers.id'])
-    //   .where(`pinnedForUsers.id = ${req.body.userId}`)
-    //   .getCount()
+    const PinnedTrainingProgramsCount = await dataSource.getRepository(TrainingPrograms)
+      .createQueryBuilder('trainingPrograms')
+      .select([
+        'trainingPrograms.id',
+      ])
+      .leftJoin('trainingPrograms.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['pinnedForUsers.id'])
+      .where(`pinnedForUsers.id = ${req.body.userId}`)
+      .getCount()
 
-    // const FavoriteExercises = await dataSource.getRepository(Exercises)
-    //   .createQueryBuilder('exercises')
-    //   .select([
-    //     'exercises.id',
-    //     'exercises.title',
-    //     'exercises.techniqueDescription',
-    //     'exercises.previewImage',
-    //     'exercises.power',
-    //     'exercises.endurance',
-    //     'exercises.flexibility',
-    //     'exercises.cardio',
-    //   ])
-    //   .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
-    //   .addSelect(['favoriteForUsers.id'])
-    //   .where(`favoriteForUsers.id = ${req.body.userId}`)
-    //   .getCount()
+    const FavoriteTrainingProgramsCount = await dataSource.getRepository(TrainingPrograms)
+      .createQueryBuilder('trainingPrograms')
+      .select([
+        'trainingPrograms.id',
+      ])
+      .leftJoin('trainingPrograms.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
+      .addSelect(['favoriteForUsers.id'])
+      .where(`favoriteForUsers.id = ${req.body.userId}`)
+      .getCount()
 
     const response = {
       programs: TrainingProgramsCount,
-      userPrograms: null,
-      pinnedPrograms: null,
-      favoritePrograms: null,
+      userPrograms: UserTrainingProgramsCount,
+      pinnedPrograms: PinnedTrainingProgramsCount,
+      favoritePrograms: FavoriteTrainingProgramsCount,
     }
 
     return res.status(200).json(response)
