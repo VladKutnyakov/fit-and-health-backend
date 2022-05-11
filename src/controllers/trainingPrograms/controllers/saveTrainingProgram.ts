@@ -9,20 +9,28 @@ import { Skills } from '../../../db/entities/Skills'
 import { TrainingTypes } from '../../../db/entities/TrainingTypes'
 
 export const saveTrainingProgram = async (req: Request, res: Response): Promise<Response> => {
-  // console.log(req.body.trainingProgram.trainingProgramDays)
-
   try {
     // ПРОВЕРКА, передаются ли данные о тренировочной программе в req.body.trainingProgram
     if (!req.body.trainingProgram) {
       return res.status(400).json({
-        errorMessage: 'Данные о тренировочной программе не переданы.'
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Данные о тренировочной программе не переданы.'
+          }
+        ]
       })
     }
 
     // ПРОВЕРКА, указано ли название в тренировочной программе
     if (!req.body.trainingProgram.title) {
       return res.status(400).json({
-        errorMessage: 'Не указано название тренировочной программы.'
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Не указано название тренировочной программы.'
+          }
+        ]
       })
     }
 
@@ -134,14 +142,15 @@ export const saveTrainingProgram = async (req: Request, res: Response): Promise<
       await queryRunner.release()
     }
 
-    const response = {
-      data: req.body.trainingProgram
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(req.body.trainingProgram)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }

@@ -33,14 +33,15 @@ export const getTrainingProgramInfo = async (req: Request, res: Response): Promi
       .getOne()
     // console.log(TrainingProgramInfo?.trainingProgramDays[0])
 
-    const response = {
-      data: TrainingProgramInfo
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(TrainingProgramInfo)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }

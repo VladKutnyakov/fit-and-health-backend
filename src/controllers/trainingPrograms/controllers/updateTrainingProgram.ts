@@ -10,14 +10,15 @@ import { dataSource } from '../../../dataSource'
 export const updateTrainingProgram = async (req: Request, res: Response): Promise<Response> => {
   try {
 
-    const response = {
-      data: null
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(null)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }
