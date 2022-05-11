@@ -67,7 +67,7 @@ router.get('/page-info', JwtGuard, trainingProgramsContrallers.fetchTrainingProg
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/', JwtGuard, trainingProgramsContrallers.fetchTrainingPrograms)
+router.get('/', JwtGuard, trainingProgramsContrallers.fetchTrainingProgramsList)
 
 // http://localhost:3031/api/training-programs/:trainingProgramId
 /**
