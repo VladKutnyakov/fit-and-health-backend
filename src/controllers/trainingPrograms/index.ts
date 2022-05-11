@@ -1,12 +1,12 @@
 import { fetchTrainingProgramsPageInfo } from './controllers/fetchTrainingProgramsPageInfo'
-import { getTrainingPrograms } from './controllers/getTrainingPrograms'
+import { fetchTrainingPrograms } from './controllers/fetchTrainingPrograms'
 import { getTrainingProgramInfo } from './controllers/getTrainingProgramInfo'
 import { saveTrainingProgram } from './controllers/saveTrainingProgram'
 import { updateTrainingProgram } from './controllers/updateTrainingProgram'
 
 export default {
   fetchTrainingProgramsPageInfo,
-  getTrainingPrograms,
+  fetchTrainingPrograms,
   getTrainingProgramInfo,
   saveTrainingProgram,
   updateTrainingProgram,

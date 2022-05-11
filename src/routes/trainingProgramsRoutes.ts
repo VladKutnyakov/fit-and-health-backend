@@ -54,26 +54,20 @@ router.get('/page-info', JwtGuard, trainingProgramsContrallers.fetchTrainingProg
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: Id категории
-*                       title:
-*                         type: string
-*                         description: Название категории
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: Id категории
+*                   title:
+*                     type: string
+*                     description: Название категории
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/', JwtGuard, trainingProgramsContrallers.getTrainingPrograms)
+router.get('/', JwtGuard, trainingProgramsContrallers.fetchTrainingPrograms)
 
 // http://localhost:3031/api/training-programs/:trainingProgramId
 /**

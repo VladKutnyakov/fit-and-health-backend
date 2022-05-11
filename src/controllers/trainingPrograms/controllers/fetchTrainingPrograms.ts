@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { dataSource } from '../../../dataSource'
 import { TrainingPrograms } from "../../../db/entities/TrainingPrograms"
 
-export const getTrainingPrograms = async (req: Request, res: Response): Promise<Response> => {
+export const fetchTrainingPrograms = async (req: Request, res: Response): Promise<Response> => {
   try {
     const TrainingProgramsList = await dataSource.getRepository(TrainingPrograms)
       .createQueryBuilder('trainingPrograms')
