@@ -46,10 +46,10 @@ export class TrainingPrograms {
   @ManyToOne(() => Users, user => user.trainingPrograms)
   user: Users
 
-  @ManyToMany(() => Users, user => user.favoriteProducts)
+  @ManyToMany(() => Users, user => user.favoriteTrainingPrograms)
   favoriteForUsers: Users[]
 
-  @ManyToMany(() => Users, user => user.pinnedProducts)
+  @ManyToMany(() => Users, user => user.pinnedTrainingPrograms)
   pinnedForUsers: Users[]
 
   @OneToMany(() => TrainingDiaries, trainingDiaries => trainingDiaries.trainingProgram)
