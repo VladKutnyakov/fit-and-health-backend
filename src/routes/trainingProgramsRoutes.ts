@@ -60,10 +60,10 @@ router.get('/page-info', JwtGuard, trainingProgramsContrallers.fetchTrainingProg
 *                 properties:
 *                   id:
 *                     type: integer
-*                     description: Id категории
+*                     description: ID тренировочной программы
 *                   title:
 *                     type: string
-*                     description: Название категории
+*                     description: Название тренировочной программы
 *       401:
 *         description: Ошибка авторизации
 */

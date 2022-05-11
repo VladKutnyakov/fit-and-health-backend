@@ -6,6 +6,10 @@ export const fetchTrainingProgramsList = async (req: Request, res: Response): Pr
   try {
     const TrainingProgramsList = await dataSource.getRepository(TrainingPrograms)
       .createQueryBuilder('trainingPrograms')
+      .select([
+        'trainingPrograms.id',
+        'trainingPrograms.title',
+      ])
       .where("trainingPrograms.user = :id OR trainingPrograms.user IS NULL", { id: req.body.userId })
       .leftJoin("trainingPrograms.user", "user")
       .addSelect(['user.id'])
@@ -15,14 +19,15 @@ export const fetchTrainingProgramsList = async (req: Request, res: Response): Pr
       .getMany()
     // console.log(TrainingProgramsList)
 
-    const response = {
-      data: TrainingProgramsList
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(TrainingProgramsList)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }
