@@ -3,6 +3,41 @@ import trainingProgramsContrallers from '../controllers/trainingPrograms/index'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
+// http://localhost:3031/api/training-programs/page-info
+/**
+* @swagger
+* /api/training-programs/page-info:
+*   get:
+*     tags:
+*       - Тренировочные программы
+*     summary: Общая информация о разделе
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Общая информация о разделе
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 programs:
+*                   type: number
+*                   description: Общее кол-во тренировочных программ
+*                 userPrograms:
+*                   type: number
+*                   description: Общее кол-во тренировочных программ пользователя
+*                 pinnedPrograms:
+*                   type: number
+*                   description: Общее кол-во закрепленных тренировочных программ пользователя
+*                 favoritePrograms:
+*                   type: number
+*                   description: Общее кол-во избранных тренировочных программ пользователя
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/page-info', JwtGuard, trainingProgramsContrallers.fetchTrainingProgramsPageInfo)
+
 // http://localhost:3031/api/training-programs/
 /**
 * @swagger
