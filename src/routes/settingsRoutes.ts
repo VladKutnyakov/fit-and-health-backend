@@ -30,7 +30,7 @@ const router: Router = express.Router()
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/fetch-app-theme', JwtGuard, settingsControllers.fetchAppTheme)
+router.get('/fetch-app-theme', settingsControllers.fetchAppTheme)
 
 // http://localhost:3031/api/settings/set-app-theme
 /**

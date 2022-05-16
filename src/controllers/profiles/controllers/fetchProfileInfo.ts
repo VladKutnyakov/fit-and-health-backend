@@ -2,9 +2,9 @@ import { Request, Response } from "express"
 import { dataSource } from '../../../dataSource'
 import { UsersProfiles } from "../../../db/entities/UsersProfiles"
 
-export const getProfileInfo = async (req: Request, res: Response): Promise<Response> => {
+export const fetchProfileInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
-    if (req.params.profileId !== 'undefined') {
+    if (req.params.profileId !== '') {
       // console.log('НЕавторизованный пользователь', req.params.profileId)
 
       // Данные о НЕ авторизованном пользователе
@@ -19,13 +19,7 @@ export const getProfileInfo = async (req: Request, res: Response): Promise<Respo
         }
       )
 
-      // console.log(Profile)
-
-      const response = {
-        data: Profile
-      }
-  
-      return res.status(200).json(response)
+      return res.status(200).json(Profile)
     } else {
       // console.log('авторизованный пользователь', req.body.userId)
 
@@ -35,19 +29,13 @@ export const getProfileInfo = async (req: Request, res: Response): Promise<Respo
         {
           where: {
             user: {
-              id: req.body.userId
+              id: req.body.userId || null
             }
           }
         }
       )
 
-      // console.log(Profile)
-
-      const response = {
-        data: Profile
-      }
-  
-      return res.status(200).json(response)
+      return res.status(200).json(Profile)
     }
   } catch (error: any) {
     return res.status(500).json({

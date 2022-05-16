@@ -105,6 +105,6 @@ router.get('/', JwtGuard, profilesControllers.getProfilesList)
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/:profileId', JwtGuard, profilesControllers.getProfileInfo)
+router.get('/:profileId', profilesControllers.fetchProfileInfo)
 
 export default router

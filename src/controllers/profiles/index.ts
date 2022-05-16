@@ -1,7 +1,7 @@
 import { getProfilesList } from './controllers/getProfilesList'
-import { getProfileInfo } from './controllers/getProfileInfo'
+import { fetchProfileInfo } from './controllers/fetchProfileInfo'
 
 export default {
   getProfilesList,
-  getProfileInfo,
+  fetchProfileInfo,
 }

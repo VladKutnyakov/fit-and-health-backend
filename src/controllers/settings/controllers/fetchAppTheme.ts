@@ -10,7 +10,7 @@ export const fetchAppTheme = async (req: Request, res: Response): Promise<Respon
         'usersSettings.browserTheme',
         'usersSettings.mobileAppTheme',
       ])
-      .where(`usersSettings.userId = ${req.body.userId}`)
+      .where(`usersSettings.userId = ${req.body?.userId || null}`)
       .getOne()
     // console.log(AppTheme)
 
