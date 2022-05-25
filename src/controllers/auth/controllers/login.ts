@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
+import { dataSource } from '@/dataSource'
 import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
 import { Users } from "../../../db/entities/Users"
