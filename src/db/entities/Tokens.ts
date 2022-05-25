@@ -1,16 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm'
-// import {Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator"
+import { Entity, PrimaryColumn, ManyToOne } from 'typeorm'
 import { Users } from './Users'
 
 @Entity()
 export class Tokens {
 
-  @PrimaryGeneratedColumn({
-    comment: 'ID токенов доступа и обновления'
-  })
-  id: number
-
-  @Column({
+  @PrimaryColumn({
     type: 'text',
     nullable: false,
     unique: true,
@@ -18,13 +12,13 @@ export class Tokens {
   })
   accessToken: string
 
-  @Column({
-    type: 'text',
-    nullable: false,
-    unique: true,
-    comment: 'Токен обновления'
-  })
-  refreshToken: string
+  // @PrimaryColumn({
+  //   type: 'text',
+  //   nullable: false,
+  //   unique: true,
+  //   comment: 'Токен обновления'
+  // })
+  // refreshToken: string
 
   @ManyToOne(() => Users, user => user.tokens)
   user: Users
