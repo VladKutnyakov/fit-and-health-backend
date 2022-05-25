@@ -1,13 +1,109 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
 import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
+import { dataSource } from '../../../dataSource'
 import { Users } from "../../../db/entities/Users"
 import { Tokens } from "../../../db/entities/Tokens"
 
 // http://localhost:3031/api/auth/register/
 export const register = async (req: Request, res: Response): Promise<Response> => {
   try {
+    // Обработка ошибки - не передана электронная почта
+    if (!req.body.email) {
+      return res.status(400).json({
+        errors: [
+          {
+            field: 'email',
+            errorMessage: 'Не указана электронная почта.'
+          }
+        ]
+      })
+    }
+
+    // Обработка ошибки - не передан электронная номер телефона
+    // if (!req.body.phone) {
+    //   return res.status(400).json({
+    //     errors: [
+    //       {
+    //         field: 'phone',
+    //         errorMessage: 'Не указан номер телефона.'
+    //       }
+    //     ]
+    //   })
+    // }
+
+    // Обработка ошибки - не передан пароль
+    if (!req.body.password) {
+      return res.status(400).json({
+        errors: [
+          {
+            field: 'password',
+            errorMessage: 'Не указан пароль.'
+          }
+        ]
+      })
+    }
+
+    const User = await dataSource.getRepository(Users)
+      .createQueryBuilder('users')
+      .select([
+        'users.id',
+        'users.email',
+        'users.password'
+      ])
+      .where(`users.email = '${req.body.email}'`)
+      .getOne()
+    // console.log(User)
+
+    if (User) {
+      return res.status(409).json({
+        message: 'Введенный E-mail уже используется. Попробуйте авторизироваться или используйте другой адрес электронной почты.'
+      })
+    } else {
+      const password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+
+      const CreatedUser = await dataSource.getRepository(Users)
+        .createQueryBuilder('users')
+        .insert()
+        .into(Users)
+        .values([
+          {
+            email: req.body.email,
+            phone: req.body.phone,
+            password: password,
+          }
+        ])
+        .execute()
+      // console.log(CreatedUser)
+
+      const JwtKey: Secret = process.env.JWT || 'access'
+      const AccessToken = jwt.sign({ id: CreatedUser.identifiers[0].id }, JwtKey, { expiresIn: '30d' })
+
+      const CreatedAccessToken = await dataSource.getRepository(Tokens)
+          .createQueryBuilder('tokens')
+          .insert()
+          .into(Tokens)
+          .values([
+            {
+              accessToken: AccessToken,
+              user: dataSource.getRepository(Users).create({
+                id: CreatedUser.identifiers[0].id,
+              })
+            }
+          ])
+          .execute()
+        // console.log(CreatedAccessToken)
+
+        return res.status(200).json(CreatedAccessToken.identifiers[0].accessToken)
+    }
+
+
+
+
+
+
+
+
     const candidate = await dataSource.manager.findOne(Users, {where: {email: req.body.email}})
 
     if (candidate) {
@@ -63,3 +159,5 @@ export const register = async (req: Request, res: Response): Promise<Response> =
   }
 
 }
+
+// СТАРЫЙ КОД с refreshToken

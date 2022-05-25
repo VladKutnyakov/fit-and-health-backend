@@ -8,6 +8,18 @@ import { Tokens } from "../../../db/entities/Tokens"
 // http://localhost:3031/api/auth/login/
 export const login = async (req: Request, res: Response): Promise<Response> => {
   try {
+    // Обработка ошибки - не передана электронная почта
+    if (!req.body.email) {
+      return res.status(400).json({
+        errors: [
+          {
+            field: 'email',
+            errorMessage: 'Не указана электронная почта.'
+          }
+        ]
+      })
+    }
+
     const User = await dataSource.getRepository(Users)
       .createQueryBuilder('users')
       .select([

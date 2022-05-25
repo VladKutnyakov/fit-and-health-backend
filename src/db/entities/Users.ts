@@ -21,11 +21,11 @@ export class Users {
 
   @Column({
     type: 'varchar',
-    nullable: true,
+    nullable: false,
     unique: true,
     comment: 'Электронная почта пользователя'
   })
-  email: string | null
+  email: string
 
   @Column({
     type: 'varchar',
