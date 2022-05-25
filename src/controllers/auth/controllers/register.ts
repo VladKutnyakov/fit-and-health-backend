@@ -46,7 +46,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
         // Создаем запись с токенами доступа для созданного пользователя
         const CreatedTokens = new Tokens()
         CreatedTokens.accessToken = AccessToken
-        CreatedTokens.refreshToken = RefreshToken
+        // CreatedTokens.refreshToken = RefreshToken
         CreatedTokens.user = CreatedUser
 
         await transactionalEntityManager.save(CreatedTokens)

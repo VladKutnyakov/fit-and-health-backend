@@ -45,13 +45,13 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
             })
 
             // Удалить все невалидные токены из БД
-            UserTokens.forEach(async element => {
-              jwt.verify(element.refreshToken, keys.jwtRefresh, async (error: any) => {
-                if (error) {
-                  await dataSource.manager.delete(Tokens, { id: element.id })
-                }
-              })
-            })
+            // UserTokens.forEach(async element => {
+            //   jwt.verify(element.refreshToken, keys.jwtRefresh, async (error: any) => {
+            //     if (error) {
+            //       await dataSource.manager.delete(Tokens, { id: element.id })
+            //     }
+            //   })
+            // })
 
             res.status(401).json({
               message: 'Ошибка авторизации.'
@@ -70,12 +70,12 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
 
               let targetToken: any = null
 
-              UserTokens.forEach(async element => {
-                // Поиск совпадения присланного токена с записями в БД
-                if (element.accessToken === token && element.refreshToken === decodedToken.refreshToken) {
-                  targetToken = element
-                }
-              })
+              // UserTokens.forEach(async element => {
+              //   // Поиск совпадения присланного токена с записями в БД
+              //   if (element.accessToken === token && element.refreshToken === decodedToken.refreshToken) {
+              //     targetToken = element
+              //   }
+              // })
 
               // Если токен найден в БД обновить accessToken и refreshToken
               if (targetToken) {
@@ -98,7 +98,7 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
                   },
                   {
                     accessToken,
-                    refreshToken
+                    // refreshToken
                   }
                 )
 
