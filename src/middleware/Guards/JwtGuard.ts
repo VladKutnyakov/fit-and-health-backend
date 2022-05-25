@@ -32,10 +32,6 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
     // console.log(UserTokens)
 
     for (let i = 0; i < UserTokens.length; i++) {
-      if (UserTokens[i].accessToken === AccessToken) {
-        accessTokenIsFound = true
-      }
-
       jwt.verify(UserTokens[i].accessToken, keys.jwt, async (error: any) => {
         if (error) {
           await dataSource
@@ -44,6 +40,11 @@ export default async function JwtGuard (req: Request, res: Response, next: NextF
             .from(Tokens)
             .where(`accessToken = '${UserTokens[i].accessToken}'`)
             .execute()
+        } else {
+          // Если токен валиден и он идентичен тому, что прислали с клиента, выставить признак наличия токена в БД как true
+          if (UserTokens[i].accessToken === AccessToken) {
+            accessTokenIsFound = true
+          }
         }
       })
     }
