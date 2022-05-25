@@ -20,6 +20,18 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       })
     }
 
+    // Обработка ошибки - не передан пароль
+    if (!req.body.password) {
+      return res.status(400).json({
+        errors: [
+          {
+            field: 'password',
+            errorMessage: 'Не указан пароль.'
+          }
+        ]
+      })
+    }
+
     const User = await dataSource.getRepository(Users)
       .createQueryBuilder('users')
       .select([
@@ -57,15 +69,25 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
         return res.status(200).json(CreatedAccessToken.identifiers[0].accessToken)
       } else {
         return res.status(401).json({
-          message: 'Неверный пароль. Попробуйте еще раз или воспользуйтесь формой для восстановления пароля.'
+          errors: [
+            {
+              field: 'password',
+              errorMessage: 'Неверный пароль. Попробуйте еще раз или воспользуйтесь формой для восстановления пароля.'
+            }
+          ]
         })
       }
     } else {
       return res.status(401).json({
-        message: 'Пользователь не найден.'
+        errors: [
+          {
+            field: 'email',
+            errorMessage: 'Пользователь не найден.'
+          }
+        ]
       })
     }
-  } catch (erro: any) {
+  } catch (error: any) {
     return res.status(500).json({
       errors: [
         {
@@ -75,7 +97,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       ]
     })
   }
-
 }
 
 // СТАРЫЙ КОД с refreshToken

@@ -55,7 +55,12 @@ export const register = async (req: Request, res: Response): Promise<Response> =
 
     if (User) {
       return res.status(409).json({
-        message: 'Введенный E-mail уже используется. Попробуйте авторизироваться или используйте другой адрес электронной почты.'
+        errors: [
+          {
+            field: 'email',
+            errorMessage: 'Введенный E-mail уже используется. Попробуйте авторизироваться или используйте другой адрес электронной почты.'
+          }
+        ]
       })
     } else {
       // ТРАНЗАКЦИЯ
@@ -119,10 +124,14 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     }
   } catch (error: any) {
     return res.status(500).json({
-      message: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
-
 }
 
 // СТАРЫЙ КОД с refreshToken
