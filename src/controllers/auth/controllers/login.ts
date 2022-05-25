@@ -48,7 +48,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       // console.log(passwordIsEqual)
 
       if (passwordIsEqual) {
-        const JwtKey: Secret = process.env.JWT || 'access'
+        const JwtKey: Secret = process.env.JWT || ''
         const AccessToken = jwt.sign({ id: User.id }, JwtKey, { expiresIn: '30d' })
 
         const CreatedAccessToken = await dataSource.getRepository(Tokens)

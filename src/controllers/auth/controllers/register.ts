@@ -86,7 +86,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
           .execute()
         // console.log(CreatedUser)
 
-        const JwtKey: Secret = process.env.JWT || 'access'
+        const JwtKey: Secret = process.env.JWT || ''
         const AccessToken = jwt.sign({ id: CreatedUser.identifiers[0].id }, JwtKey, { expiresIn: '30d' })
 
         const CreatedAccessToken = await dataSource.getRepository(Tokens)
