@@ -1,9 +1,13 @@
 FROM node:14
 
-COPY . .
+WORKDIR /app
 
-RUN npm install
+COPY . /app
+
+RUN npm ci
 
 RUN npm run build
+
+EXPOSE 3031
 
 CMD [ "npm", "start" ]
