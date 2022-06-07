@@ -3,6 +3,9 @@ import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
 import { dataSource } from '../../../dataSource'
 import { Users } from "../../../db/entities/Users"
+import { UsersProfiles } from "../../../db/entities/UsersProfiles"
+import { UsersParams } from "../../../db/entities/UsersParams"
+import { UsersSettings } from "../../../db/entities/UsersSettings"
 import { Tokens } from "../../../db/entities/Tokens"
 
 // http://localhost:3031/api/auth/register/
@@ -72,6 +75,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
       try {
         const password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
 
+        // Создание пользователя
         const CreatedUser = await dataSource.getRepository(Users)
           .createQueryBuilder('users')
           .insert()
@@ -86,9 +90,55 @@ export const register = async (req: Request, res: Response): Promise<Response> =
           .execute()
         // console.log(CreatedUser)
 
+        // Создание данных с профилем пользователя
+        const CreatedUserProfile = await dataSource.getRepository(UsersProfiles)
+          .createQueryBuilder('usersProfiles')
+          .insert()
+          .into(UsersProfiles)
+          .values([
+            {
+              user: dataSource.getRepository(Users).create({
+                id: CreatedUser.identifiers[0].id,
+              })
+            }
+          ])
+          .execute()
+        // console.log(CreatedUserProfile)
+
+        // Создание данных с параметрами пользователя
+        const CreatedUserParams = await dataSource.getRepository(UsersParams)
+          .createQueryBuilder('usersParams')
+          .insert()
+          .into(UsersParams)
+          .values([
+            {
+              user: dataSource.getRepository(Users).create({
+                id: CreatedUser.identifiers[0].id,
+              })
+            }
+          ])
+          .execute()
+        // console.log(CreatedUserParams)
+
+        // Создание данных с настройками пользователя
+        const CreatedUserSettings = await dataSource.getRepository(UsersSettings)
+          .createQueryBuilder('usersSettings')
+          .insert()
+          .into(UsersSettings)
+          .values([
+            {
+              user: dataSource.getRepository(Users).create({
+                id: CreatedUser.identifiers[0].id,
+              })
+            }
+          ])
+          .execute()
+        // console.log(CreatedUserSettings)
+
         const JwtKey: Secret = process.env.JWT || ''
         const AccessToken = jwt.sign({ id: CreatedUser.identifiers[0].id }, JwtKey, { expiresIn: '30d' })
 
+        // Создание токена авторизации для пользователя
         const CreatedAccessToken = await dataSource.getRepository(Tokens)
             .createQueryBuilder('tokens')
             .insert()
