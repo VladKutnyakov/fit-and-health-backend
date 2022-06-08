@@ -103,8 +103,11 @@ dataSource.initialize()
       badge: true
     })
   })
-  .catch((err) => {
-      console.error("Error during Data Source initialization", err)
+  .catch((error) => {
+    consola.error({
+      message: `Error during Data Source initialization\n${error}`,
+      badge: true
+    })
   })
 
 // Запуск сервера
@@ -113,7 +116,11 @@ const PORT: any = process.env.PORT || 3031
 
 app.listen(PORT, HOST, () => {
   consola.ready({
-    message: `\n\nServer http://${HOST}:${PORT}\n\nSwagger http://${HOST}:${PORT}/swagger`,
+    message: `Server http://${HOST}:${PORT}`,
+    badge: true
+  })
+  consola.ready({
+    message: `Swagger http://${HOST}:${PORT}/swagger`,
     badge: true
   })
 })
