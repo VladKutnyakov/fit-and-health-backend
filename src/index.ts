@@ -113,7 +113,7 @@ const PORT: any = process.env.PORT || 3031
 
 app.listen(PORT, HOST, () => {
   consola.ready({
-    message: `Server listening on http://${HOST}:${PORT}`,
+    message: `\n\nServer http://${HOST}:${PORT}\n\nSwagger http://${HOST}:${PORT}/swagger`,
     badge: true
   })
 })
