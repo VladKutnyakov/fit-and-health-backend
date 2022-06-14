@@ -42,9 +42,10 @@ export const fetchTrainingProgramsList = async (req: Request, res: Response): Pr
       trainingPrograms.push({
         id: TrainingProgramsList[i].id,
         title: TrainingProgramsList[i].title,
-        user: TrainingProgramsList[i].user,
+        description: TrainingProgramsList[i].description,
         favorite: TrainingProgramsList[i].favoriteForUsers.length > 0 ? true : false,
         pinned: TrainingProgramsList[i].pinnedForUsers.length > 0 ? true : false,
+        user: TrainingProgramsList[i].user,
       })
     }
     // console.log(trainingPrograms)
