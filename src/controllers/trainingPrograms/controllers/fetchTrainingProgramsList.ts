@@ -25,6 +25,7 @@ export const fetchTrainingProgramsList = async (req: Request, res: Response): Pr
         'trainingPrograms.description',
       ])
       .where("trainingPrograms.user = :id OR trainingPrograms.user IS NULL", { id: req.body.userId })
+      .leftJoinAndSelect('trainingPrograms.skill', 'skill')
       .leftJoin('trainingPrograms.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
       .addSelect(['favoriteForUsers.id'])
       .leftJoin('trainingPrograms.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
@@ -47,6 +48,7 @@ export const fetchTrainingProgramsList = async (req: Request, res: Response): Pr
         endurance: 0,
         flexibility: 0,
         cardio: 0,
+        skill: TrainingProgramsList[i].skill,
         favorite: TrainingProgramsList[i].favoriteForUsers.length > 0 ? true : false,
         pinned: TrainingProgramsList[i].pinnedForUsers.length > 0 ? true : false,
         user: TrainingProgramsList[i].user,
