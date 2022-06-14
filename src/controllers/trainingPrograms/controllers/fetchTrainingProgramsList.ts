@@ -22,6 +22,7 @@ export const fetchTrainingProgramsList = async (req: Request, res: Response): Pr
       .select([
         'trainingPrograms.id',
         'trainingPrograms.title',
+        'trainingPrograms.description',
       ])
       .where("trainingPrograms.user = :id OR trainingPrograms.user IS NULL", { id: req.body.userId })
       .leftJoin('trainingPrograms.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
@@ -36,7 +37,19 @@ export const fetchTrainingProgramsList = async (req: Request, res: Response): Pr
       .getMany()
     // console.log(TrainingProgramsList)
 
-    return res.status(200).json(TrainingProgramsList)
+    const trainingPrograms: Array<any> = []
+    for (let i = 0; i < TrainingProgramsList.length; i++) {
+      trainingPrograms.push({
+        id: TrainingProgramsList[i].id,
+        title: TrainingProgramsList[i].title,
+        user: TrainingProgramsList[i].user,
+        favorite: TrainingProgramsList[i].favoriteForUsers.length > 0 ? true : false,
+        pinned: TrainingProgramsList[i].pinnedForUsers.length > 0 ? true : false,
+      })
+    }
+    // console.log(trainingPrograms)
+
+    return res.status(200).json(trainingPrograms)
   } catch (error: any) {
     return res.status(500).json({
       errors: [
