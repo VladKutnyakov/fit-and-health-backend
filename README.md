@@ -4,7 +4,8 @@
 
 Для запуска проекта требуется:
  - Nodejs >= 12
- - PostgressSql установленный с настройками по умолчанию (host: "localhost", port: 5432, username: "postgres", password: "admin", database: "fit_and_health",)
+ - PostgreSQL установленный с настройками по умолчанию (host: "localhost", port: 5432, username: "postgres", password: "admin")
+ - Созданная база данных: "fit_and_health"
 
 ## Setup
 
