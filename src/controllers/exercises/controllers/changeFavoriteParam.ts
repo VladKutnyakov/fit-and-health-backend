@@ -13,36 +13,45 @@ export const changeFavoriteParam = async (req: Request, res: Response): Promise<
       .getOne()
     // console.log(User)
 
-    let isFavorite = false
-
     if (User) {
+      let isFavorite = false
+
       for (let i = 0; i < User?.favoriteExercises.length; i++) {
         if (User?.favoriteExercises[i].id === parseInt(req.params.exerciseId)) {
           isFavorite = true
         }
       }
-    }
 
-    if (isFavorite) {
-      // Для user с id=1 удалить занчение favoriteExercises exerciseId=2
-      await dataSource
-        .createQueryBuilder()
-        .relation(Users, "favoriteExercises")
-        .of(req.body.userId)
-        .remove(req.params.exerciseId)
+      if (isFavorite) {
+        // Для user с id=1 удалить занчение favoriteExercises exerciseId=2
+        await dataSource
+          .createQueryBuilder()
+          .relation(Users, "favoriteExercises")
+          .of(req.body.userId)
+          .remove(req.params.exerciseId)
+      } else {
+        // Для user с id=1 установить занчение favoriteExercises exerciseId=2
+        await dataSource
+          .createQueryBuilder()
+          .relation(Users, "favoriteExercises")
+          .of(req.body.userId)
+          .add(req.params.exerciseId)
+      }
+  
+      return res.status(200).json({
+        favorite: !isFavorite,
+        exerciseId: req.params.exerciseId
+      })
     } else {
-      // Для user с id=1 установить занчение favoriteExercises exerciseId=2
-      await dataSource
-        .createQueryBuilder()
-        .relation(Users, "favoriteExercises")
-        .of(req.body.userId)
-        .add(req.params.exerciseId)
+      return res.status(404).json({
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Пользователь не найден. Зарегистрируйтесь или авторизуйтесь, чтобы редактировать избранные упражнения.'
+          }
+        ]
+      })
     }
-
-    return res.status(200).json({
-      favorite: !isFavorite,
-      exerciseId: req.params.exerciseId
-    })
   } catch (error: any) {
     return res.status(500).json({
       errors: [
