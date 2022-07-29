@@ -7,7 +7,10 @@
     "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc -p .",
     "start": "ts-node-dev ./build/index.js",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+    "migration:create": "typeorm migration:create ./src/db/migrations/newMigration",
+    "migration:generate": "npx typeorm-ts-node-esm migration:generate ./src/db/migrations/newMigration -d ./src/dataSource.ts",
+    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./src/dataSource.ts"
   },
   "repository": {
     "type": "git",

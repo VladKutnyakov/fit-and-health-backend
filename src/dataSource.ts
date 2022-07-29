@@ -7,7 +7,7 @@ export const dataSource = new DataSource({
   username: "postgres",
   password: "admin",
   database: "fit_and_health",
-  synchronize: true,
+  synchronize: false,
   logging: false,
   entities: [
     "src/db/entities/**/*.ts"
