@@ -1,6 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { TrainingProgramDays } from './TrainingProgramDays'
 
+// Йога
+// Кардио
+// CrossFit
+// Легкая атлетика
+// Бодибилдинг
+
 @Entity()
 export class TrainingTypes {
 
