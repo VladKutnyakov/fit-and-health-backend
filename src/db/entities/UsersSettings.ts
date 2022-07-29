@@ -10,22 +10,6 @@ export class UsersSettings {
   })
   id: number
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    unique: false,
-    comment: 'Визуальная тема для сайта'
-  })
-  browserTheme: string | null
-
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    unique: false,
-    comment: 'Визуальная тема для мобильного приложения'
-  })
-  mobileAppTheme: string | null
-
   @OneToOne(() => Users, user => user.settings)
   @JoinColumn()
   user: Users
