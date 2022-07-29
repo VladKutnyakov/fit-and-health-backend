@@ -4,11 +4,11 @@ export class insertExerciseExertions1659103808061 implements MigrationInterface 
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      INSERT INTO exercise_exertions (title)
+      INSERT INTO exercise_exertions (id, title)
       VALUES
-        ('Жимовое'),
-        ('Тяговое'),
-        ('Статическое');
+        (1, 'Жимовое'),
+        (2, 'Тяговое'),
+        (3, 'Статическое');
     `)
   }
 
