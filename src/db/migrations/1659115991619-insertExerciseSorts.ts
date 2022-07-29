@@ -17,7 +17,7 @@ export class insertExerciseSorts1659115991619 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `
-        DELETE FROM exercise_exertions
+        DELETE FROM exercise_sorts
         WHERE
           title = 'Статическое' OR
           title = 'Динамическое' OR

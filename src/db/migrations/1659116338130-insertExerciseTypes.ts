@@ -13,7 +13,7 @@ export class insertExerciseTypes1659116338130 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `DELETE FROM exercise_exertions WHERE title = 'Базовое' OR title = 'Изолирующее' OR;`
+      `DELETE FROM exercise_types WHERE title = 'Базовое' OR title = 'Изолирующее' OR;`
     )
   }
 

@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm'
 import { Exercises } from './Exercises'
 
-// ALL HOME GYM
+// ALL HOME GYM OUTDOORS
 
 @Entity()
 export class TrainingPlaces {
