@@ -95,7 +95,9 @@ app.use('/api/training-process', trainingProcessRoutes)
 
 // Подключение к базе данных
 dataSource.initialize()
-  .then(() => {
+  .then(async () => {
+    await dataSource.runMigrations()
+
     consola.ready({
       message: `Database connected success`,
       badge: true
@@ -107,6 +109,8 @@ dataSource.initialize()
       badge: true
     })
   })
+
+
 
 // Запуск сервера
 const HOST: string = process.env.HOST || 'localhost'
