@@ -2,6 +2,9 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { Exercises } from './Exercises'
 import { TrainingPrograms } from './TrainingPrograms'
 
+// Новичок, Ниже среднего, Средний, Выше среднего, Профессионал
+// Низкий, Ниже среднего, Средний, Выше среднего, Высокий
+
 @Entity()
 export class Skills {
 
