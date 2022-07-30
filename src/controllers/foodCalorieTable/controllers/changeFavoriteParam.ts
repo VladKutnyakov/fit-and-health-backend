@@ -13,40 +13,50 @@ export const changeFavoriteParam = async (req: Request, res: Response): Promise<
     .getOne()
     // console.log(User)
 
-    let isFavorite = false
-
+    
     if (User) {
+      let isFavorite = false
+
       for (let i = 0; i < User?.favoriteProducts.length; i++) {
         if (User?.favoriteProducts[i].id === parseInt(req.params.productId)) {
           isFavorite = true
         }
       }
-    }
 
-    if (isFavorite) {
-      // Для user с id=1 удалить занчение favoriteProducts productsId=2
-      await dataSource
-      .createQueryBuilder()
-      .relation(Users, "favoriteProducts")
-      .of(req.body.userId)
-      .remove(req.params.productId)
-    } else {
-      // Для user с id=1 установить занчение favoriteProducts productsId=2
-      await dataSource
-      .createQueryBuilder()
-      .relation(Users, "favoriteProducts")
-      .of(req.body.userId)
-      .add(req.params.productId)
-    }
-
-    const response = {
-      data: {
-        productId: req.params.productId,
-        favorite: !isFavorite
+      if (isFavorite) {
+        // Для user с id=1 удалить занчение favoriteProducts productsId=2
+        await dataSource
+        .createQueryBuilder()
+        .relation(Users, "favoriteProducts")
+        .of(req.body.userId)
+        .remove(req.params.productId)
+      } else {
+        // Для user с id=1 установить занчение favoriteProducts productsId=2
+        await dataSource
+        .createQueryBuilder()
+        .relation(Users, "favoriteProducts")
+        .of(req.body.userId)
+        .add(req.params.productId)
       }
+  
+      const response = {
+        data: {
+          productId: req.params.productId,
+          favorite: !isFavorite
+        }
+      }
+  
+      return res.status(200).json(response)
+    } else {
+      return res.status(404).json({
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Пользователь не найден. Зарегистрируйтесь или авторизуйтесь, чтобы редактировать избранные продукты.'
+          }
+        ]
+      })
     }
-
-    return res.status(200).json(response)
   } catch (error: any) {
     return res.status(500).json({
       errorMessage: 'Неизвестная ошибка.'
