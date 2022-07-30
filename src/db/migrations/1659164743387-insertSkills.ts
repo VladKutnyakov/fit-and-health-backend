@@ -6,11 +6,11 @@ export class insertSkills1659164743387 implements MigrationInterface {
     await queryRunner.query(`
       INSERT INTO skills (id, "excellenceTitle", "complexityTitle", value)
       VALUES
-        (1, 'Новичок', 'Низкий', 1),
+        (1, 'Новичок', 'Низкая', 1),
         (2, 'Ниже среднего', 'Ниже среднего', 2),
-        (3, 'Средний', 'Средний', 3),
+        (3, 'Средний', 'Средная', 3),
         (4, 'Выше среднего', 'Выше среднего', 4),
-        (5, 'Профессионал', 'Высокий', 5);
+        (5, 'Профессионал', 'Высокая', 5);
     `)
   }
 

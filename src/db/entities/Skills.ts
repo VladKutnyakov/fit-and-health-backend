@@ -3,7 +3,7 @@ import { Exercises } from './Exercises'
 import { TrainingPrograms } from './TrainingPrograms'
 
 // Новичок, Ниже среднего, Средний, Выше среднего, Профессионал
-// Низкий, Ниже среднего, Средний, Выше среднего, Высокий
+// Низкая, Ниже среднего, Средная, Выше среднего, Высокая
 
 @Entity()
 export class Skills {
