@@ -4,7 +4,15 @@ import { Products } from "../../../db/entities/Products"
 
 export const fetchPageInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const ProductsCount = await dataSource.getRepository(Products).count()
+    const ProductsCount = await dataSource.getRepository(Products)
+      .createQueryBuilder('products')
+      .select([
+        'products.id'
+      ])
+      .leftJoin('products.user', 'user')
+      .addSelect(['user.id'])
+      .where(`products.user = ${req.body.userId} OR products.user IS NULL`)
+      .getCount()
 
     const PinnedProductsCount = await dataSource.getRepository(Products)
       .createQueryBuilder('products')
