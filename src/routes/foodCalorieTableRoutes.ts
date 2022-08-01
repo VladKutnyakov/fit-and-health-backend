@@ -111,7 +111,7 @@ router.get('/product-categories', JwtGuard, foodCalorieTableControllers.getProdu
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/', JwtGuard, foodCalorieTableControllers.getAllProducts)
+router.get('/', JwtGuard, foodCalorieTableControllers.fetchProductsList)
 
 // http://localhost:3031/api/food-calorie-table/save-product
 /**
