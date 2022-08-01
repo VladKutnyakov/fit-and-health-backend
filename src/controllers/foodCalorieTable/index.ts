@@ -1,4 +1,4 @@
-import { getProductCategories } from './controllers/getProductCategories'
+import { fetchProductCategories } from './controllers/fetchProductCategories'
 import { fetchProductsList } from './controllers/fetchProductsList'
 import { saveNewProduct } from './controllers/saveNewProduct'
 import { updateProduct } from './controllers/updateProduct'
@@ -7,7 +7,7 @@ import { changeFavoriteParam } from './controllers/changeFavoriteParam'
 import { changePinnedParam } from './controllers/changePinnedParam'
 
 export default {
-  getProductCategories,
+  fetchProductCategories,
   fetchProductsList,
   saveNewProduct,
   updateProduct,

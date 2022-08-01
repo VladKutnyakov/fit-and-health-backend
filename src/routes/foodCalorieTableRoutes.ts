@@ -38,7 +38,7 @@ const router: Router = express.Router()
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/product-categories', JwtGuard, foodCalorieTableControllers.getProductCategories)
+router.get('/product-categories', JwtGuard, foodCalorieTableControllers.fetchProductCategories)
 
 // http://localhost:3031/api/food-calorie-table/
 /**
