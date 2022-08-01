@@ -64,7 +64,7 @@ export class Products {
   user: Users
 
   @ManyToOne(() => ProductCategories, category => category.products)
-  category: ProductCategories
+  category: ProductCategories | null
 
   @ManyToMany(() => Users, user => user.favoriteProducts)
   favoriteForUsers: Users[]
