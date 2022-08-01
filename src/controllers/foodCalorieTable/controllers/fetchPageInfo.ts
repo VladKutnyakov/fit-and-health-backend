@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import { dataSource } from '../../../dataSource'
 import { Products } from "../../../db/entities/Products"
-import { ProductCategories } from "../../../db/entities/ProductCategories"
 
 export const fetchPageInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
