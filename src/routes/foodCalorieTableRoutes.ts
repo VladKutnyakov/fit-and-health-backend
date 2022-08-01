@@ -3,6 +3,44 @@ import foodCalorieTableControllers from '../controllers/foodCalorieTable/index'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
+// http://localhost:3031/api/food-calorie-table/page-info
+/**
+* @swagger
+* /api/food-calorie-table/page-info:
+*   get:
+*     tags:
+*       - Таблица калорийности продуктов
+*     summary: Информация по разделу
+*     security:
+*       - jwt: []
+*     responses:
+*       200:
+*         description: Информация по разделу
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 pageInfo:
+*                   type: object
+*                   properties:
+*                     products:
+*                       type: integer
+*                       description: Общее кол-во продуктов
+*                     pinned:
+*                       type: integer
+*                       description: Общее кол-во закрепленных продуктов
+*                     favorites:
+*                       type: integer
+*                       description: Общее кол-во избранных продуктов
+*                     userProducts:
+*                       type: integer
+*                       description: Общее кол-во продуктов пользователя
+*       401:
+*         description: Ошибка авторизации
+*/
+router.get('/page-info', JwtGuard, foodCalorieTableControllers.fetchPageInfo)
+
 // http://localhost:3031/api/food-calorie-table/product-categories
 /**
 * @swagger
