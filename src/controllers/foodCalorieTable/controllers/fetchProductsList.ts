@@ -26,6 +26,7 @@ export const fetchProductsList = async (req: Request, res: Response): Promise<Re
       ])
       .where(`products.title LIKE '%${req.query?.searchString || ''}%'`)
       .andWhere(req.query.userType === 'MY' ? `products.user = ${req.body.userId}` : `(products.user = ${req.body.userId} OR products.user IS NULL)`)
+      .andWhere(req.query.userRelation === 'ALL' || !req.query.userRelation ? `((favoriteForUsers.id IS NOT NULL OR favoriteForUsers.id IS NULL) AND (pinnedForUsers.id IS NOT NULL OR pinnedForUsers.id IS NULL))` : req.query.userRelation === 'PINNED' ? `pinnedForUsers.id IS NOT NULL` : `favoriteForUsers.id IS NOT NULL`)
       .leftJoinAndSelect('products.category', 'category')
       .leftJoin('products.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
       .addSelect(['favoriteForUsers.id'])
@@ -35,7 +36,7 @@ export const fetchProductsList = async (req: Request, res: Response): Promise<Re
       .addSelect(['user.id'])
       .orderBy(orderByParams)
       .getMany()
-    //   .getSql()
+      // .getSql()
     // console.log(ProductsList)
 
     const products: Array<any> = []
