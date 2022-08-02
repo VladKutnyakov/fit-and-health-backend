@@ -1,7 +1,3 @@
-// Формат даты для всего проекта --- 2021-12-29
-// Показать дату в мс --- new Date('2021-12-29').getTime() / 1000
-// Текущая дата --- new Date().toJSON().split('T')[0]
-
 import { Request, Response } from "express"
 import { dataSource } from '../../../dataSource'
 import { MealPlaners } from "../../../db/entities/MealPlaners"
@@ -11,11 +7,7 @@ export const saveMealPlanerInfo = async (req: Request, res: Response): Promise<R
   try {
     console.log(req.body.mealPlanerInfo)
 
-    const response = {
-      data: null
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(req.body.mealPlanerInfo)
   } catch (error: any) {
     return res.status(500).json({
       errorMessage: 'Неизвестная ошибка.'
