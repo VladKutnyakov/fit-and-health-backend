@@ -41,7 +41,7 @@ const router: Router = express.Router()
 *       401:
 *         description: Ошибка авторизации
 */
-router.get('/', JwtGuard, mealPlanerControllers.getMealPlanerInfo)
+router.get('/', JwtGuard, mealPlanerControllers.fetchMealPlanerInfo)
 
 // http://localhost:3031/api/meal-planer/save-meal-planer-info
 /**

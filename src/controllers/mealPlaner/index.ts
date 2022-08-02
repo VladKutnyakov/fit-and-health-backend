@@ -1,7 +1,7 @@
-import { getMealPlanerInfo } from './controllers/getMealPlanerInfo'
+import { fetchMealPlanerInfo } from './controllers/fetchMealPlanerInfo'
 import { saveMealPlanerInfo } from './controllers/saveMealPlanerInfo'
 
 export default {
-  getMealPlanerInfo,
+  fetchMealPlanerInfo,
   saveMealPlanerInfo
 }

@@ -7,7 +7,7 @@ import { dataSource } from '../../../dataSource'
 import { MealPlaners } from "../../../db/entities/MealPlaners"
 import { UsersParams } from "../../../db/entities/UsersParams"
 
-export const getMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
+export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
     const targetDate = req.query.date || new Date().toJSON().split('T')[0]
     // console.log(targetDate)
@@ -67,19 +67,13 @@ export const getMealPlanerInfo = async (req: Request, res: Response): Promise<Re
           id: null,
           title: 'Затрак',
           mealTime: '07:00',
-          mealPartProducts: [],
-          mealPartRecipes: []
+          products: [],
+          recipes: [],
         },
       ],
-      user: {
-        id: req.body.userId,
-        params: [
-          {
-            weight: null,
-            targetWeight: null
-          }
-        ]
-      }
+      pinned: null,
+      favorite: null,
+      user: req.body.userId || null,
     }
     // console.log(EmptyMealPlanerInfo)
 
@@ -92,15 +86,11 @@ export const getMealPlanerInfo = async (req: Request, res: Response): Promise<Re
         .getOne()
       // console.log(UserParams)
 
-      EmptyMealPlanerInfo.user.params[0].targetWeight = UserParams?.targetWeight || null
-      EmptyMealPlanerInfo.user.params[0].weight = UserParams?.weight || null
+      EmptyMealPlanerInfo.targetWeight = UserParams?.targetWeight || null
+      EmptyMealPlanerInfo.currentWeight = UserParams?.weight || null
     }
 
-    const response = {
-      data: MealPlanerInfo || EmptyMealPlanerInfo
-    }
-
-    return res.status(200).json(response)
+    return res.status(200).json(MealPlanerInfo || EmptyMealPlanerInfo)
   } catch (error: any) {
     return res.status(500).json({
       errorMessage: 'Неизвестная ошибка.'
