@@ -9,7 +9,6 @@ import { UsersParams } from "../../../db/entities/UsersParams"
 
 export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
-
     // Если план питания не найден возвращается объект с начальными данными
     const MealPlanerInfo: any = {
       id: null,
@@ -27,7 +26,20 @@ export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<
           id: null,
           title: 'Затрак',
           mealTime: '07:00',
-          mealPartProducts: [],
+          mealPartProducts: [
+            // {
+            //   weightInMealPart: 145,
+            //   product: {
+            //     id: 21,
+            //     title: "3245",
+            //     weight: 100,
+            //     protein: 50,
+            //     fats: 2,
+            //     carb: 3,
+            //     kkal: 45
+            //   }
+            // }
+          ],
           mealPartRecipes: [],
         },
       ],
@@ -74,7 +86,7 @@ export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<
         .getOne()
         // .getSql()
       // console.log(FoundedMealPlanerInfo)
-      console.log(FoundedMealPlanerInfo?.user.params)
+      // console.log(FoundedMealPlanerInfo?.user.params)
       // console.log(FoundedMealPlanerInfo?.mealParts[0].mealPartProducts)
 
       // Если план питания для нужной даты не найден, получить послдение данные о "Текущем весе" и "Желаемом весе" пользователя
