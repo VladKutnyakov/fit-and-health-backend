@@ -1,6 +1,6 @@
-// Формат даты для всего проекта --- 2021-12-29
-// Показать дату в мс --- new Date('2021-12-29').getTime() / 1000
-// Текущая дата --- new Date().toJSON().split('T')[0]
+// Формат даты для всего проекта --- 29.12.2022
+// Показать дату в мс --- new Date('29.12.2022').getTime() / 1000
+// Текущая дата --- new Date().toLocaleString('ru-RU').split(',')[0]
 
 import { Request, Response } from "express"
 import { dataSource } from '../../../dataSource'
