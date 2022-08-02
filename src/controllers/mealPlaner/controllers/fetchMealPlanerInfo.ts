@@ -9,12 +9,38 @@ import { UsersParams } from "../../../db/entities/UsersParams"
 
 export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {
+
+    // Если план питания не найден возвращается объект с начальными данными
+    const MealPlanerInfo: any = {
+      id: null,
+      date: new Date().toLocaleString('ru-RU').split(',')[0],
+      title: null,
+      description: null,
+      targetProtein: 1,
+      targetFats: 0.5,
+      targetCarb: 2,
+      targetWeight: null,
+      currentWeight: null,
+      marks: [],
+      mealParts: [
+        {
+          id: null,
+          title: 'Затрак',
+          mealTime: '07:00',
+          mealPartProducts: [],
+          mealPartRecipes: [],
+        },
+      ],
+      user: req.body.userId || null,
+    }
+    // console.log(MealPlanerInfo)
+
     if (req.body.userId) {
       const targetDate = req.query.date || new Date().toLocaleString('ru-RU').split(',')[0]
       // console.log(targetDate)
 
       // Найти план питания для укзанной даты или для текущего дня если дата не передана в запросе
-      const MealPlanerInfo = await dataSource.getRepository(MealPlaners)
+      const FoundedMealPlanerInfo = await dataSource.getRepository(MealPlaners)
         .createQueryBuilder('mealPlaners')
         .where([{user: req.body.userId, date: targetDate}])
         .select([
@@ -47,79 +73,39 @@ export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<
         .addSelect(['params.weight', 'params.targetWeight'])
         .getOne()
         // .getSql()
-      // console.log(MealPlanerInfo)
-      // console.log(MealPlanerInfo?.user.params)
-      // console.log(MealPlanerInfo?.mealParts[0].mealPartProducts)
-
-      // Если план питания не найден возвращается объект с начальными данными
-      const EmptyMealPlanerInfo: any = {
-        id: null,
-        date: new Date().toJSON().split('T')[0],
-        title: null,
-        description: null,
-        targetProtein: 1,
-        targetFats: 0.5,
-        targetCarb: 2,
-        targetWeight: null,
-        currentWeight: null,
-        marks: [],
-        mealParts: [
-          {
-            id: null,
-            title: 'Затрак',
-            mealTime: '07:00',
-            mealPartProducts: [],
-            mealPartRecipes: [],
-          },
-        ],
-        pinned: null,
-        favorite: null,
-        user: req.body.userId || null,
-      }
-      // console.log(EmptyMealPlanerInfo)
+      // console.log(FoundedMealPlanerInfo)
+      console.log(FoundedMealPlanerInfo?.user.params)
+      // console.log(FoundedMealPlanerInfo?.mealParts[0].mealPartProducts)
 
       // Если план питания для нужной даты не найден, получить послдение данные о "Текущем весе" и "Желаемом весе" пользователя
-      if (!MealPlanerInfo) {
-        const UserParams = await dataSource.getRepository(UsersParams)
-          .createQueryBuilder('userParams')
-          .where([{user: req.body.userId}])
-          .orderBy('id', 'DESC')
-          .getOne()
-        // console.log(UserParams)
-
-        EmptyMealPlanerInfo.targetWeight = UserParams?.targetWeight || null
-        EmptyMealPlanerInfo.currentWeight = UserParams?.weight || null
+      if (FoundedMealPlanerInfo) {
+        MealPlanerInfo.id = FoundedMealPlanerInfo.id,
+        MealPlanerInfo.date = FoundedMealPlanerInfo.date,
+        MealPlanerInfo.title = FoundedMealPlanerInfo.title,
+        MealPlanerInfo.description = FoundedMealPlanerInfo.description,
+        MealPlanerInfo.targetProtein = FoundedMealPlanerInfo.targetProtein,
+        MealPlanerInfo.targetFats = FoundedMealPlanerInfo.targetFats,
+        MealPlanerInfo.targetCarb = FoundedMealPlanerInfo.targetCarb,
+        // MealPlanerInfo.marks = FoundedMealPlanerInfo.marks,
+        MealPlanerInfo.mealParts = FoundedMealPlanerInfo.mealParts,
+        MealPlanerInfo.user = {
+          id: FoundedMealPlanerInfo.user.id,
+        }
       }
 
-      return res.status(200).json(MealPlanerInfo || EmptyMealPlanerInfo)
+      const LastUserParams = await dataSource.getRepository(UsersParams)
+        .createQueryBuilder('userParams')
+        .where([{user: req.body.userId}])
+        .orderBy('id', 'DESC')
+        .getOne()
+      // console.log(LastUserParams)
+
+      MealPlanerInfo.targetWeight = LastUserParams?.targetWeight || null
+      MealPlanerInfo.currentWeight = LastUserParams?.weight || null
+
+      return res.status(200).json(MealPlanerInfo)
     } else {
-      // Если пользователь не указан возвращается объект с начальными данными
-      const EmptyMealPlanerInfo: any = {
-        id: null,
-        date: new Date().toJSON().split('T')[0],
-        title: null,
-        description: null,
-        targetProtein: 1,
-        targetFats: 0.5,
-        targetCarb: 2,
-        targetWeight: null,
-        currentWeight: null,
-        marks: [],
-        mealParts: [
-          {
-            id: null,
-            title: 'Затрак',
-            mealTime: '07:00',
-            products: [],
-            recipes: [],
-          },
-        ],
-        pinned: null,
-        favorite: null,
-        user: null,
-      }
-
-      return res.status(200).json(EmptyMealPlanerInfo)
+      return res.status(200).json(MealPlanerInfo)
     }
   } catch (error: any) {
     return res.status(500).json({
