@@ -11,8 +11,6 @@ const router: Router = express.Router()
 *     tags:
 *       - Общие справочники
 *     summary: Список вариантов сложности (мастерства)
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список вариантов сложности (мастерства)
@@ -35,8 +33,8 @@ const router: Router = express.Router()
 *                   value:
 *                     type: string
 *                     description: Числовое обозначение уровня сложности
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/skill-types', JwtGuard, directoryControllers.fetchSkillTypes)
 
@@ -48,8 +46,6 @@ router.get('/skill-types', JwtGuard, directoryControllers.fetchSkillTypes)
 *     tags:
 *       - Общие справочники
 *     summary: Список типов тренировок
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список типов тренировок
@@ -66,8 +62,8 @@ router.get('/skill-types', JwtGuard, directoryControllers.fetchSkillTypes)
 *                   title:
 *                     type: string
 *                     description: Название типа тренировки
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/training-types', JwtGuard, directoryControllers.fetchTrainingTypes)
 
@@ -79,8 +75,6 @@ router.get('/training-types', JwtGuard, directoryControllers.fetchTrainingTypes)
 *     tags:
 *       - Общие справочники
 *     summary: Список мест для тренировок
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список мест для тренировок
@@ -97,8 +91,8 @@ router.get('/training-types', JwtGuard, directoryControllers.fetchTrainingTypes)
 *                   title:
 *                     type: string
 *                     description: Название места для тренировок
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/training-places', JwtGuard, directoryControllers.fetchTrainingPlaces)
 
