@@ -126,8 +126,10 @@ const router: Router = express.Router()
 *                     id:
 *                       type: integer
 *                       description: ID пользователя
-*       401:
-*         description: Ошибка авторизации
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/', JwtGuard, mealPlanerControllers.fetchMealPlanerInfo)
 
@@ -171,8 +173,10 @@ router.get('/', JwtGuard, mealPlanerControllers.fetchMealPlanerInfo)
 *                     id:
 *                       type: integer
 *                       description: Id категории
-*       401:
-*         description: Ошибка авторизации
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.post('/save-meal-planer-info', JwtGuard, mealPlanerControllers.saveMealPlanerInfo)
 // router.post('/remove-meal-planer-info', JwtGuard, mealPlanerControllers.removeMealPlanerInfo)
