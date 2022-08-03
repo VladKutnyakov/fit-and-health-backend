@@ -18,8 +18,8 @@ export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<
       targetProtein: 1,
       targetFats: 0.5,
       targetCarb: 2,
-      targetWeight: null,
       currentWeight: null,
+      targetWeight: null,
       marks: [],
       mealParts: [
         {
@@ -81,8 +81,8 @@ export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<
         .leftJoinAndSelect('mealPlaners.marks', 'marks')
         .leftJoin("mealPlaners.user", "user")
         .addSelect(['user.id'])
-        .leftJoin('user.params', 'params', `params.id = (SELECT id FROM "users_params" WHERE "date" = '${targetDate}')`)
-        .addSelect(['params.weight', 'params.targetWeight'])
+        // .leftJoin('user.params', 'params', `params.id = (SELECT id FROM "users_params" WHERE "date" = '${targetDate}')`)
+        // .addSelect(['params.weight', 'params.targetWeight'])
         .getOne()
         // .getSql()
       // console.log(FoundedMealPlanerInfo)
@@ -117,7 +117,14 @@ export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<
 
       return res.status(200).json(MealPlanerInfo)
     } else {
-      return res.status(200).json(MealPlanerInfo)
+      return res.status(404).json({
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Пользователь не найден. Зарегистрируйтесь или авторизуйтесь, чтобы сохранять информацию о рационе.'
+          }
+        ]
+      })
     }
   } catch (error: any) {
     return res.status(500).json({

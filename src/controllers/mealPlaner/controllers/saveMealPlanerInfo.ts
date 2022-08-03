@@ -10,7 +10,12 @@ export const saveMealPlanerInfo = async (req: Request, res: Response): Promise<R
     return res.status(200).json(req.body.mealPlanerInfo)
   } catch (error: any) {
     return res.status(500).json({
-      errorMessage: 'Неизвестная ошибка.'
+      errors: [
+        {
+          field: null,
+          errorMessage: 'Неизвестная ошибка.'
+        }
+      ]
     })
   }
 }
