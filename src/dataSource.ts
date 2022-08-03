@@ -19,9 +19,4 @@ export const dataSource = new DataSource({
   subscribers: [
     "src/db/subscribers/**/*.ts"
   ],
-  // cli: {
-  //   entitiesDir: "src/db/entity",
-  //   migrationsDir: "src/db/migration",
-  //   subscribersDir: "src/db/subscriber",
-  // }
 })
