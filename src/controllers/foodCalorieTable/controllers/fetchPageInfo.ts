@@ -11,7 +11,15 @@ export const fetchPageInfo = async (req: Request, res: Response): Promise<Respon
       ])
       .leftJoin('products.user', 'user')
       .addSelect(['user.id'])
-      .where(`products.user = ${req.body.userId} OR products.user IS NULL`)
+      .where(req.body.userId ? `products.user = ${req.body.userId} OR products.user IS NULL` : 'products.user IS NULL')
+      .getCount()
+
+    const UserProductsCount = await dataSource.getRepository(Products)
+      .createQueryBuilder('products')
+      .select([
+        'products.id'
+      ])
+      .where(`products.user = ${req.body.userId}`)
       .getCount()
 
     const PinnedProductsCount = await dataSource.getRepository(Products)
@@ -34,19 +42,11 @@ export const fetchPageInfo = async (req: Request, res: Response): Promise<Respon
       .where(`favoriteForUsers.id = ${req.body.userId}`)
       .getCount()
 
-      const UserProductsCount = await dataSource.getRepository(Products)
-      .createQueryBuilder('products')
-      .select([
-        'products.id'
-      ])
-      .where(`products.user = ${req.body.userId}`)
-      .getCount()
-
     const response = {
       products: ProductsCount,
+      userProducts: UserProductsCount,
       pinned: PinnedProductsCount,
       favorites: FavoriteProducts,
-      userProducts: UserProductsCount,
     }
 
     return res.status(200).json(response)

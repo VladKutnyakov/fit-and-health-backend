@@ -11,8 +11,6 @@ const router: Router = express.Router()
 *     tags:
 *       - Таблица калорийности продуктов
 *     summary: Информация по разделу
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Информация по разделу
@@ -21,23 +19,20 @@ const router: Router = express.Router()
 *             schema:
 *               type: object
 *               properties:
-*                 pageInfo:
-*                   type: object
-*                   properties:
-*                     products:
-*                       type: integer
-*                       description: Общее кол-во продуктов
-*                     pinned:
-*                       type: integer
-*                       description: Общее кол-во закрепленных продуктов
-*                     favorites:
-*                       type: integer
-*                       description: Общее кол-во избранных продуктов
-*                     userProducts:
-*                       type: integer
-*                       description: Общее кол-во продуктов пользователя
-*       401:
-*         description: Ошибка авторизации
+*                 products:
+*                   type: integer
+*                   description: Общее кол-во продуктов
+*                 userProducts:
+*                   type: integer
+*                   description: Общее кол-во продуктов пользователя
+*                 pinned:
+*                   type: integer
+*                   description: Общее кол-во закрепленных продуктов
+*                 favorites:
+*                   type: integer
+*                   description: Общее кол-во избранных продуктов
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/page-info', JwtGuard, foodCalorieTableControllers.fetchPageInfo)
 
