@@ -20,6 +20,7 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
 
     // Обработка ошибки - не указано обязательное поле в передаваемых данных
     const errors = []
+
     for (const key in req.body.product) {
       if (
         (key !== 'id' && !req.body.product[key]) &&
