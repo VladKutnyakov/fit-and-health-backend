@@ -269,6 +269,8 @@ router.get('/', JwtGuard, foodCalorieTableControllers.fetchProductsList)
 *                   description: Признак добавления в закрепленное у авторизованного пользователя
 *       400:
 *         description: Неверный запрос
+*       404:
+*         description: Не найдено
 *       500:
 *         description: Неизвестная ошибка
 */
@@ -281,7 +283,7 @@ router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduc
 *   put:
 *     tags:
 *       - Таблица калорийности продуктов
-*     summary: Обновить все данные у продукта
+*     summary: Обновить данные у продукта
 *     security:
 *       - jwt: []
 *     requestBody:
@@ -335,50 +337,43 @@ router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduc
 *             schema:
 *               type: object
 *               properties:
-*                 updatedToken:
+*                 id:
+*                   type: integer
+*                   description: Id продукта
+*                 title:
 *                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
+*                   description: Название продукта
+*                 protein:
+*                   type: integer
+*                   description: Кол-во белков (на 100 гр.)
+*                 fats:
+*                   type: integer
+*                   description: Кол-во жиров (на 100 гр.)
+*                 carb:
+*                   type: integer
+*                   description: Кол-во углеводов (на 100 гр.)
+*                 kkal:
+*                   type: integer
+*                   description: Калорийность (на 100 гр.)
+*                 category:
 *                   type: object
 *                   properties:
-*                     product:
-*                       type: object
-*                       properties:
-*                         id:
-*                           type: integer
-*                           description: Id продукта
-*                         title:
-*                           type: string
-*                           description: Название продукта
-*                         protein:
-*                           type: integer
-*                           description: Кол-во белков (на 100 гр.)
-*                         fats:
-*                           type: integer
-*                           description: Кол-во жиров (на 100 гр.)
-*                         carb:
-*                           type: integer
-*                           description: Кол-во углеводов (на 100 гр.)
-*                         kkal:
-*                           type: integer
-*                           description: Калорийность (на 100 гр.)
-*                         category:
-*                           type: object
-*                           properties:
-*                             id:
-*                               type: integer
-*                               description: Id категории продукта
-*                             title:
-*                               type: string
-*                               description: Название категории продукта
-*                         favorite:
-*                           type: boolean
-*                           description: Признак добавления в избранное у авторизованного пользователя
-*                         pinned:
-*                           type: boolean
-*                           description: Признак добавления в закрепленное у авторизованного пользователя
-*       401:
-*         description: Ошибка авторизации
+*                     id:
+*                       type: integer
+*                       description: Id категории продукта
+*                     title:
+*                       type: string
+*                       description: Название категории продукта
+*                 favorite:
+*                   type: boolean
+*                   description: Признак добавления в избранное у авторизованного пользователя
+*                 pinned:
+*                   type: boolean
+*                   description: Признак добавления в закрепленное у авторизованного пользователя
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduct)
 
@@ -407,20 +402,16 @@ router.put('/update-product', JwtGuard, foodCalorieTableControllers.updateProduc
 *             schema:
 *               type: object
 *               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: object
-*                   properties:
-*                     favorite:
-*                       type: boolean
-*                       description: Признак "изранного" для продукта у пользователя
-*                     productId:
-*                       type: integer
-*                       description: Id продукта
-*       401:
-*         description: Ошибка авторизации
+*                 favorite:
+*                   type: boolean
+*                   description: Признак "изранного" для продукта у пользователя
+*                 productId:
+*                   type: integer
+*                   description: Id продукта
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.put('/change-favorite-param/:productId', JwtGuard, foodCalorieTableControllers.changeFavoriteParam)
 
@@ -449,20 +440,16 @@ router.put('/change-favorite-param/:productId', JwtGuard, foodCalorieTableContro
 *             schema:
 *               type: object
 *               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: object
-*                   properties:
-*                     pinned:
-*                       type: boolean
-*                       description: Признак "закрепленного" для продукта у пользователя
-*                     productId:
-*                       type: integer
-*                       description: Id продукта
-*       401:
-*         description: Ошибка авторизации
+*                 pinned:
+*                   type: boolean
+*                   description: Признак "закрепленного" для продукта у пользователя
+*                 productId:
+*                   type: integer
+*                   description: Id продукта
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.put('/change-pinned-param/:productId', JwtGuard, foodCalorieTableControllers.changePinnedParam)
 
@@ -491,20 +478,16 @@ router.put('/change-pinned-param/:productId', JwtGuard, foodCalorieTableControll
 *             schema:
 *               type: object
 *               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: object
-*                   properties:
-*                     removed:
-*                       type: boolean
-*                       description: Признак успешного удаления продукта
-*                     productId:
-*                       type: integer
-*                       description: Id продукта
-*       401:
-*         description: Ошибка авторизации
+*                 removed:
+*                   type: boolean
+*                   description: Признак успешного удаления продукта
+*                 productId:
+*                   type: integer
+*                   description: Id продукта
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.delete('/remove-product/:productId', JwtGuard, foodCalorieTableControllers.removeProduct)
 

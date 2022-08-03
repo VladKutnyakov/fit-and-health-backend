@@ -97,7 +97,7 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
 
       return res.status(200).json(product)
     } else {
-      return res.status(400).json({
+      return res.status(404).json({
         errors: [
           {
             field: null,
