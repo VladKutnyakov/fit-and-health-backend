@@ -6,7 +6,10 @@ export const fetchProductCategories = async (req: Request, res: Response): Promi
   try {
     const ProductCategoriesList = await dataSource.getRepository(ProductCategories)
       .createQueryBuilder('categories')
-      .select(['categories.id', 'categories.title'])
+      .select([
+        'categories.id',
+        'categories.title'
+      ])
       .orderBy({'id': 'ASC'})
       .getMany()
 

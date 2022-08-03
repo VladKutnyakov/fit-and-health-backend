@@ -44,32 +44,24 @@ router.get('/page-info', JwtGuard, foodCalorieTableControllers.fetchPageInfo)
 *     tags:
 *       - Таблица калорийности продуктов
 *     summary: Список категорий продуктов
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список категорий продуктов
 *         content:
 *           application/json:
 *             schema:
-*               type: object
-*               properties:
-*                 updatedToken:
-*                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
-*                   type: array
-*                   items:
-*                     type: object
-*                     properties:
-*                       id:
-*                         type: integer
-*                         description: Id категории
-*                       title:
-*                         type: string
-*                         description: Название категории
-*       401:
-*         description: Ошибка авторизации
+*               type: array
+*               items:
+*                 type: object
+*                 properties:
+*                   id:
+*                     type: integer
+*                     description: Id категории
+*                   title:
+*                     type: string
+*                     description: Название категории
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/product-categories', JwtGuard, foodCalorieTableControllers.fetchProductCategories)
 
