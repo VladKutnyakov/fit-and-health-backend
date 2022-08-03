@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import { dataSource } from '../../dataSource'
-// import { Users } from "../../db/entities/Users"
-import { Tokens } from "../../db/entities/Tokens"
+import { dataSource } from '@/dataSource'
+// import { Users } from "@/db/entities/Users"
+import { Tokens } from "@/db/entities/Tokens"
 interface I_JwtKeys {
   jwt: any
   // jwtRefresh: any

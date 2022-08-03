@@ -1,14 +1,14 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { Users } from '../../../db/entities/Users'
-import { TrainingPlaces } from '../../../db/entities/TrainingPlaces'
-import { Skills } from '../../../db/entities/Skills'
-import { Muscles } from "../../../db/entities/Muscles"
-import { Exercises } from "../../../db/entities/Exercises"
-import { ExerciseTypes } from "../../../db/entities/ExerciseTypes"
-import { ExerciseSorts } from "../../../db/entities/ExerciseSorts"
-import { ExerciseExertions } from "../../../db/entities/ExerciseExertions"
-import { ExerciseEquipments } from "../../../db/entities/ExerciseEquipments"
+import { dataSource } from '@/dataSource'
+import { Users } from '@/db/entities/Users'
+import { TrainingPlaces } from '@/db/entities/TrainingPlaces'
+import { Skills } from '@/db/entities/Skills'
+import { Muscles } from "@/db/entities/Muscles"
+import { Exercises } from "@/db/entities/Exercises"
+import { ExerciseTypes } from "@/db/entities/ExerciseTypes"
+import { ExerciseSorts } from "@/db/entities/ExerciseSorts"
+import { ExerciseExertions } from "@/db/entities/ExerciseExertions"
+import { ExerciseEquipments } from "@/db/entities/ExerciseEquipments"
 
 export const updateExercise = async (req: Request, res: Response): Promise<Response> => {
   try {

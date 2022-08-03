@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { Products } from "../../../db/entities/Products"
-import { ProductCategories } from '../../../db/entities/ProductCategories'
-import { Users } from '../../../db/entities/Users'
+import { dataSource } from '@/dataSource'
+import { Products } from "@/db/entities/Products"
+import { ProductCategories } from '@/db/entities/ProductCategories'
+import { Users } from '@/db/entities/Users'
 
 export const saveNewProduct = async (req: Request, res: Response): Promise<Response> => {
   try {

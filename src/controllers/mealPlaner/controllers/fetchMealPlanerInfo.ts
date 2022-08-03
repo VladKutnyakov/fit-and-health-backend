@@ -3,9 +3,9 @@
 // Текущая дата --- new Date().toLocaleString('ru-RU').split(',')[0]
 
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { MealPlaners } from "../../../db/entities/MealPlaners"
-import { UsersParams } from "../../../db/entities/UsersParams"
+import { dataSource } from '@/dataSource'
+import { MealPlaners } from "@/db/entities/MealPlaners"
+import { UsersParams } from "@/db/entities/UsersParams"
 
 export const fetchMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {

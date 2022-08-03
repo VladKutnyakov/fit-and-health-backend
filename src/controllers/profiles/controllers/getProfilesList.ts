@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { UsersProfiles } from "../../../db/entities/UsersProfiles"
+import { dataSource } from '@/dataSource'
+import { UsersProfiles } from "@/db/entities/UsersProfiles"
 
 export const getProfilesList = async (req: Request, res: Response): Promise<Response> => {
   try {

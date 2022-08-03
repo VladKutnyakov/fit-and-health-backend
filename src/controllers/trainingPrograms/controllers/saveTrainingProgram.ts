@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { TrainingPrograms } from "../../../db/entities/TrainingPrograms"
-import { TrainingProgramDays } from '../../../db/entities/TrainingProgramDays'
-import { TrainingProgramDayExercises } from '../../../db/entities/TrainingProgramDayExercises'
-import { Exercises } from '../../../db/entities/Exercises'
-import { Users } from '../../../db/entities/Users'
-import { Skills } from '../../../db/entities/Skills'
-import { TrainingTypes } from '../../../db/entities/TrainingTypes'
+import { dataSource } from '@/dataSource'
+import { TrainingPrograms } from "@/db/entities/TrainingPrograms"
+import { TrainingProgramDays } from '@/db/entities/TrainingProgramDays'
+import { TrainingProgramDayExercises } from '@/db/entities/TrainingProgramDayExercises'
+import { Exercises } from '@/db/entities/Exercises'
+import { Users } from '@/db/entities/Users'
+import { Skills } from '@/db/entities/Skills'
+import { TrainingTypes } from '@/db/entities/TrainingTypes'
 
 export const saveTrainingProgram = async (req: Request, res: Response): Promise<Response> => {
   try {

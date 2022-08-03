@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { Users } from '../../../db/entities/Users'
+import { dataSource } from '@/dataSource'
+import { Users } from '@/db/entities/Users'
 
 export const changePinnedParam = async (req: Request, res: Response): Promise<Response> => {
   try {

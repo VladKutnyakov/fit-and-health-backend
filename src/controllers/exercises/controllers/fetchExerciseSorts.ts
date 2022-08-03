@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { ExerciseSorts } from "../../../db/entities/ExerciseSorts"
+import { dataSource } from '@/dataSource'
+import { ExerciseSorts } from "@/db/entities/ExerciseSorts"
 
 export const fetchExerciseSorts = async (req: Request, res: Response): Promise<Response> => {
   try {

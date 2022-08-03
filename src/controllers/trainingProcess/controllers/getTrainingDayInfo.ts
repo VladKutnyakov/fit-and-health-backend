@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { TrainingProgramDayExerciseApproaches } from "../../../db/entities/TrainingProgramDayExerciseApproaches"
-import { TrainingProgramDays } from '../../../db/entities/TrainingProgramDays'
+import { dataSource } from '@/dataSource'
+import { TrainingProgramDayExerciseApproaches } from "@/db/entities/TrainingProgramDayExerciseApproaches"
+import { TrainingProgramDays } from '@/db/entities/TrainingProgramDays'
 
 export const getTrainingDayInfo = async (req: Request, res: Response): Promise<Response> => {
   // console.log(req.query.trainingDay)

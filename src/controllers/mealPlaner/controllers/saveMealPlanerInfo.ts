@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { MealPlaners } from "../../../db/entities/MealPlaners"
-import { UsersParams } from "../../../db/entities/UsersParams"
+import { dataSource } from '@/dataSource'
+import { MealPlaners } from "@/db/entities/MealPlaners"
+import { UsersParams } from "@/db/entities/UsersParams"
 
 export const saveMealPlanerInfo = async (req: Request, res: Response): Promise<Response> => {
   try {

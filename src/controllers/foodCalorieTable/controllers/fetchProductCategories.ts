@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
-import { ProductCategories } from '../../../db/entities/ProductCategories'
+import { dataSource } from '@/dataSource'
+import { ProductCategories } from '@/db/entities/ProductCategories'
 
 export const fetchProductCategories = async (req: Request, res: Response): Promise<Response> => {
   try {

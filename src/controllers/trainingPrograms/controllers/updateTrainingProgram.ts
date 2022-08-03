@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { dataSource } from '../../../dataSource'
+import { dataSource } from '@/dataSource'
 // import { TrainingPrograms } from "../db/entities/TrainingPrograms"
 // import { TrainingProgramDays } from '../db/entities/TrainingProgramDays'
 // import { TrainingProgramDayExercises } from '../db/entities/TrainingProgramDayExercises'
