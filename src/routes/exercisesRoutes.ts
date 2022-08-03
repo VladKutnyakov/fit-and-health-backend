@@ -3,6 +3,39 @@ import exercisesControllers from '../controllers/exercises/index'
 import JwtGuard from '../middleware/Guards/JwtGuard'
 const router: Router = express.Router()
 
+// http://localhost:3031/api/exercises/exercises-page-info
+/**
+* @swagger
+* /api/exercises/exercises-page-info:
+*   get:
+*     tags:
+*       - Справочник упражнений
+*     summary: Общая информация по разделу "Справочник упражнений"
+*     responses:
+*       200:
+*         description: Общая информация по разделу "Справочник упражнений"
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 exercises:
+*                   type: number
+*                   description: Кол-во упражнений в БД
+*                 userExercises:
+*                   type: number
+*                   description: Кол-во упражнений пользователя в БД
+*                 pinnedExercises:
+*                   type: number
+*                   description: Кол-во закрепленных упражнений у пользователя
+*                 favoriteExercises:
+*                   type: number
+*                   description: Кол-во избранных упражнений у пользователя
+*       500:
+*         description: Неизвестная ошибка
+*/
+router.get('/exercises-page-info', JwtGuard, exercisesControllers.fetchExercisePageInfo)
+
 // http://localhost:3031/api/exercises/exercises-list
 /**
 * @swagger
@@ -11,8 +44,6 @@ const router: Router = express.Router()
 *     tags:
 *       - Справочник упражнений
 *     summary: Список упражнений
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список упражнений
@@ -127,8 +158,8 @@ const router: Router = express.Router()
 *                       id:
 *                         type: integer
 *                         description: ID пользователя
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/exercises-list', JwtGuard, exercisesControllers.fetchExercisesList)
 
@@ -140,8 +171,6 @@ router.get('/exercises-list', JwtGuard, exercisesControllers.fetchExercisesList)
 *     tags:
 *       - Справочник упражнений
 *     summary: Список упражнений по мышечным группам
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список упражнений по мышечным группам
@@ -186,8 +215,8 @@ router.get('/exercises-list', JwtGuard, exercisesControllers.fetchExercisesList)
 *                             id:
 *                               type: integer
 *                               description: ID пользователя
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/exercises-by-muscles', JwtGuard, exercisesControllers.fetchExercisesListByMuscles)
 
@@ -305,8 +334,10 @@ router.get('/exercises-by-muscles', JwtGuard, exercisesControllers.fetchExercise
 *                     id:
 *                       type: number
 *                       description: ID пользователя
-*       401:
-*         description: Ошибка авторизации
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExerciseInfo)
 
@@ -558,8 +589,12 @@ router.get('/exercise-info/:exerciseId', JwtGuard, exercisesControllers.fetchExe
 *                         id:
 *                           type: number
 *                           description: ID пользователя
-*       401:
-*         description: Ошибка авторизации
+*       400:
+*         description: Неверный запрос
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.post('/save-new-exercise', JwtGuard, exercisesControllers.saveNewExercise)
 
@@ -793,8 +828,12 @@ router.post('/save-new-exercise', JwtGuard, exercisesControllers.saveNewExercise
 *                         id:
 *                           type: number
 *                           description: ID пользователя
-*       401:
-*         description: Ошибка авторизации
+*       400:
+*         description: Неверный запрос
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.put('/update-exercise', JwtGuard, exercisesControllers.updateExercise)
 
@@ -826,8 +865,12 @@ router.put('/update-exercise', JwtGuard, exercisesControllers.updateExercise)
 *                 exerciseId:
 *                   type: number
 *                   description: id удаленного упражнеия
-*       401:
-*         description: Ошибка авторизации
+*       400:
+*         description: Неверный запрос
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.delete('/remove-exercise/:exerciseId', JwtGuard, exercisesControllers.removeExercise)
 
@@ -862,8 +905,12 @@ router.delete('/remove-exercise/:exerciseId', JwtGuard, exercisesControllers.rem
 *                 exerciseId:
 *                   type: number
 *                   description: ID упражнения
-*       401:
-*         description: Ошибка авторизации
+*       400:
+*         description: Неверный запрос
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.put('/change-pinned-param/:exerciseId', JwtGuard, exercisesControllers.changePinnedParam)
 
@@ -898,8 +945,12 @@ router.put('/change-pinned-param/:exerciseId', JwtGuard, exercisesControllers.ch
 *                 exerciseId:
 *                   type: number
 *                   description: ID упражнения
-*       401:
-*         description: Ошибка авторизации
+*       400:
+*         description: Неверный запрос
+*       404:
+*         description: Не найдено
+*       500:
+*         description: Неизвестная ошибка
 */
 router.put('/change-favorite-param/:exerciseId', JwtGuard, exercisesControllers.changeFavoriteParam)
 
@@ -911,8 +962,6 @@ router.put('/change-favorite-param/:exerciseId', JwtGuard, exercisesControllers.
 *     tags:
 *       - Справочник упражнений
 *     summary: Список мышечных групп
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список мышечных групп
@@ -929,8 +978,8 @@ router.put('/change-favorite-param/:exerciseId', JwtGuard, exercisesControllers.
 *                   title:
 *                     type: string
 *                     description: Название мышечной группы
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/muscles', JwtGuard, exercisesControllers.fetchMuscles)
 
@@ -942,8 +991,6 @@ router.get('/muscles', JwtGuard, exercisesControllers.fetchMuscles)
 *     tags:
 *       - Справочник упражнений
 *     summary: Список типов для упражнений
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список типов для упражнений
@@ -960,8 +1007,8 @@ router.get('/muscles', JwtGuard, exercisesControllers.fetchMuscles)
 *                   title:
 *                     type: string
 *                     description: Название мышечной группы
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/exercise-types', JwtGuard, exercisesControllers.fetchExerciseTypes)
 
@@ -973,8 +1020,6 @@ router.get('/exercise-types', JwtGuard, exercisesControllers.fetchExerciseTypes)
 *     tags:
 *       - Справочник упражнений
 *     summary: Список видов для упражнений
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список видов для упражнений
@@ -991,8 +1036,8 @@ router.get('/exercise-types', JwtGuard, exercisesControllers.fetchExerciseTypes)
 *                   title:
 *                     type: string
 *                     description: Название мышечной группы
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/exercise-sorts', JwtGuard, exercisesControllers.fetchExerciseSorts)
 
@@ -1004,8 +1049,6 @@ router.get('/exercise-sorts', JwtGuard, exercisesControllers.fetchExerciseSorts)
 *     tags:
 *       - Справочник упражнений
 *     summary: Список усилий для выполнения упражнений
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список усилий для выполнения упражнений
@@ -1022,8 +1065,8 @@ router.get('/exercise-sorts', JwtGuard, exercisesControllers.fetchExerciseSorts)
 *                   title:
 *                     type: string
 *                     description: Название мышечной группы
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/exercise-exertions', JwtGuard, exercisesControllers.fetchExerciseExertions)
 
@@ -1035,8 +1078,6 @@ router.get('/exercise-exertions', JwtGuard, exercisesControllers.fetchExerciseEx
 *     tags:
 *       - Справочник упражнений
 *     summary: Список необходимого оборудования для выполнения упражнений
-*     security:
-*       - jwt: []
 *     responses:
 *       200:
 *         description: Список необходимого оборудования для выполнения упражнений
@@ -1053,44 +1094,9 @@ router.get('/exercise-exertions', JwtGuard, exercisesControllers.fetchExerciseEx
 *                   title:
 *                     type: string
 *                     description: Название мышечной группы
-*       401:
-*         description: Ошибка авторизации
+*       500:
+*         description: Неизвестная ошибка
 */
 router.get('/exercise-equipments', JwtGuard, exercisesControllers.fetchExerciseEquipments)
-
-// http://localhost:3031/api/exercises/exercises-page-info
-/**
-* @swagger
-* /api/exercises/exercises-page-info:
-*   get:
-*     tags:
-*       - Справочник упражнений
-*     summary: Общая информация по разделу "Справочник упражнений"
-*     security:
-*       - jwt: []
-*     responses:
-*       200:
-*         description: Общая информация по разделу "Справочник упражнений"
-*         content:
-*           application/json:
-*             schema:
-*               type: object
-*               properties:
-*                 exercises:
-*                   type: number
-*                   description: Кол-во упражнений в БД
-*                 userExercises:
-*                   type: number
-*                   description: Кол-во упражнений пользователя в БД
-*                 pinnedExercises:
-*                   type: number
-*                   description: Кол-во закрепленных упражнений у пользователя
-*                 favoriteExercises:
-*                   type: number
-*                   description: Кол-во избранных упражнений у пользователя
-*       401:
-*         description: Ошибка авторизации
-*/
-router.get('/exercises-page-info', JwtGuard, exercisesControllers.fetchExercisePageInfo)
 
 export default router

@@ -12,6 +12,18 @@ import { ExerciseEquipments } from "../../../db/entities/ExerciseEquipments"
 
 export const updateExercise = async (req: Request, res: Response): Promise<Response> => {
   try {
+    // Обработка ошибки - не найден пользователь
+    if (!req.body.userId) {
+      return res.status(404).json({
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Пользователь не найден. Зарегистрируйтесь или авторизуйтесь, чтобы редактировать закрепленные продукты.'
+          }
+        ]
+      })
+    }
+
     // Обработка ошибки - не передан объект с данными об упражнении
     if (!req.body.exercise) {
       return res.status(400).json({

@@ -10,13 +10,6 @@ export const fetchExercisePageInfo = async (req: Request, res: Response): Promis
       .createQueryBuilder('exercises')
       .select([
         'exercises.id',
-        'exercises.title',
-        'exercises.techniqueDescription',
-        'exercises.previewImage',
-        'exercises.power',
-        'exercises.endurance',
-        'exercises.flexibility',
-        'exercises.cardio',
       ])
       .where(`exercises.user = ${req.body.userId}`)
       .getCount()
@@ -25,13 +18,6 @@ export const fetchExercisePageInfo = async (req: Request, res: Response): Promis
       .createQueryBuilder('exercises')
       .select([
         'exercises.id',
-        'exercises.title',
-        'exercises.techniqueDescription',
-        'exercises.previewImage',
-        'exercises.power',
-        'exercises.endurance',
-        'exercises.flexibility',
-        'exercises.cardio',
       ])
       .leftJoin('exercises.pinnedForUsers', 'pinnedForUsers', `${'pinnedForUsers.id'} = ${req.body.userId}`)
       .addSelect(['pinnedForUsers.id'])
@@ -42,13 +28,6 @@ export const fetchExercisePageInfo = async (req: Request, res: Response): Promis
       .createQueryBuilder('exercises')
       .select([
         'exercises.id',
-        'exercises.title',
-        'exercises.techniqueDescription',
-        'exercises.previewImage',
-        'exercises.power',
-        'exercises.endurance',
-        'exercises.flexibility',
-        'exercises.cardio',
       ])
       .leftJoin('exercises.favoriteForUsers', 'favoriteForUsers', `${'favoriteForUsers.id'} = ${req.body.userId}`)
       .addSelect(['favoriteForUsers.id'])

@@ -4,6 +4,18 @@ import { Exercises } from "../../../db/entities/Exercises"
 
 export const removeExercise = async (req: Request, res: Response): Promise<Response> => {
   try {
+    // Обработка ошибки - не найден пользователь
+    if (!req.body.userId) {
+      return res.status(404).json({
+        errors: [
+          {
+            field: null,
+            errorMessage: 'Пользователь не найден. Зарегистрируйтесь или авторизуйтесь, чтобы редактировать закрепленные продукты.'
+          }
+        ]
+      })
+    }
+
     // Обработка ошибки - указан ли id упражнения, которое необходимо удалить
     if (!req.params.exerciseId) {
       return res.status(400).json({
