@@ -228,56 +228,49 @@ router.get('/', JwtGuard, foodCalorieTableControllers.fetchProductsList)
 *             schema:
 *               type: object
 *               properties:
-*                 updatedToken:
+*                 id:
+*                   type: integer
+*                   description: Id продукта
+*                 title:
 *                   type: string
-*                   description: Обновленный токен авторизации
-*                 data:
+*                   description: Название продукта
+*                 protein:
+*                   type: integer
+*                   description: Кол-во белков (на 100 гр.)
+*                 fats:
+*                   type: integer
+*                   description: Кол-во жиров (на 100 гр.)
+*                 carb:
+*                   type: integer
+*                   description: Кол-во углеводов (на 100 гр.)
+*                 kkal:
+*                   type: integer
+*                   description: Калорийность (на 100 гр.)
+*                 user:
 *                   type: object
 *                   properties:
-*                     product:
-*                       type: object
-*                       properties:
-*                         id:
-*                           type: integer
-*                           description: Id продукта
-*                         title:
-*                           type: string
-*                           description: Название продукта
-*                         protein:
-*                           type: integer
-*                           description: Кол-во белков (на 100 гр.)
-*                         fats:
-*                           type: integer
-*                           description: Кол-во жиров (на 100 гр.)
-*                         carb:
-*                           type: integer
-*                           description: Кол-во углеводов (на 100 гр.)
-*                         kkal:
-*                           type: integer
-*                           description: Калорийность (на 100 гр.)
-*                         user:
-*                           type: object
-*                           properties:
-*                             id:
-*                               type: integer
-*                               description: Id пользователя
-*                         category:
-*                           type: object
-*                           properties:
-*                             id:
-*                               type: integer
-*                               description: Id категории продукта
-*                             title:
-*                               type: string
-*                               description: Название категории продукта
-*                         favorite:
-*                           type: boolean
-*                           description: Признак добавления в избранное у авторизованного пользователя
-*                         pinned:
-*                           type: boolean
-*                           description: Признак добавления в закрепленное у авторизованного пользователя
-*       401:
-*         description: Ошибка авторизации
+*                     id:
+*                       type: integer
+*                       description: Id пользователя
+*                 category:
+*                   type: object
+*                   properties:
+*                     id:
+*                       type: integer
+*                       description: Id категории продукта
+*                     title:
+*                       type: string
+*                       description: Название категории продукта
+*                 favorite:
+*                   type: boolean
+*                   description: Признак добавления в избранное у авторизованного пользователя
+*                 pinned:
+*                   type: boolean
+*                   description: Признак добавления в закрепленное у авторизованного пользователя
+*       400:
+*         description: Неверный запрос
+*       500:
+*         description: Неизвестная ошибка
 */
 router.post('/save-product', JwtGuard, foodCalorieTableControllers.saveNewProduct)
 
