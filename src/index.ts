@@ -1,4 +1,4 @@
-require('module-alias/register')
+require('module-alias/register') // Требуется для работы alias? указанных в package.json
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
