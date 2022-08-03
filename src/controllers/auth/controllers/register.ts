@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
 import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
-import { dataSource } from '../../../dataSource'
-import { Users } from "../../../db/entities/Users"
-import { UsersProfiles } from "../../../db/entities/UsersProfiles"
-import { UsersParams } from "../../../db/entities/UsersParams"
-import { UsersSettings } from "../../../db/entities/UsersSettings"
-import { Tokens } from "../../../db/entities/Tokens"
+import { dataSource } from '@/dataSource'
+import { Users } from "@/db/entities/Users"
+import { UsersProfiles } from "@/db/entities/UsersProfiles"
+import { UsersParams } from "@/db/entities/UsersParams"
+import { UsersSettings } from "@/db/entities/UsersSettings"
+import { Tokens } from "@/db/entities/Tokens"
 
 // http://localhost:3031/api/auth/register/
 export const register = async (req: Request, res: Response): Promise<Response> => {

@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
 import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
-import { dataSource } from '../../../dataSource'
-import { Users } from "../../../db/entities/Users"
-import { Tokens } from "../../../db/entities/Tokens"
+import { dataSource } from '@/dataSource'
+import { Users } from "@/db/entities/Users"
+import { Tokens } from "@/db/entities/Tokens"
 
 // http://localhost:3031/api/auth/login/
 export const login = async (req: Request, res: Response): Promise<Response> => {
