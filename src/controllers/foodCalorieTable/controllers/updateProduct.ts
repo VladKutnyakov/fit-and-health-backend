@@ -18,6 +18,28 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
       })
     }
 
+    // Обработка ошибки - не указано обязательное поле в передаваемых данных
+    const errors = []
+
+    for (const key in req.body.product) {
+      if (
+        (key !== 'id' && !req.body.product[key]) &&
+        (key !== 'pinned' && !req.body.product[key]) &&
+        (key !== 'favorite' && !req.body.product[key])
+      ) {
+        errors.push({
+          field: key,
+          errorMessage: 'Обязательно для заполнения.'
+        })
+      }
+    }
+
+    if (errors.length) {
+      return res.status(400).json({
+        errors: errors
+      })
+    }
+
     if (req.body.userId) {
       // Обновить основные данные о продукте
       const UpdatedProduct = await dataSource.getRepository(Products)

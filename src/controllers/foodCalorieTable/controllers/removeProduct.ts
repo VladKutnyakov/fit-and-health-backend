@@ -10,7 +10,7 @@ export const removeProduct = async (req: Request, res: Response): Promise<Respon
         errors: [
           {
             field: null,
-            errorMessage: 'Не переданные id продукта.'
+            errorMessage: 'Не переданн id продукта.'
           }
         ]
       })
