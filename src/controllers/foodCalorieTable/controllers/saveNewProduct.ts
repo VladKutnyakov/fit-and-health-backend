@@ -25,7 +25,8 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
       if (
         (key !== 'id' && !req.body.product[key]) &&
         (key !== 'pinned' && !req.body.product[key]) &&
-        (key !== 'favorite' && !req.body.product[key])
+        (key !== 'favorite' && !req.body.product[key]) &&
+        (key !== 'category' && !req.body.product[key])
       ) {
         errors.push({
           field: key,
@@ -101,7 +102,7 @@ export const saveNewProduct = async (req: Request, res: Response): Promise<Respo
         errors: [
           {
             field: null,
-            errorMessage: 'Пользователь не найден. Зарегистрируйтесь или авторизуйтесь, чтобы сохранаять продукты.'
+            errorMessage: 'Пользователь не найден. Зарегистрируйтесь или авторизуйтесь, чтобы сохранять продукты.'
           }
         ]
       })
